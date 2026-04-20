@@ -32,12 +32,10 @@ class MedicalAppointment(models.Model):
             if not record.appointment_date:
                 continue
             
-            # Using basic UTC for simplicity, or user tz if available
             user_tz = pytz.timezone(self.env.user.tz or 'UTC')
             local_time = pytz.utc.localize(record.appointment_date).astimezone(user_tz)
             hour = local_time.hour
             
-            # 8h to 12h and 12h to 17h = 8 <= hour < 17
             if not (8 <= hour < 17):
                 raise ValidationError("Les rendez-vous doivent avoir lieu entre 08:00 et 17:00.")
 
@@ -47,7 +45,6 @@ class MedicalAppointment(models.Model):
             if not record.appointment_date:
                 continue
                 
-            # Fixed duration of 30 minutes
             start_date = record.appointment_date
             end_date = start_date + timedelta(minutes=30)
             
