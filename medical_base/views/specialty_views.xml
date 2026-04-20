@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="view_medical_specialty_tree" model="ir.ui.view">
+        <field name="name">medical.specialty.tree</field>
+        <field name="model">medical.specialty</field>
+        <field name="arch" type="xml">
+            <list string="Specialties">
+                <field name="name"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_medical_specialty_form" model="ir.ui.view">
+        <field name="name">medical.specialty.form</field>
+        <field name="model">medical.specialty</field>
+        <field name="arch" type="xml">
+            <form string="Specialty">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="description"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_medical_specialty" model="ir.actions.act_window">
+        <field name="name">Specialties</field>
+        <field name="res_model">medical.specialty</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="medical_specialty_menu"
+              name="Specialties"
+              parent="medical_configuration_menu"
+              action="action_medical_specialty"
+              sequence="10"/>
+
+</odoo>

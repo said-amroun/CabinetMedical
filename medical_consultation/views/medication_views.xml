@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_medical_medication_tree" model="ir.ui.view">
+        <field name="name">medical.medication.tree</field>
+        <field name="model">medical.medication</field>
+        <field name="arch" type="xml">
+            <list string="Medications" editable="bottom">
+                <field name="name"/>
+                <field name="active_ingredient"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_medical_medication" model="ir.actions.act_window">
+        <field name="name">Medications</field>
+        <field name="res_model">medical.medication</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

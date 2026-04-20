@@ -1,0 +1,20 @@
+{
+    'name': 'Medical Consultation',
+    'version': '1.0',
+    'summary': 'Manage medical consultations',
+    'description': 'Consultation history, symptoms, diseases, and prescriptions.',
+    'author': 'DIB Syphax / AMROUN Said',
+    'category': 'Healthcare',
+    'depends': ['base', 'medical_appointment'],
+    'data': [
+        'security/ir.model.access.csv',
+        'data/sequence.xml',
+        'views/disease_views.xml',
+        'views/medication_views.xml',
+        'views/consultation_views.xml',
+        'views/medical_consultation_menu.xml',
+    ],
+    'installable': True,
+    'application': False,
+    'license': 'LGPL-3',
+}
