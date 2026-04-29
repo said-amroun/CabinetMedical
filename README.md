@@ -1,10 +1,10 @@
-<<<<<<< HEAD
-# MedocSS---Gestion-de-cabinet-m-dical-
-=======
+
+# Gestion de cabinet medical
+
 GESTION DE CABINET MEDICAL 
 
 MEMBRES DU GROUPE :
 
 - AMROUN SAID
 - DIB SYPHAX
->>>>>>> origin/main
+
