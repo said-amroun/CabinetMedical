@@ -54,11 +54,4 @@
         <field name="res_model">medical.patient</field>
         <field name="view_mode">list,form</field>
     </record>
-
-    <menuitem id="medical_patient_menu_item"
-              name="Patients"
-              parent="medical_patient_menu"
-              action="action_medical_patient"
-              sequence="10"/>
-
 </odoo>

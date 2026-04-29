@@ -10,10 +10,12 @@
     <menuitem id="medical_doctor_menu"
               name="Doctors"
               parent="medical_root_menu"
+              action="action_medical_doctor"
               sequence="20"/>
 
     <menuitem id="medical_patient_menu"
               name="Patients"
               parent="medical_root_menu"
+              action="action_medical_patient"
               sequence="30"/>
 </odoo>
