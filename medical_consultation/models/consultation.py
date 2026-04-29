@@ -7,7 +7,6 @@ class MedicalConsultation(models.Model):
     name = fields.Char(string='Reference', required=True, copy=False, readonly=True, default='New')
     appointment_id = fields.Many2one('medical.appointment', string='Appointment', required=True)
     
-    # Historique: Les données remontent du rendez-vous
     patient_id = fields.Many2one('medical.patient', related='appointment_id.patient_id', string='Patient', readonly=True, store=True)
     doctor_id = fields.Many2one('medical.doctor', related='appointment_id.doctor_id', string='Doctor', readonly=True, store=True)
     
@@ -17,12 +16,10 @@ class MedicalConsultation(models.Model):
     ], string='Status', default='draft', required=True)
     consultation_date = fields.Datetime(string='Date de Consultation', readonly=True)
     
-    # Détails de la consultation
     symptoms = fields.Text(string='Symptoms')
     disease_id = fields.Many2one('medical.disease', string='Disease/Diagnosis')
     notes = fields.Text(string='Notes')
     
-    # Ordonnance
     prescription_line_ids = fields.One2many('medical.prescription.line', 'consultation_id', string='Prescriptions')
 
     @api.model_create_multi

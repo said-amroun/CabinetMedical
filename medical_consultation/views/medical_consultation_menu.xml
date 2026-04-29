@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <!-- Consultation main menu (under Medical) -->
     <menuitem id="medical_consultation_menu"
               name="Consultations"
               parent="medical_base.medical_root_menu"
               action="action_medical_consultation"
               sequence="16"/>
 
-    <!-- Configuration sub-menus (under Configuration) -->
     <menuitem id="medical_disease_menu"
               name="Diseases"
               parent="medical_base.medical_configuration_menu"

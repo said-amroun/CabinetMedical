@@ -31,7 +31,6 @@
                     </div>
                     <group>
                         <group>
-                            <!-- Selecting appointment auto-fills the patient and doctor -->
                             <field name="appointment_id"/>
                             <field name="patient_id"/>
                             <field name="doctor_id"/>
