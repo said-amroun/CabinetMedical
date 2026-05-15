@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Template du PDF -->
+    <template id="report_appointment_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <div class="text-center mb-4">
+                            <h2>Confirmation de Rendez-vous</h2>
+                            <h4 class="text-muted">Cabinet Médical</h4>
+                        </div>
+
+                        <hr/>
+
+                        <div class="row mt-4">
+                            <div class="col-6">
+                                <h5>Informations du rendez-vous</h5>
+                                <table class="table table-borderless">
+                                    <tr>
+                                        <td><strong>Référence :</strong></td>
+                                        <td><t t-esc="doc.name"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Date :</strong></td>
+                                        <td><t t-esc="doc.appointment_date" t-options='{"widget": "datetime"}'/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Statut :</strong></td>
+                                        <td><t t-esc="doc.state"/></td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-6">
+                                <h5>Patient</h5>
+                                <table class="table table-borderless">
+                                    <tr>
+                                        <td><strong>Nom :</strong></td>
+                                        <td><t t-esc="doc.patient_id.name"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Téléphone :</strong></td>
+                                        <td><t t-esc="doc.patient_id.phone or 'N/A'"/></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="row mt-3">
+                            <div class="col-6">
+                                <h5>Médecin</h5>
+                                <table class="table table-borderless">
+                                    <tr>
+                                        <td><strong>Nom :</strong></td>
+                                        <td><t t-esc="doc.doctor_id.name"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Spécialité :</strong></td>
+                                        <td><t t-esc="doc.doctor_id.specialty_id.name or 'N/A'"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Téléphone :</strong></td>
+                                        <td><t t-esc="doc.doctor_id.phone or 'N/A'"/></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <hr class="mt-4"/>
+                        <div class="text-center text-muted mt-3">
+                            <p>Veuillez vous présenter 10 minutes avant votre rendez-vous.</p>
+                            <p>En cas d'empêchement, merci de nous contacter au plus tôt.</p>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <!-- Déclaration du rapport -->
+    <record id="action_report_appointment" model="ir.actions.report">
+        <field name="name">Confirmation de RDV</field>
+        <field name="model">medical.appointment</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">medical_appointment.report_appointment_document</field>
+        <field name="report_file">medical_appointment.report_appointment_document</field>
+        <field name="binding_model_id" ref="model_medical_appointment"/>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>

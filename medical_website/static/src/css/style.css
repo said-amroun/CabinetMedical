@@ -1,0 +1,71 @@
+/* Medical Website - Styles */
+
+/* ===== VARIABLES ===== */
+:root {
+    --medical-primary: #2e7d8c;
+    --medical-secondary: #4caf8f;
+    --medical-light: #f0f7f9;
+    --medical-dark: #1a4a54;
+}
+
+/* ===== PAGE MEDICALE ===== */
+.medical-hero {
+    background: linear-gradient(135deg, var(--medical-primary), var(--medical-secondary));
+    color: white;
+    padding: 80px 0;
+    text-align: center;
+}
+
+.medical-hero h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.medical-hero p {
+    font-size: 1.2rem;
+    opacity: 0.9;
+    margin-bottom: 30px;
+}
+
+/* ===== CARDS ===== */
+.medical-card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden;
+}
+
+.medical-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+}
+
+/* ===== BOUTON PRINCIPAL ===== */
+.btn-medical {
+    background: linear-gradient(135deg, var(--medical-primary), var(--medical-secondary));
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 25px;
+    font-weight: 600;
+    transition: opacity 0.3s ease;
+}
+
+.btn-medical:hover {
+    opacity: 0.9;
+    color: white;
+}
+
+/* ===== FORMULAIRE RDV ===== */
+.rdv-form .form-control {
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+    padding: 12px 15px;
+}
+
+.rdv-form .form-control:focus {
+    border-color: var(--medical-primary);
+    box-shadow: 0 0 0 3px rgba(46, 125, 140, 0.15);
+}
