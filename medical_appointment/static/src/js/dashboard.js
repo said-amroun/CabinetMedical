@@ -65,11 +65,30 @@ export class MedicalDashboard extends Component {
                 this.state.is_doctor = false;
             }
 
-            this.state.appointments = await this.orm.searchRead(
+            const appointments = await this.orm.searchRead(
                 "medical.appointment",
                 domain,
                 ["name", "patient_id", "doctor_id", "appointment_date", "state"]
             );
+
+            appointments.forEach(app => {
+                if (app.appointment_date) {
+                    const timePart = app.appointment_date.split(' ')[1];
+                    if (timePart) {
+                        app.time_display = timePart.substring(0, 5);
+                    } else {
+                        app.time_display = "--:--";
+                    }
+                }
+            });
+
+            appointments.sort((a, b) => {
+                if (a.appointment_date < b.appointment_date) return -1;
+                if (a.appointment_date > b.appointment_date) return 1;
+                return 0;
+            });
+
+            this.state.appointments = appointments;
         });
     }
 }

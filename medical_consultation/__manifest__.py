@@ -10,7 +10,6 @@
         'security/security_rules.xml',
         'security/ir.model.access.csv',
         'data/sequence.xml',
-        'reports/prescription_report.xml',
         'views/disease_views.xml',
         'views/medication_views.xml',
         'views/consultation_views.xml',

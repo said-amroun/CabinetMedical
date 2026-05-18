@@ -46,30 +46,10 @@
         </field>
     </record>
 
-    <record id="view_medical_appointment_calendar" model="ir.ui.view">
-        <field name="name">medical.appointment.calendar</field>
-        <field name="model">medical.appointment</field>
-        <field name="arch" type="xml">
-            <calendar string="Rendez-vous"
-                      date_start="appointment_date"
-                      date_stop="date_stop"
-                      color="doctor_id"
-                      mode="week"
-                      quick_create="False">
-                <field name="patient_id"/>
-                <field name="doctor_id"/>
-                <field name="state" widget="badge"
-                       decoration-success="state == 'confirmed'"
-                       decoration-warning="state == 'draft'"
-                       decoration-danger="state == 'cancelled'"/>
-            </calendar>
-        </field>
-    </record>
-
     <record id="action_medical_appointment" model="ir.actions.act_window">
         <field name="name">Appointments</field>
         <field name="res_model">medical.appointment</field>
-        <field name="view_mode">list,calendar,form</field>
+        <field name="view_mode">list,form</field>
     </record>
 
 </odoo>
