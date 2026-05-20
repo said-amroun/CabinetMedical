@@ -1,0 +1,28 @@
+Compte Rendu 2 : Évolutions du Système de Gestion Médicale
+==========================================================
+
+1. Ajout de la génération d'Ordonnance en PDF
+----------------------------------------------
+* Quoi : Intégration d'une fonctionnalité permettant au médecin de générer et d'imprimer une ordonnance au format PDF directement depuis une consultation.
+* Pourquoi : Il s'agit d'une exigence métier fondamentale pour un cabinet médical. Le médecin doit pouvoir remettre au patient une trace écrite, standardisée et propre, de sa prescription à l'issue de la consultation.
+* Comment : 
+  - Création d'un rapport QWeb : Développement d'un nouveau fichier "report/prescription_report.xml" utilisant le moteur de template QWeb d'Odoo. Ce template est construit avec du code HTML/Bootstrap pour la mise en page.
+  - Affichage dynamique : Le code va piocher dynamiquement dans la base de données pour afficher le nom du médecin, celui du patient, la date, et fait une boucle (t-foreach) pour générer le tableau des médicaments prescrits (médicament, dosage, durée, notes).
+  - Modification de la vue (UI) : Ajout d'un bouton d'action "Imprimer Ordonnance" dans l'en-tête du fichier "views/consultation_views.xml". Ce bouton est paramétré pour n'apparaître que si la consultation est à l'état "Confirmé" (il est masqué en brouillon).
+  - Déclaration : Le rapport a été lié au modèle de données "medical.consultation" et déclaré dans le "__manifest__.py" pour être pris en compte par Odoo.
+
+2. Résolution d'anomalies (Débogage)
+------------------------------------
+* Quoi : Résolution d'une erreur critique lors de la mise à jour du module et correction du rendu des rapports (qui s'affichaient en HTML brut).
+* Pourquoi : 
+  - Le système a rencontré une erreur "SerializationFailure", due à une collision dans la base de données PostgreSQL lors du recalcul des droits d'accès.
+  - Odoo ne trouvait pas l'outil système nécessaire pour convertir le code Web (QWeb) en format PDF imprimable.
+* Comment :
+  - Erreur PostgreSQL : Diagnostic d'un blocage de concurrence temporaire (deadlock). Résolu par une méthode de purge classique : redémarrage du processus serveur Odoo et relance de l'installation.
+  - Problème d'impression : Identification de l'absence de la librairie externe wkhtmltopdf. La correction a été apportée en modifiant le fichier de configuration central "odoo.conf" (ajout de la ligne "bin_path = C:\Program Files\wkhtmltopdf\bin") pour indiquer à Odoo le chemin exact du convertisseur sous Windows.
+
+3. Consolidation de l'architecture du projet (Bonnes Pratiques)
+---------------------------------------------------------------
+* Quoi : Clarification et validation de la structure de l'espace de travail (Workspace) et de la gestion des dépôts Git (Repositories).
+* Pourquoi : Pour garantir la maintenabilité à long terme de l'application et éviter que le code sur-mesure ne soit écrasé lors d'une mise à jour logicielle d'Odoo.
+* Comment : Validation du principe d'isolation stricte : le code natif (le "moteur" Odoo) est isolé dans son propre répertoire versionné, tandis que nos modules (medical_base, medical_appointment, medical_consultation) sont cloisonnés de façon sécurisée dans le répertoire indépendant "custom_addons".
