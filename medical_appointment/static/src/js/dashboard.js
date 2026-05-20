@@ -91,6 +91,34 @@ export class MedicalDashboard extends Component {
             this.state.appointments = appointments;
         });
     }
+
+    async openConsultation(appointmentId) {
+        const consultations = await this.orm.searchRead(
+            "medical.consultation",
+            [["appointment_id", "=", appointmentId]],
+            ["id"]
+        );
+
+        if (consultations.length > 0) {
+            this.action.doAction({
+                type: "ir.actions.act_window",
+                res_model: "medical.consultation",
+                res_id: consultations[0].id,
+                views: [[false, "form"]],
+                target: "current",
+            });
+        } else {
+            this.action.doAction({
+                type: "ir.actions.act_window",
+                res_model: "medical.consultation",
+                views: [[false, "form"]],
+                target: "current",
+                context: {
+                    default_appointment_id: appointmentId,
+                }
+            });
+        }
+    }
 }
 MedicalDashboard.template = "medical_appointment.Dashboard";
 

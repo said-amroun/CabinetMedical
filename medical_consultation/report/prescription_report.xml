@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report_prescription" model="ir.actions.report">
+        <field name="name">Ordonnance</field>
+        <field name="model">medical.consultation</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">medical_consultation.report_prescription_document</field>
+        <field name="report_file">medical_consultation.report_prescription_document</field>
+        <field name="print_report_name">'Ordonnance - %s' % (object.name)</field>
+        <field name="binding_model_id" ref="model_medical_consultation"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="report_prescription_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <div class="row">
+                            <div class="col-12 text-center" style="margin-bottom: 20px;">
+                                <h2>Ordonnance Médicale</h2>
+                            </div>
+                        </div>
+                        <div class="row mt32 mb32" style="font-size: 16px;">
+                            <div class="col-6">
+                                <strong>Docteur:</strong> <span t-field="doc.doctor_id.name"/><br/>
+                                <strong>Date:</strong> <span t-field="doc.consultation_date" t-options='{"widget": "date"}'/>
+                            </div>
+                            <div class="col-6 text-end">
+                                <strong>Patient:</strong> <span t-field="doc.patient_id.name"/><br/>
+                                <strong>Réf Consultation:</strong> <span t-field="doc.name"/>
+                            </div>
+                        </div>
+                        
+                        <div style="margin-top: 40px; margin-bottom: 20px;">
+                            <h4>Prescription:</h4>
+                        </div>
+                        <table class="table table-sm o_main_table mt16">
+                            <thead>
+                                <tr>
+                                    <th>Médicament</th>
+                                    <th>Dosage</th>
+                                    <th>Durée</th>
+                                    <th>Notes</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="doc.prescription_line_ids" t-as="line">
+                                    <tr>
+                                        <td><span t-field="line.medication_id.name"/></td>
+                                        <td><span t-field="line.dosage"/></td>
+                                        <td><span t-field="line.duration"/></td>
+                                        <td><span t-field="line.note"/></td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+
+                        <div class="row" style="margin-top: 50px;">
+                            <div class="col-12 text-end">
+                                <strong>Signature du médecin</strong>
+                                <br/><br/><br/>
+                                _______________________
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

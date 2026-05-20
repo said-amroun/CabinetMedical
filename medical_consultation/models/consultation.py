@@ -5,7 +5,7 @@ class MedicalConsultation(models.Model):
     _description = 'Medical Consultation'
 
     name = fields.Char(string='Reference', required=True, copy=False, readonly=True, default='New')
-    appointment_id = fields.Many2one('medical.appointment', string='Appointment', required=True)
+    appointment_id = fields.Many2one('medical.appointment', string='Appointment', required=True, domain=[('state', '!=', 'done')])
     
     patient_id = fields.Many2one('medical.patient', related='appointment_id.patient_id', string='Patient', readonly=True, store=True)
     doctor_id = fields.Many2one('medical.doctor', related='appointment_id.doctor_id', string='Doctor', readonly=True, store=True)

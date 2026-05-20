@@ -40,7 +40,7 @@
                             
                             <div class="d-flex flex-column gap-3">
                                 <t t-foreach="state.appointments" t-as="app" t-key="app.id">
-                                    <div class="card shadow-sm border-0 position-relative">
+                                    <div class="card shadow-sm border-0 position-relative" t-on-click="() => this.openConsultation(app.id)" style="cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.01)'" onmouseout="this.style.transform='scale(1)'">
                                         <!-- Timeline dot -->
                                         <div class="position-absolute bg-primary rounded-circle" style="left: -26px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; border: 3px solid white; z-index: 1;"></div>
                                         
