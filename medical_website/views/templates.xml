@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="index" name="Medical - Accueil">
+        <t t-call="website.layout">
+            <div class="medical-hero">
+                <div class="container">
+                    <h1>Bienvenue sur MédicSS</h1>
+                    <p>Votre cabinet médical de confiance - Des soins de qualité, accessibles en ligne</p>
+                    <a href="/medical/rdv" class="btn btn-medical btn-lg">
+                        Prendre un rendez-vous
+                    </a>
+                </div>
+            </div>
+
+            <div class="container mt-5 mb-5">
+                <div class="text-center mb-5">
+                    <h2 class="section-title">Nos services</h2>
+                    <p class="section-subtitle">Tout ce dont vous avez besoin pour prendre soin de votre santé</p>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4 mb-4">
+                        <div class="medical-card p-4 h-100 text-center">
+                            <div class="medical-icon">
+                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm1 11h-2v2H9v-2H7v-2h2v-2h2v2h2v2z"/>
+                                </svg>
+                            </div>
+                            <h4 class="fw-bold mb-3">Prise de RDV en ligne</h4>
+                            <p class="text-muted">Réservez votre consultation en quelques clics, disponible 24h/24 et 7j/7.</p>
+                            <a href="/medical/rdv" class="btn btn-medical mt-3">Réserver maintenant</a>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 mb-4">
+                        <div class="medical-card p-4 h-100 text-center">
+                            <div class="medical-icon">
+                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                                </svg>
+                            </div>
+                            <h4 class="fw-bold mb-3">Médecins spécialistes</h4>
+                            <p class="text-muted">Une équipe de médecins qualifiés et expérimentés à votre service pour tous vos besoins de santé.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 mb-4">
+                        <div class="medical-card p-4 h-100 text-center">
+                            <div class="medical-icon">
+                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/>
+                                </svg>
+                            </div>
+                            <h4 class="fw-bold mb-3">Suivi personnalisé</h4>
+                            <p class="text-muted">Consultez vos rendez-vous et votre historique médical à tout moment depuis votre espace.</p>
+                            <a href="/medical/mes-rdv" class="btn btn-medical mt-3">Mes rendez-vous</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="background: var(--medical-light); padding: 60px 0;">
+                <div class="container text-center">
+                    <h2 class="section-title">Prêt à prendre soin de vous ?</h2>
+                    <p class="section-subtitle">Rejoignez des milliers de patients qui nous font confiance</p>
+                    <a href="/medical/rdv" class="btn btn-medical btn-lg me-3">Prendre un RDV</a>
+                    <a href="/medical/contact" class="btn btn-outline-secondary btn-lg">Nous contacter</a>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="rdv" name="Medical - Rendez-vous">
+        <t t-call="website.layout">
+            <div class="container mt-5 mb-5">
+                <div class="row justify-content-center">
+                    <div class="col-md-8">
+                        <h1 class="mb-4">Prendre un rendez-vous</h1>
+
+                        <t t-if="error">
+                            <div class="alert alert-danger">
+                                <t t-esc="error"/>
+                            </div>
+                        </t>
+
+                        <div class="medical-card p-4">
+                            <form action="/medical/rdv/submit" method="post" class="rdv-form">
+                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+
+                                <h5 class="mb-3">Vos informations</h5>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label fw-bold">Prénom *</label>
+                                        <input type="text" name="first_name" class="form-control" required="1" placeholder="Votre prénom"/>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label fw-bold">Nom *</label>
+                                        <input type="text" name="last_name" class="form-control" required="1" placeholder="Votre nom"/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label fw-bold">Téléphone</label>
+                                        <input type="tel" name="phone" class="form-control" placeholder="Votre numéro"/>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label fw-bold">Email</label>
+                                        <input type="email" name="email" class="form-control" placeholder="Votre email"/>
+                                    </div>
+                                </div>
+
+                                <hr class="my-4"/>
+
+                                <h5 class="mb-3">Votre rendez-vous</h5>
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Médecin *</label>
+                                    <select name="doctor_id" class="form-control" required="1">
+                                        <option value="">Choisir un médecin</option>
+                                        <t t-foreach="doctors" t-as="doctor">
+                                            <option t-att-value="doctor.id">
+                                                <t t-esc="doctor.name"/>
+                                                <t t-if="doctor.specialty_id"> - <t t-esc="doctor.specialty_id.name"/></t>
+                                            </option>
+                                        </t>
+                                    </select>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Date et heure *</label>
+                                    <input type="datetime-local" name="appointment_date"
+                                           class="form-control" required="1" id="appointment_date"/>
+                                    <small class="text-muted">Les rendez-vous sont disponibles entre 08h00 et 17h00</small>
+                                </div>
+
+                                <button type="submit" class="btn btn-medical w-100 mt-3">
+                                    Confirmer le rendez-vous
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="confirmation" name="Medical - Confirmation RDV">
+        <t t-call="website.layout">
+            <div class="container mt-5 mb-5">
+                <div class="row justify-content-center">
+                    <div class="col-md-8 text-center">
+                        <div class="medical-card p-5">
+                            <h2>Rendez-vous confirmé</h2>
+                            <p class="text-muted mb-4">Votre rendez-vous a été enregistré avec succès.</p>
+
+                            <table class="table table-bordered text-start mb-4">
+                                <tr>
+                                    <td><strong>Référence</strong></td>
+                                    <td><t t-esc="rdv.name"/></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Patient</strong></td>
+                                    <td><t t-esc="rdv.patient_id.name"/></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Médecin</strong></td>
+                                    <td><t t-esc="rdv.doctor_id.name"/></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Spécialité</strong></td>
+                                    <td><t t-esc="rdv.doctor_id.specialty_id.name or 'N/A'"/></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Date et heure</strong></td>
+                                    <td><t t-esc="rdv.appointment_date" t-options='{"widget": "datetime"}'/></td>
+                                </tr>
+                            </table>
+
+                            <a t-att-href="'/medical/rdv/pdf/' + str(rdv.id)" class="btn btn-medical btn-lg mb-3">
+                                Télécharger la confirmation PDF
+                            </a>
+                            <br/>
+                            <a href="/medical/rdv" class="btn btn-outline-secondary">
+                                Prendre un autre rendez-vous
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="contact" name="Medical - Contact">
+        <t t-call="website.layout">
+            <div class="container mt-5 mb-5">
+                <div class="row justify-content-center">
+                    <div class="col-md-8">
+                        <h1 class="mb-4">Contactez-nous</h1>
+                        <p class="text-muted mb-4">
+                            Une question ? Une remarque ? N'hésitez pas à nous écrire, nous vous répondrons dans les plus brefs délais.
+                        </p>
+
+                        <t t-if="success">
+                            <div class="alert alert-success">
+                                Votre message a été envoyé avec succès. Nous vous répondrons rapidement.
+                            </div>
+                        </t>
+
+                        <t t-if="error">
+                            <div class="alert alert-danger">
+                                <t t-esc="error"/>
+                            </div>
+                        </t>
+
+                        <div class="medical-card p-4">
+                            <form action="/medical/contact/submit" method="post" class="rdv-form">
+                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label fw-bold">Nom complet *</label>
+                                        <input type="text" name="name" class="form-control" required="1" placeholder="Votre nom"/>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label fw-bold">Email *</label>
+                                        <input type="email" name="email" class="form-control" required="1" placeholder="Votre email"/>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Sujet</label>
+                                    <input type="text" name="subject" class="form-control" placeholder="Sujet de votre message"/>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Message *</label>
+                                    <textarea name="message" class="form-control" rows="6" required="1" placeholder="Votre message..."></textarea>
+                                </div>
+
+                                <button type="submit" class="btn btn-medical w-100 mt-3">
+                                    Envoyer le message
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+    <template id="mes_rdv" name="Medical - Mes Rendez-vous">
+        <t t-call="website.layout">
+            <div class="container mt-5 mb-5">
+                <div class="row justify-content-center">
+                    <div class="col-md-8">
+                        <h1 class="mb-4">Mes rendez-vous</h1>
+                        <p class="text-muted mb-4">
+                            Entrez vos informations pour retrouver vos rendez-vous.
+                        </p>
+
+                        <div class="medical-card p-4 mb-4">
+                            <form action="/medical/mes-rdv/search" method="post" class="rdv-form">
+                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label fw-bold">Prénom *</label>
+                                        <input type="text" name="first_name" class="form-control" required="1" placeholder="Votre prénom"/>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label fw-bold">Nom *</label>
+                                        <input type="text" name="last_name" class="form-control" required="1" placeholder="Votre nom"/>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Référence du rendez-vous *</label>
+                                    <input type="text" name="reference" class="form-control" required="1" placeholder="Ex: APT/00001"/>
+                                </div>
+
+                                <button type="submit" class="btn btn-medical w-100">
+                                    Rechercher mes rendez-vous
+                                </button>
+                            </form>
+                        </div>
+
+                        <t t-if="error">
+                            <div class="alert alert-danger">
+                                <t t-esc="error"/>
+                            </div>
+                        </t>
+
+                        <t t-if="searched and rdvs">
+                            <h4 class="mb-3">Rendez-vous de <t t-esc="patient.name"/></h4>
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead class="table-dark">
+                                        <tr>
+                                            <th>Référence</th>
+                                            <th>Médecin</th>
+                                            <th>Date</th>
+                                            <th>Statut</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-foreach="rdvs" t-as="rdv">
+                                            <tr>
+                                                <td><t t-esc="rdv.name"/></td>
+                                                <td><t t-esc="rdv.doctor_id.name"/></td>
+                                                <td><t t-esc="rdv.appointment_date" t-options='{"widget": "datetime"}'/></td>
+                                                <td>
+                                                    <span t-attf-class="badge bg-#{
+                                                        'success' if rdv.state == 'done' else
+                                                        'primary' if rdv.state == 'confirmed' else
+                                                        'warning' if rdv.state == 'draft' else
+                                                        'danger'}">
+                                                        <t t-esc="rdv.state"/>
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

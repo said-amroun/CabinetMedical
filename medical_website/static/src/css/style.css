@@ -1,0 +1,208 @@
+:root {
+    --medical-primary: #6a1b9a;
+    --medical-secondary: #9c27b0;
+    --medical-accent: #ce93d8;
+    --medical-light: #f3e5f5;
+    --medical-dark: #4a148c;
+    --medical-gradient: linear-gradient(135deg, #4a148c, #7b1fa2, #9c27b0);
+}
+
+* {
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.medical-hero {
+    background: linear-gradient(135deg, rgba(74, 20, 140, 0.88), rgba(123, 31, 162, 0.82)),
+                url('https://images.unsplash.com/photo-1505751172876-fa1923c5c528?w=1600&q=80') center/cover no-repeat;
+    color: white;
+    padding: 130px 0;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.medical-hero::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: white;
+    clip-path: ellipse(55% 100% at 50% 100%);
+}
+
+.medical-hero h1 {
+    font-size: 3.2rem;
+    font-weight: 900;
+    margin-bottom: 20px;
+    color: white;
+    text-shadow: 0 2px 20px rgba(0,0,0,0.4);
+    letter-spacing: -0.5px;
+}
+
+.medical-hero p {
+    font-size: 1.25rem;
+    color: rgba(255,255,255,0.95);
+    margin-bottom: 40px;
+    text-shadow: 0 1px 8px rgba(0,0,0,0.3);
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.medical-card {
+    border: none;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(106, 27, 154, 0.10);
+    background: white;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.medical-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 50px rgba(106, 27, 154, 0.18);
+}
+
+.medical-icon {
+    width: 70px;
+    height: 70px;
+    background: var(--medical-gradient);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+}
+
+.medical-icon svg {
+    width: 35px;
+    height: 35px;
+    fill: white;
+}
+
+.btn-medical {
+    background: var(--medical-gradient);
+    color: white;
+    border: none;
+    padding: 14px 38px;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+    box-shadow: 0 6px 20px rgba(106, 27, 154, 0.35);
+    display: inline-block;
+}
+
+.btn-medical:hover {
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 28px rgba(106, 27, 154, 0.45);
+}
+
+.rdv-form .form-control {
+    border-radius: 12px;
+    border: 2px solid #e1bee7;
+    padding: 13px 16px;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    background: #fafafa;
+}
+
+.rdv-form .form-control:focus {
+    border-color: var(--medical-secondary);
+    box-shadow: 0 0 0 4px rgba(156, 39, 176, 0.12);
+    background: white;
+    outline: none;
+}
+
+.rdv-form label {
+    color: var(--medical-dark);
+    font-size: 0.9rem;
+    margin-bottom: 6px;
+}
+
+.rdv-form h5 {
+    color: var(--medical-primary);
+    font-weight: 700;
+    border-left: 4px solid var(--medical-secondary);
+    padding-left: 12px;
+    margin-bottom: 20px;
+}
+
+.rdv-form hr {
+    border-color: #e1bee7;
+    margin: 24px 0;
+}
+
+.table thead {
+    background: var(--medical-gradient);
+    color: white;
+}
+
+.table-dark {
+    background: var(--medical-gradient) !important;
+}
+
+.alert-success {
+    background-color: #e8f5e9;
+    border-color: #a5d6a7;
+    border-radius: 12px;
+    color: #2e7d32;
+}
+
+.alert-danger {
+    background-color: #fce4ec;
+    border-color: #f48fb1;
+    border-radius: 12px;
+    color: #880e4f;
+}
+
+h1, h2, h4 {
+    color: var(--medical-dark);
+}
+
+.text-muted {
+    color: #8e7b9a !important;
+    line-height: 1.6;
+}
+
+.btn-outline-secondary {
+    border: 2px solid var(--medical-secondary);
+    color: var(--medical-secondary);
+    border-radius: 50px;
+    padding: 10px 28px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-secondary:hover {
+    background: var(--medical-secondary);
+    color: white;
+}
+
+.badge {
+    padding: 7px 14px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.8rem;
+}
+
+.bg-success { background: #43a047 !important; }
+.bg-primary { background: var(--medical-primary) !important; }
+.bg-warning { background: #f9a825 !important; color: #333 !important; }
+.bg-danger  { background: #e53935 !important; }
+
+.section-title {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--medical-dark);
+    margin-bottom: 10px;
+}
+
+.section-subtitle {
+    color: #8e7b9a;
+    font-size: 1.05rem;
+    margin-bottom: 50px;
+}
