@@ -28,5 +28,12 @@
             <field name="parent_id" ref="website.main_menu"/>
             <field name="sequence">13</field>
         </record>
+
+        <record id="menu_medical_medecins" model="website.menu">
+            <field name="name">Nos médecins</field>
+            <field name="url">/medical/medecins</field>
+            <field name="parent_id" ref="website.main_menu"/>
+            <field name="sequence">12</field>
+        </record>
     </data>
 </odoo>

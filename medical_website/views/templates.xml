@@ -72,70 +72,113 @@
 
     <template id="rdv" name="Medical - Rendez-vous">
         <t t-call="website.layout">
+
+            <div style="background: var(--medical-gradient); padding: 60px 0; text-align: center; color: white;">
+                <h1 style="font-size: 2.5rem; font-weight: 800; margin: 0; color: white; text-shadow: 0 2px 15px rgba(0,0,0,0.4);">Prendre un rendez-vous</h1>
+                <p style="color: rgba(255,255,255,0.95); margin-top: 10px; text-shadow: 0 1px 8px rgba(0,0,0,0.3);">Remplissez le formulaire ci-dessous pour réserver votre consultation</p>
+            </div>
+
             <div class="container mt-5 mb-5">
                 <div class="row justify-content-center">
                     <div class="col-md-8">
-                        <h1 class="mb-4">Prendre un rendez-vous</h1>
 
                         <t t-if="error">
-                            <div class="alert alert-danger">
-                                <t t-esc="error"/>
+                            <div class="alert alert-danger mb-4" style="border-radius: 12px; border: none; background: #fce4ec; color: #880e4f;">
+                                <strong>Erreur :</strong> <t t-esc="error"/>
                             </div>
                         </t>
 
-                        <div class="medical-card p-4">
+                        <t t-if="selected_doctor">
+                            <div class="medical-card p-4 mb-4 text-center" style="background: var(--medical-light);">
+                                <div style="width: 80px; height: 80px; border-radius: 50%; background: var(--medical-gradient); display: flex; align-items: center; justify-content: center; margin: 0 auto 15px;">
+                                    <svg viewBox="0 0 24 24" style="width: 40px; fill: white;">
+                                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                                    </svg>
+                                </div>
+                                <h4 style="color: var(--medical-dark); font-weight: 800;">
+                                    <t t-esc="selected_doctor.name"/>
+                                </h4>
+                                <p style="color: var(--medical-secondary); font-weight: 600;">
+                                    <t t-esc="selected_doctor.specialty_id.name if selected_doctor.specialty_id else 'Médecin généraliste'"/>
+                                </p>
+                                <a href="/medical/medecins" style="color: var(--medical-primary); font-size: 0.9rem;">
+                                    Changer de médecin
+                                </a>
+                            </div>
+                        </t>
+
+                        <div class="medical-card p-5">
                             <form action="/medical/rdv/submit" method="post" class="rdv-form">
                                 <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                <input type="hidden" name="doctor_id" t-if="selected_doctor" t-att-value="str(selected_doctor.id)"/>
 
-                                <h5 class="mb-3">Vos informations</h5>
+                                <h5 class="mb-4" style="color: var(--medical-dark); font-weight: 800; border-left: 4px solid var(--medical-secondary); padding-left: 12px;">Vos informations</h5>
+
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label fw-bold">Prénom *</label>
-                                        <input type="text" name="first_name" class="form-control" required="1" placeholder="Votre prénom"/>
+                                        <input type="text" name="first_name" class="form-control" required="1"
+                                               placeholder="Votre prénom"
+                                               t-att-value="form_data.get('first_name', '') if form_data else ''"/>
                                     </div>
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label fw-bold">Nom *</label>
-                                        <input type="text" name="last_name" class="form-control" required="1" placeholder="Votre nom"/>
+                                        <input type="text" name="last_name" class="form-control" required="1"
+                                               placeholder="Votre nom"
+                                               t-att-value="form_data.get('last_name', '') if form_data else ''"/>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label fw-bold">Téléphone</label>
-                                        <input type="tel" name="phone" class="form-control" placeholder="Votre numéro"/>
+                                        <input type="tel" name="phone" class="form-control"
+                                               placeholder="Votre numéro"
+                                               t-att-value="form_data.get('phone', '') if form_data else ''"/>
                                     </div>
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label fw-bold">Email</label>
-                                        <input type="email" name="email" class="form-control" placeholder="Votre email"/>
+                                        <input type="email" name="email" class="form-control"
+                                               placeholder="Votre email"
+                                               t-att-value="form_data.get('email', '') if form_data else ''"/>
                                     </div>
                                 </div>
 
-                                <hr class="my-4"/>
+                                <h5 class="mb-4 mt-4" style="color: var(--medical-dark); font-weight: 800; border-left: 4px solid var(--medical-secondary); padding-left: 12px;">Votre rendez-vous</h5>
 
-                                <h5 class="mb-3">Votre rendez-vous</h5>
-                                <div class="mb-3">
-                                    <label class="form-label fw-bold">Médecin *</label>
-                                    <select name="doctor_id" class="form-control" required="1">
-                                        <option value="">Choisir un médecin</option>
-                                        <t t-foreach="doctors" t-as="doctor">
-                                            <option t-att-value="doctor.id">
-                                                <t t-esc="doctor.name"/>
-                                                <t t-if="doctor.specialty_id"> - <t t-esc="doctor.specialty_id.name"/></t>
-                                            </option>
-                                        </t>
-                                    </select>
-                                </div>
+                                <t t-if="not selected_doctor">
+                                    <div class="mb-3">
+                                        <label class="form-label fw-bold">Médecin *</label>
+                                        <select name="doctor_id" class="form-control" required="1">
+                                            <option value="">Choisir un médecin</option>
+                                            <t t-foreach="doctors" t-as="doctor">
+                                                <option t-att-value="str(doctor.id)"
+                                                        t-att-selected="'selected' if form_data and form_data.get('doctor_id') == str(doctor.id) else None">
+                                                    <t t-esc="doctor.name"/>
+                                                    <t t-if="doctor.specialty_id"> - <t t-esc="doctor.specialty_id.name"/></t>
+                                                </option>
+                                            </t>
+                                        </select>
+                                    </div>
+                                </t>
 
-                                <div class="mb-3">
+                                <div class="mb-4">
                                     <label class="form-label fw-bold">Date et heure *</label>
                                     <input type="datetime-local" name="appointment_date"
-                                           class="form-control" required="1" id="appointment_date"/>
-                                    <small class="text-muted">Les rendez-vous sont disponibles entre 08h00 et 17h00</small>
+                                           class="form-control" required="1" id="appointment_date"
+                                           t-att-value="form_data.get('appointment_date', '') if form_data else ''"/>
+                                    <small class="text-muted">Disponible du lundi au vendredi, entre 08h00 et 17h00</small>
                                 </div>
 
-                                <button type="submit" class="btn btn-medical w-100 mt-3">
+                                <button type="submit" class="btn btn-medical w-100" style="padding: 16px; font-size: 1.1rem;">
                                     Confirmer le rendez-vous
                                 </button>
                             </form>
+                        </div>
+
+                        <div class="text-center mt-3">
+                            <a href="/medical/medecins" style="color: var(--medical-primary);">
+                                Voir tous nos médecins
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -321,6 +364,51 @@
                             </div>
                         </t>
                     </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="medecins" name="Medical - Nos Médecins">
+        <t t-call="website.layout">
+            <div style="background: var(--medical-gradient); padding: 60px 0; text-align: center; color: white;">
+                <h1 style="font-size: 2.5rem; font-weight: 800; margin: 0; color: white; text-shadow: 0 2px 15px rgba(0,0,0,0.4);">Nos Médecins</h1>
+                <p style="color: rgba(255,255,255,0.95); margin-top: 10px; text-shadow: 0 1px 8px rgba(0,0,0,0.3);">Choisissez votre médecin et prenez rendez-vous en ligne</p>
+            </div>
+
+            <div class="container mt-5 mb-5">
+                <div class="row">
+                    <t t-foreach="doctors" t-as="doctor">
+                        <div class="col-md-4 mb-4">
+                            <div class="medical-card p-4 h-100 text-center">
+                                <div style="width: 100px; height: 100px; border-radius: 50%; background: var(--medical-gradient); display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
+                                    <svg viewBox="0 0 24 24" style="width: 50px; fill: white;">
+                                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                                    </svg>
+                                </div>
+                                <h4 class="fw-bold mb-1" style="color: var(--medical-dark);">
+                                    <t t-esc="doctor.name"/>
+                                </h4>
+                                <p style="color: var(--medical-secondary); font-weight: 600; margin-bottom: 15px;">
+                                    <t t-esc="doctor.specialty_id.name if doctor.specialty_id else 'Médecin généraliste'"/>
+                                </p>
+                                <p class="text-muted" style="font-size: 0.95rem; line-height: 1.6; margin-bottom: 20px;">
+                                    <t t-esc="doctor.bio if doctor.bio else 'Médecin expérimenté à votre service.'"/>
+                                </p>
+                                <div style="border-top: 1px solid #e1bee7; padding-top: 15px; margin-top: auto;">
+                                    <t t-if="doctor.phone">
+                                        <p style="color: #5d4a6e; font-size: 0.9rem; margin-bottom: 5px;">
+                                            <t t-esc="doctor.phone"/>
+                                        </p>
+                                    </t>
+                                    <a t-att-href="'/medical/rdv?doctor_id=' + str(doctor.id)"
+                                       class="btn btn-medical mt-2" style="width: 100%;">
+                                        Prendre rendez-vous
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
                 </div>
             </div>
         </t>
