@@ -11,7 +11,6 @@
                 <field name="gender"/>
                 <field name="phone"/>
                 <field name="email"/>
-                <field name="active"/>
             </list>
         </field>
     </record>
@@ -33,7 +32,6 @@
                         <group>
                             <field name="phone"/>
                             <field name="email"/>
-                            <field name="active"/>
                         </group>
                     </group>
                     <notebook>

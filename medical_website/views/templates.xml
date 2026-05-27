@@ -315,7 +315,7 @@
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label fw-bold">Référence du rendez-vous *</label>
-                                    <input type="text" name="reference" class="form-control" required="1" placeholder="Ex: APT/00001"/>
+                                    <input type="text" name="reference" class="form-control" required="1" placeholder="Ex: APT-JD/00001"/>
                                 </div>
 
                                 <button type="submit" class="btn btn-medical w-100">

@@ -1,4 +1,14 @@
 from odoo import models, fields, api
+from odoo.exceptions import ValidationError
+from odoo.tools import email_normalize
+import re
+
+try:
+    import phonenumbers
+except ImportError:
+    phonenumbers = None
+
+PHONE_REGEX = re.compile(r"^\+?[0-9\s\-\.\(\)]+$")
 
 
 class MedicalDoctor(models.Model):
@@ -13,7 +23,6 @@ class MedicalDoctor(models.Model):
     specialty_id = fields.Many2one('medical.specialty', string='Specialty')
     bio = fields.Text(string='Biography')
     user_id = fields.Many2one('res.users', string='Utilisateur Odoo', help='Lié à l\'utilisateur du système')
-    active = fields.Boolean(string='Active', default=True)
 
     @api.depends('first_name', 'last_name')
     def _compute_name(self):
@@ -21,3 +30,27 @@ class MedicalDoctor(models.Model):
             first = record.first_name or ''
             last = record.last_name or ''
             record.name = f"{first} {last}".strip()
+
+    @api.constrains('email')
+    def _check_email(self):
+        for record in self:
+            if record.email:
+                normalized = email_normalize(record.email)
+                if not normalized or not re.match(r"^[^@]+@[^@]+\.[a-zA-Z]{2,}$", normalized):
+                    raise ValidationError("L'adresse email '%s' n'est pas valide (ex: docteur@domaine.com)." % record.email)
+
+    @api.constrains('phone')
+    def _check_phone(self):
+        for record in self:
+            if record.phone:
+                if phonenumbers:
+                    country_code = record.env.company.country_id.code or None
+                    try:
+                        phone_nbr = phonenumbers.parse(record.phone, country_code)
+                        if not phonenumbers.is_valid_number(phone_nbr):
+                            raise ValidationError("Le numéro de téléphone '%s' n'est pas valide." % record.phone)
+                    except Exception:
+                        raise ValidationError("Le numéro de téléphone '%s' n'est pas valide." % record.phone)
+                else:
+                    if not PHONE_REGEX.match(record.phone) or sum(c.isdigit() for c in record.phone) < 8:
+                        raise ValidationError("Le numéro de téléphone '%s' n'est pas valide (minimum 8 chiffres attendus)." % record.phone)

@@ -21,6 +21,8 @@ class MedicalConsultation(models.Model):
     notes = fields.Text(string='Notes')
     
     prescription_line_ids = fields.One2many('medical.prescription.line', 'consultation_id', string='Prescriptions')
+    document_ids = fields.One2many('medical.consultation.document', 'consultation_id', string='Attestations / Justificatifs')
+    city = fields.Char(string='Ville', default='Aix-En-Provence')
     treatment_summary = fields.Text(string='Traitement', compute='_compute_treatment_summary')
 
     @api.depends('prescription_line_ids.medication_id', 'prescription_line_ids.dosage')
@@ -42,6 +44,8 @@ class MedicalConsultation(models.Model):
         for rec in self:
             rec.state = 'done'
             rec.consultation_date = fields.Datetime.now()
+            if rec.appointment_id:
+                rec.appointment_id.action_done()
 
 
 class MedicalPrescriptionLine(models.Model):
@@ -53,3 +57,12 @@ class MedicalPrescriptionLine(models.Model):
     dosage = fields.Char(string='Dosage', required=True)
     duration = fields.Char(string='Duration')
     note = fields.Char(string='Notes')
+
+
+class MedicalConsultationDocument(models.Model):
+    _name = 'medical.consultation.document'
+    _description = 'Attestation et Document Médical'
+
+    consultation_id = fields.Many2one('medical.consultation', string='Consultation', ondelete='cascade')
+    title = fields.Char(string='Titre du document', required=True)
+    content = fields.Text(string='Contenu du document', required=True)

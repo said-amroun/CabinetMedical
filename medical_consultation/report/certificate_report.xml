@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report_certificate" model="ir.actions.report">
+        <field name="name">Certificat Médical</field>
+        <field name="model">medical.consultation.document</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">medical_consultation.report_certificate_document</field>
+        <field name="report_file">medical_consultation.report_certificate_document</field>
+        <field name="print_report_name">'Certificat - %s' % (object.title)</field>
+        <field name="binding_model_id" ref="model_medical_consultation_document"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="report_certificate_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <div class="page" style="font-size: 14px; line-height: 1.8;">
+
+                        <!-- Titre -->
+                        <div class="text-center" style="margin-bottom: 40px; margin-top: 20px;">
+                            <h2 style="text-transform: uppercase; letter-spacing: 2px; border-bottom: 2px solid #333; display: inline-block; padding-bottom: 8px;">
+                                <t t-esc="doc.title"/>
+                            </h2>
+                        </div>
+
+                        <!-- Body -->
+                        <div style="margin: 30px 20px; text-align: justify;">
+                            <p>
+                                Je soussigné, Docteur
+                                <strong>
+                                    <t t-esc="doc.consultation_id.doctor_id.last_name"/>
+                                    <t t-raw="' '"/>
+                                    <t t-esc="doc.consultation_id.doctor_id.first_name"/>
+                                </strong>,
+                                certifie avoir examiné ce jour le patient suivant :
+                            </p>
+
+                            <p style="margin-top: 15px; margin-left: 20px;">
+                                <t t-if="doc.consultation_id.patient_id.gender == 'male'">
+                                    <strong>Monsieur</strong>
+                                </t>
+                                <t t-elif="doc.consultation_id.patient_id.gender == 'female'">
+                                    <strong>Madame</strong>
+                                </t>
+                                <t t-else="">
+                                    <strong>M.</strong>
+                                </t>
+                                <strong>
+                                    <t t-esc="doc.consultation_id.patient_id.last_name"/>
+                                    <t t-raw="' '"/>
+                                    <t t-esc="doc.consultation_id.patient_id.first_name"/>
+                                </strong>
+                                <br/>
+                                Né(e) le :
+                                <strong>
+                                    <t t-if="doc.consultation_id.patient_id.birth_date">
+                                        <span t-field="doc.consultation_id.patient_id.birth_date" t-options='{"widget": "date", "format": "dd/MM/yyyy"}'/>
+                                    </t>
+                                    <t t-else="">
+                                        <em>Non renseignée</em>
+                                    </t>
+                                </strong>
+                            </p>
+
+                            <!-- Le paragraphe écrit par le docteur -->
+                            <div style="margin-top: 30px; margin-bottom: 30px; white-space: pre-wrap;">
+                                <t t-esc="doc.content"/>
+                            </div>
+                        </div>
+
+                        <!-- Ville et Date -->
+                        <div style="margin-top: 50px; text-align: right; margin-right: 20px;">
+                            <p>
+                                Certificat établi à
+                                <strong>
+                                    <t t-if="doc.consultation_id.city">
+                                        <t t-esc="doc.consultation_id.city"/>
+                                    </t>
+                                    <t t-else="">
+                                        ___________
+                                    </t>
+                                </strong>,
+                                le
+                                <strong>
+                                    <span t-esc="datetime.datetime.now().strftime('%d/%m/%Y')"/>
+                                </strong>
+                            </p>
+                        </div>
+
+                        <!-- Signature -->
+                        <div class="text-end" style="margin-top: 40px; margin-right: 20px;">
+                            <strong>Signature du médecin</strong>
+                            <br/><br/><br/>
+                            _______________________
+                        </div>
+
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

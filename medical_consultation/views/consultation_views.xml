@@ -58,15 +58,65 @@
                                 </list>
                             </field>
                         </page>
+                        <page string="Documents / Attestations">
+                            <field name="document_ids">
+                                <list>
+                                    <field name="title"/>
+                                    <field name="content" line_breaks="true"/>
+                                    <button name="%(medical_consultation.action_report_certificate)d" string="Imprimer" type="action" icon="fa-print" class="btn-secondary"/>
+                                </list>
+                                <form>
+                                    <header>
+                                        <button name="%(medical_consultation.action_report_certificate)d" string="Imprimer" type="action" class="btn-primary" icon="fa-print"/>
+                                    </header>
+                                    <sheet>
+                                        <group>
+                                            <field name="title" placeholder="Ex: Certificat médical d'aptitude, Justificatif d'absence..."/>
+                                        </group>
+                                        <group>
+                                            <field name="content" widget="text" placeholder="Rédigez le contenu du document ici..." class="oe_inline" style="width: 100%; min-height: 150px;"/>
+                                        </group>
+                                    </sheet>
+                                </form>
+                            </field>
+                        </page>
+                        <page string="Ville">
+                            <group>
+                                <field name="city" placeholder="Ex: Paris, Lyon..."/>
+                            </group>
+                        </page>
                     </notebook>
                 </sheet>
             </form>
         </field>
     </record>
 
+    <record id="view_medical_consultation_graph" model="ir.ui.view">
+        <field name="name">medical.consultation.graph</field>
+        <field name="model">medical.consultation</field>
+        <field name="arch" type="xml">
+            <graph string="Consultations" type="bar">
+                <field name="doctor_id" type="row"/>
+                <field name="disease_id" type="col"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="view_medical_consultation_pivot" model="ir.ui.view">
+        <field name="name">medical.consultation.pivot</field>
+        <field name="model">medical.consultation</field>
+        <field name="arch" type="xml">
+            <pivot string="Consultations">
+                <field name="doctor_id" type="row"/>
+                <field name="disease_id" type="col"/>
+                <field name="consultation_date" type="row" interval="month"/>
+            </pivot>
+        </field>
+    </record>
+
     <record id="action_medical_consultation" model="ir.actions.act_window">
         <field name="name">Consultations</field>
         <field name="res_model">medical.consultation</field>
-        <field name="view_mode">list,form</field>
+        <field name="view_mode">list,form,graph,pivot</field>
     </record>
 </odoo>

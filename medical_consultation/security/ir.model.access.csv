@@ -11,3 +11,6 @@ access_medical_disease_admin,access.medical.disease.admin,model_medical_disease,
 access_medical_medication_admin,access.medical.medication.admin,model_medical_medication,base.group_erp_manager,1,1,1,1
 access_medical_consultation_admin,access.medical.consultation.admin,model_medical_consultation,base.group_erp_manager,1,1,1,1
 access_medical_prescription_line_admin,access.medical.prescription.line.admin,model_medical_prescription_line,base.group_erp_manager,1,1,1,1
+access_medical_consultation_document_sec,access.medical.consultation.document.sec,model_medical_consultation_document,medical_base.group_medical_secretary,1,1,1,1
+access_medical_consultation_document_doc,access.medical.consultation.document.doc,model_medical_consultation_document,medical_base.group_medical_doctor,1,1,1,1
+access_medical_consultation_document_admin,access.medical.consultation.document.admin,model_medical_consultation_document,base.group_erp_manager,1,1,1,1

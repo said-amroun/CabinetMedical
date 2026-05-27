@@ -10,7 +10,6 @@
                 <field name="email"/>
                 <field name="phone"/>
                 <field name="specialty_id"/>
-                <field name="active"/>
             </list>
         </field>
     </record>
@@ -32,7 +31,6 @@
                             <field name="phone"/>
                             <field name="email"/>
                             <field name="user_id"/>
-                            <field name="active"/>
                         </group>
                     </group>
                     <notebook>

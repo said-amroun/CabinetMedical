@@ -11,6 +11,7 @@
         'security/ir.model.access.csv',
         'data/sequence.xml',
         'report/prescription_report.xml',
+        'report/certificate_report.xml',
         'views/disease_views.xml',
         'views/medication_views.xml',
         'views/consultation_views.xml',
