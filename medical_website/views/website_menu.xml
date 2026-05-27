@@ -10,7 +10,7 @@
 
         <record id="menu_medical_rdv" model="website.menu">
             <field name="name">Prendre RDV</field>
-            <field name="url">/medical/rdv</field>
+            <field name="url">/medical/medecins</field>
             <field name="parent_id" ref="website.main_menu"/>
             <field name="sequence">11</field>
         </record>

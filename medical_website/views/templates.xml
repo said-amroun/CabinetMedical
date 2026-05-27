@@ -2,77 +2,370 @@
 <odoo>
     <template id="index" name="Medical - Accueil">
         <t t-call="website.layout">
-            <div class="medical-hero">
-                <div class="container">
-                    <h1>Bienvenue sur MédicSS</h1>
-                    <p>Votre cabinet médical de confiance - Des soins de qualité, accessibles en ligne</p>
-                    <a href="/medical/rdv" class="btn btn-medical btn-lg">
-                        Prendre un rendez-vous
-                    </a>
+
+            <!-- HERO SECTION -->
+            <div class="hero-section">
+                <div class="hero-overlay"></div>
+                <div class="container hero-content">
+                    <div class="row align-items-center" style="min-height: 600px;">
+                        <div class="col-lg-6">
+                            <div class="hero-badge">Cabinet Médical Agréé</div>
+                            <h1 class="hero-title">
+                                Votre santé,<br/>
+                                <span class="hero-title-accent">notre priorité</span>
+                            </h1>
+                            <p class="hero-subtitle">
+                                MédicSS vous offre un accès simplifié à des soins de qualité avec des médecins spécialistes expérimentés, disponibles en ligne 24h/7j.
+                            </p>
+                            <div class="hero-buttons">
+                                <a href="/medical/medecins" class="hero-btn-primary">
+                                    Prendre un rendez-vous
+                                </a>
+                                <a href="/medical/medecins" class="hero-btn-secondary">
+                                    Voir nos médecins
+                                </a>
+                            </div>
+                            <div class="hero-trust">
+                                <div class="hero-trust-item">
+                                    <svg viewBox="0 0 24 24" style="width:20px;fill:#43a047;">
+                                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                    </svg>
+                                    <span>Consultation en ligne</span>
+                                </div>
+                                <div class="hero-trust-item">
+                                    <svg viewBox="0 0 24 24" style="width:20px;fill:#43a047;">
+                                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                    </svg>
+                                    <span>Médecins certifiés</span>
+                                </div>
+                                <div class="hero-trust-item">
+                                    <svg viewBox="0 0 24 24" style="width:20px;fill:#43a047;">
+                                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                    </svg>
+                                    <span>Prise de RDV rapide</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 d-none d-lg-block">
+                            <div class="hero-card-floating">
+                                <div class="hero-float-card">
+                                    <div style="display:flex;align-items:center;gap:12px;">
+                                        <div style="width:50px;height:50px;border-radius:50%;background:var(--medical-gradient);display:flex;align-items:center;justify-content:center;">
+                                            <svg viewBox="0 0 24 24" style="width:28px;fill:white;">
+                                                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <p style="margin:0;font-weight:700;color:#333;">Dr. Said Amroun</p>
+                                            <p style="margin:0;font-size:0.8rem;color:#9c27b0;">Dermatologue</p>
+                                        </div>
+                                    </div>
+                                    <div style="margin-top:15px;background:#f8f4fc;border-radius:10px;padding:10px;">
+                                        <p style="margin:0;font-size:0.8rem;color:#666;">Prochain créneau disponible</p>
+                                        <p style="margin:0;font-weight:700;color:#6a1b9a;">Aujourd'hui à 14h00</p>
+                                    </div>
+                                    <a href="/medical/medecins" style="display:block;margin-top:12px;background:var(--medical-gradient);color:white;text-align:center;padding:10px;border-radius:10px;font-weight:700;text-decoration:none;">
+                                        Réserver maintenant
+                                    </a>
+                                </div>
+                                <div class="hero-float-stats">
+                                    <div class="hero-stat">
+                                        <span class="hero-stat-number">+500</span>
+                                        <span class="hero-stat-label">Patients</span>
+                                    </div>
+                                    <div class="hero-stat">
+                                        <span class="hero-stat-number">10+</span>
+                                        <span class="hero-stat-label">Médecins</span>
+                                    </div>
+                                    <div class="hero-stat">
+                                        <span class="hero-stat-number">4.9</span>
+                                        <span class="hero-stat-label">Note</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-wave">
+                    <svg viewBox="0 0 1440 80" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M0,40 C360,80 1080,0 1440,40 L1440,80 L0,80 Z" fill="white"/>
+                    </svg>
                 </div>
             </div>
 
+            <!-- STATS BAR -->
+            <div class="stats-bar">
+                <div class="container">
+                    <div class="row text-center">
+                        <div class="col-6 col-md-3 mb-3 mb-md-0">
+                            <div class="stat-item">
+                                <span class="stat-number">+500</span>
+                                <span class="stat-label">Patients satisfaits</span>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3 mb-3 mb-md-0">
+                            <div class="stat-item">
+                                <span class="stat-number">10+</span>
+                                <span class="stat-label">Médecins spécialistes</span>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <div class="stat-item">
+                                <span class="stat-number">15+</span>
+                                <span class="stat-label">Spécialités médicales</span>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <div class="stat-item">
+                                <span class="stat-number">24/7</span>
+                                <span class="stat-label">Disponible en ligne</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SERVICES -->
             <div class="container mt-5 mb-5">
                 <div class="text-center mb-5">
-                    <h2 class="section-title">Nos services</h2>
-                    <p class="section-subtitle">Tout ce dont vous avez besoin pour prendre soin de votre santé</p>
+                    <div class="section-badge">Nos services</div>
+                    <h2 class="section-title mt-3">Tout pour votre santé</h2>
+                    <p class="section-subtitle">Des services médicaux de qualité accessibles en ligne</p>
                 </div>
-
-                <div class="row">
-                    <div class="col-md-4 mb-4">
-                        <div class="medical-card p-4 h-100 text-center">
-                            <div class="medical-icon">
-                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <div class="row g-4">
+                    <div class="col-md-4">
+                        <div class="service-card">
+                            <div class="service-icon-wrap">
+                                <svg viewBox="0 0 24 24" style="width:35px;fill:white;">
                                     <path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm1 11h-2v2H9v-2H7v-2h2v-2h2v2h2v2z"/>
                                 </svg>
                             </div>
-                            <h4 class="fw-bold mb-3">Prise de RDV en ligne</h4>
-                            <p class="text-muted">Réservez votre consultation en quelques clics, disponible 24h/24 et 7j/7.</p>
-                            <a href="/medical/rdv" class="btn btn-medical mt-3">Réserver maintenant</a>
+                            <h4 class="service-title">Prise de RDV en ligne</h4>
+                            <p class="service-desc">Réservez votre consultation en quelques clics, disponible 24h/24 et 7j/7 sans attente.</p>
+                            <a href="/medical/medecins" class="service-link">
+                                Réserver maintenant
+                                <svg viewBox="0 0 24 24" style="width:16px;fill:var(--medical-primary);margin-left:5px;">
+                                    <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
+                                </svg>
+                            </a>
                         </div>
                     </div>
-
-                    <div class="col-md-4 mb-4">
-                        <div class="medical-card p-4 h-100 text-center">
-                            <div class="medical-icon">
-                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <div class="col-md-4">
+                        <div class="service-card service-card-featured">
+                            <div class="service-icon-wrap">
+                                <svg viewBox="0 0 24 24" style="width:35px;fill:white;">
                                     <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
                                 </svg>
                             </div>
-                            <h4 class="fw-bold mb-3">Médecins spécialistes</h4>
-                            <p class="text-muted">Une équipe de médecins qualifiés et expérimentés à votre service pour tous vos besoins de santé.</p>
+                            <h4 class="service-title">Médecins spécialistes</h4>
+                            <p class="service-desc">Une équipe de médecins qualifiés et expérimentés dans toutes les spécialités médicales.</p>
+                            <a href="/medical/medecins" class="service-link">
+                                Voir nos médecins
+                                <svg viewBox="0 0 24 24" style="width:16px;fill:white;margin-left:5px;">
+                                    <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
+                                </svg>
+                            </a>
                         </div>
                     </div>
-
-                    <div class="col-md-4 mb-4">
-                        <div class="medical-card p-4 h-100 text-center">
-                            <div class="medical-icon">
-                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <div class="col-md-4">
+                        <div class="service-card">
+                            <div class="service-icon-wrap">
+                                <svg viewBox="0 0 24 24" style="width:35px;fill:white;">
                                     <path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/>
                                 </svg>
                             </div>
-                            <h4 class="fw-bold mb-3">Suivi personnalisé</h4>
-                            <p class="text-muted">Consultez vos rendez-vous et votre historique médical à tout moment depuis votre espace.</p>
-                            <a href="/medical/mes-rdv" class="btn btn-medical mt-3">Mes rendez-vous</a>
+                            <h4 class="service-title">Suivi personnalisé</h4>
+                            <p class="service-desc">Consultez vos rendez-vous et votre historique médical à tout moment depuis votre espace.</p>
+                            <a href="/medical/mes-rdv" class="service-link">
+                                Mes rendez-vous
+                                <svg viewBox="0 0 24 24" style="width:16px;fill:var(--medical-primary);margin-left:5px;">
+                                    <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
+                                </svg>
+                            </a>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div style="background: var(--medical-light); padding: 60px 0;">
-                <div class="container text-center">
-                    <h2 class="section-title">Prêt à prendre soin de vous ?</h2>
-                    <p class="section-subtitle">Rejoignez des milliers de patients qui nous font confiance</p>
-                    <a href="/medical/rdv" class="btn btn-medical btn-lg me-3">Prendre un RDV</a>
-                    <a href="/medical/contact" class="btn btn-outline-secondary btn-lg">Nous contacter</a>
+            <!-- ABOUT -->
+            <div class="about-section">
+                <div class="container">
+                    <div class="row align-items-center g-5">
+                        <div class="col-md-6">
+                            <div class="about-image-wrap">
+                                <div class="about-img-main"></div>
+                                <div class="about-img-badge">
+                                    <svg viewBox="0 0 24 24" style="width:30px;fill:white;">
+                                        <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 3c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm7 13H5v-.23c0-.62.28-1.2.76-1.58C7.47 15.82 9.64 15 12 15s4.53.82 6.24 2.19c.48.38.76.97.76 1.58V19z"/>
+                                    </svg>
+                                    <span>+500 patients</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="section-badge">À propos de nous</div>
+                            <h2 class="section-title mt-3">Un cabinet médical<br/>moderne et accessible</h2>
+                            <p class="about-text">
+                                MédicSS est un cabinet médical moderne dédié à votre santé et à votre bien-être. Fondé par une équipe de professionnels de santé passionnés, notre cabinet vous offre un accès simplifié à des soins de qualité grâce à notre plateforme de prise de rendez-vous en ligne.
+                            </p>
+                            <p class="about-text">
+                                Notre équipe de médecins spécialistes est à votre écoute pour vous accompagner dans votre parcours de santé, avec bienveillance et professionnalisme.
+                            </p>
+                            <div class="about-features">
+                                <div class="about-feature">
+                                    <div class="about-feature-icon">
+                                        <svg viewBox="0 0 24 24" style="width:20px;fill:white;">
+                                            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                        </svg>
+                                    </div>
+                                    <span>Médecins certifiés et expérimentés</span>
+                                </div>
+                                <div class="about-feature">
+                                    <div class="about-feature-icon">
+                                        <svg viewBox="0 0 24 24" style="width:20px;fill:white;">
+                                            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                        </svg>
+                                    </div>
+                                    <span>Prise de RDV en ligne 24h/7j</span>
+                                </div>
+                                <div class="about-feature">
+                                    <div class="about-feature-icon">
+                                        <svg viewBox="0 0 24 24" style="width:20px;fill:white;">
+                                            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                                        </svg>
+                                    </div>
+                                    <span>Suivi médical personnalisé</span>
+                                </div>
+                            </div>
+                            <a href="/medical/contact" class="btn btn-medical mt-4" style="padding: 14px 35px;">Nous contacter</a>
+                        </div>
+                    </div>
                 </div>
             </div>
+
+            <!-- CTA -->
+            <div class="cta-section">
+                <div class="cta-overlay"></div>
+                <div class="container text-center cta-content">
+                    <h2 style="color:white;font-size:2.5rem;font-weight:900;margin-bottom:15px;text-shadow:0 2px 20px rgba(0,0,0,0.3);">
+                        Prêt à prendre soin de vous ?
+                    </h2>
+                    <p style="color:rgba(255,255,255,0.9);font-size:1.15rem;margin-bottom:35px;">
+                        Rejoignez des milliers de patients qui nous font confiance
+                    </p>
+                    <a href="/medical/medecins" class="cta-btn-primary">Prendre un rendez-vous</a>
+                    <a href="/medical/contact" class="cta-btn-secondary">Nous contacter</a>
+                </div>
+            </div>
+
+        </t>
+    </template>
+
+    <template id="medecins" name="Medical - Nos Médecins">
+        <t t-call="website.layout">
+            <div class="medecins-hero">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-md-8 text-center">
+                            <h1 style="color: white; font-weight: 900; font-size: 2.8rem; text-shadow: 0 2px 15px rgba(0,0,0,0.3);">Trouvez votre médecin</h1>
+                            <p style="color: rgba(255,255,255,0.9); font-size: 1.1rem; margin-bottom: 30px;">Prenez rendez-vous en ligne avec nos spécialistes</p>
+                            <div style="background: white; border-radius: 50px; padding: 8px 20px; display: flex; align-items: center; box-shadow: 0 8px 30px rgba(0,0,0,0.15);">
+                                <svg viewBox="0 0 24 24" style="width: 22px; fill: #9c27b0; margin-right: 10px; flex-shrink: 0;">
+                                    <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                                </svg>
+                                <input type="text" id="search-doctor" placeholder="Rechercher par nom ou spécialité..." style="border: none; outline: none; width: 100%; font-size: 1rem; color: #333;"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="background: #f8f4fc; min-height: 60vh; padding: 40px 0;">
+                <div class="container">
+                    <p style="color: #8e7b9a; margin-bottom: 25px; font-size: 0.95rem;">
+                        <strong style="color: var(--medical-dark);" id="doctor-count"><t t-esc="len(doctors)"/></strong> médecin(s) disponible(s)
+                    </p>
+                    <div id="doctors-list">
+                        <t t-foreach="doctors" t-as="doctor">
+                            <div class="doctolib-card"
+                                 t-att-data-name="doctor.name.lower()"
+                                 t-att-data-specialty="doctor.specialty_id.name.lower() if doctor.specialty_id else ''">
+                                <div class="doctolib-card-left">
+                                    <div class="doctolib-avatar">
+                                        <svg viewBox="0 0 24 24" style="width: 45px; fill: white;">
+                                            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div class="doctolib-card-middle">
+                                    <div class="doctolib-specialty-tag">
+                                        <t t-esc="doctor.specialty_id.name if doctor.specialty_id else 'Médecin généraliste'"/>
+                                    </div>
+                                    <h4 class="doctolib-name">Dr. <t t-esc="doctor.name"/></h4>
+                                    <p class="doctolib-bio">
+                                        <t t-esc="doctor.bio if doctor.bio else 'Médecin expérimenté et dévoué à votre santé et bien-être.'"/>
+                                    </p>
+                                    <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+                                        <t t-if="doctor.phone">
+                                            <span style="color: #8e7b9a; font-size: 0.85rem; display: flex; align-items: center; gap: 5px;">
+                                                <svg viewBox="0 0 24 24" style="width: 14px; fill: var(--medical-secondary);">
+                                                    <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
+                                                </svg>
+                                                <t t-esc="doctor.phone"/>
+                                            </span>
+                                        </t>
+                                        <t t-if="doctor.email">
+                                            <span style="color: #8e7b9a; font-size: 0.85rem; display: flex; align-items: center; gap: 5px;">
+                                                <svg viewBox="0 0 24 24" style="width: 14px; fill: var(--medical-secondary);">
+                                                    <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                                                </svg>
+                                                <t t-esc="doctor.email"/>
+                                            </span>
+                                        </t>
+                                    </div>
+                                </div>
+                                <div class="doctolib-card-right">
+                                    <p style="color: #43a047; font-weight: 700; font-size: 0.9rem; margin-bottom: 15px;">Disponible en ligne</p>
+                                    <a t-att-href="'/medical/rdv?doctor_id=' + str(doctor.id)" class="btn btn-medical" style="width: 100%; padding: 12px; font-size: 0.95rem;">
+                                        Prendre RDV
+                                    </a>
+                                    <p style="color: #8e7b9a; font-size: 0.8rem; text-align: center; margin-top: 10px;">Consultation en cabinet</p>
+                                </div>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    var searchInput = document.getElementById('search-doctor');
+                    var cards = document.querySelectorAll('.doctolib-card');
+                    var countEl = document.getElementById('doctor-count');
+                    if (searchInput) {
+                        searchInput.addEventListener('input', function() {
+                            var query = this.value.toLowerCase();
+                            var visible = 0;
+                            cards.forEach(function(card) {
+                                var name = card.getAttribute('data-name') || '';
+                                var specialty = card.getAttribute('data-specialty') || '';
+                                if (!query || name.includes(query) || specialty.includes(query)) {
+                                    card.style.display = 'flex';
+                                    visible++;
+                                } else {
+                                    card.style.display = 'none';
+                                }
+                            });
+                            if (countEl) countEl.textContent = visible;
+                        });
+                    }
+                });
+            </script>
         </t>
     </template>
 
     <template id="rdv" name="Medical - Rendez-vous">
         <t t-call="website.layout">
-
             <div style="background: var(--medical-gradient); padding: 60px 0; text-align: center; color: white;">
                 <h1 style="font-size: 2.5rem; font-weight: 800; margin: 0; color: white; text-shadow: 0 2px 15px rgba(0,0,0,0.4);">Prendre un rendez-vous</h1>
                 <p style="color: rgba(255,255,255,0.95); margin-top: 10px; text-shadow: 0 1px 8px rgba(0,0,0,0.3);">Remplissez le formulaire ci-dessous pour réserver votre consultation</p>
@@ -95,15 +388,11 @@
                                         <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
                                     </svg>
                                 </div>
-                                <h4 style="color: var(--medical-dark); font-weight: 800;">
-                                    <t t-esc="selected_doctor.name"/>
-                                </h4>
+                                <h4 style="color: var(--medical-dark); font-weight: 800;">Dr. <t t-esc="selected_doctor.name"/></h4>
                                 <p style="color: var(--medical-secondary); font-weight: 600;">
                                     <t t-esc="selected_doctor.specialty_id.name if selected_doctor.specialty_id else 'Médecin généraliste'"/>
                                 </p>
-                                <a href="/medical/medecins" style="color: var(--medical-primary); font-size: 0.9rem;">
-                                    Changer de médecin
-                                </a>
+                                <a href="/medical/medecins" style="color: var(--medical-primary); font-size: 0.9rem;">Changer de médecin</a>
                             </div>
                         </t>
 
@@ -145,22 +434,6 @@
 
                                 <h5 class="mb-4 mt-4" style="color: var(--medical-dark); font-weight: 800; border-left: 4px solid var(--medical-secondary); padding-left: 12px;">Votre rendez-vous</h5>
 
-                                <t t-if="not selected_doctor">
-                                    <div class="mb-3">
-                                        <label class="form-label fw-bold">Médecin *</label>
-                                        <select name="doctor_id" class="form-control" required="1">
-                                            <option value="">Choisir un médecin</option>
-                                            <t t-foreach="doctors" t-as="doctor">
-                                                <option t-att-value="str(doctor.id)"
-                                                        t-att-selected="'selected' if form_data and form_data.get('doctor_id') == str(doctor.id) else None">
-                                                    <t t-esc="doctor.name"/>
-                                                    <t t-if="doctor.specialty_id"> - <t t-esc="doctor.specialty_id.name"/></t>
-                                                </option>
-                                            </t>
-                                        </select>
-                                    </div>
-                                </t>
-
                                 <div class="mb-4">
                                     <label class="form-label fw-bold">Date et heure *</label>
                                     <input type="datetime-local" name="appointment_date"
@@ -176,9 +449,7 @@
                         </div>
 
                         <div class="text-center mt-3">
-                            <a href="/medical/medecins" style="color: var(--medical-primary);">
-                                Voir tous nos médecins
-                            </a>
+                            <a href="/medical/medecins" style="color: var(--medical-primary);">Voir tous nos médecins</a>
                         </div>
                     </div>
                 </div>
@@ -194,7 +465,6 @@
                         <div class="medical-card p-5">
                             <h2>Rendez-vous confirmé</h2>
                             <p class="text-muted mb-4">Votre rendez-vous a été enregistré avec succès.</p>
-
                             <table class="table table-bordered text-start mb-4">
                                 <tr>
                                     <td><strong>Référence</strong></td>
@@ -217,12 +487,11 @@
                                     <td><t t-esc="rdv.appointment_date" t-options='{"widget": "datetime"}'/></td>
                                 </tr>
                             </table>
-
                             <a t-att-href="'/medical/rdv/pdf/' + str(rdv.id)" class="btn btn-medical btn-lg mb-3">
                                 Télécharger la confirmation PDF
                             </a>
                             <br/>
-                            <a href="/medical/rdv" class="btn btn-outline-secondary">
+                            <a href="/medical/medecins" class="btn btn-outline-secondary">
                                 Prendre un autre rendez-vous
                             </a>
                         </div>
@@ -234,30 +503,26 @@
 
     <template id="contact" name="Medical - Contact">
         <t t-call="website.layout">
+            <div style="background: var(--medical-gradient); padding: 60px 0; text-align: center; color: white;">
+                <h1 style="font-size: 2.5rem; font-weight: 800; margin: 0; color: white; text-shadow: 0 2px 15px rgba(0,0,0,0.4);">Contactez-nous</h1>
+                <p style="color: rgba(255,255,255,0.95); margin-top: 10px;">Une question ? N'hésitez pas à nous écrire</p>
+            </div>
             <div class="container mt-5 mb-5">
                 <div class="row justify-content-center">
                     <div class="col-md-8">
-                        <h1 class="mb-4">Contactez-nous</h1>
-                        <p class="text-muted mb-4">
-                            Une question ? Une remarque ? N'hésitez pas à nous écrire, nous vous répondrons dans les plus brefs délais.
-                        </p>
-
                         <t t-if="success">
-                            <div class="alert alert-success">
+                            <div class="alert alert-success mb-4" style="border-radius: 12px;">
                                 Votre message a été envoyé avec succès. Nous vous répondrons rapidement.
                             </div>
                         </t>
-
                         <t t-if="error">
-                            <div class="alert alert-danger">
+                            <div class="alert alert-danger mb-4" style="border-radius: 12px;">
                                 <t t-esc="error"/>
                             </div>
                         </t>
-
-                        <div class="medical-card p-4">
+                        <div class="medical-card p-5">
                             <form action="/medical/contact/submit" method="post" class="rdv-form">
                                 <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
-
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label fw-bold">Nom complet *</label>
@@ -268,18 +533,15 @@
                                         <input type="email" name="email" class="form-control" required="1" placeholder="Votre email"/>
                                     </div>
                                 </div>
-
                                 <div class="mb-3">
                                     <label class="form-label fw-bold">Sujet</label>
                                     <input type="text" name="subject" class="form-control" placeholder="Sujet de votre message"/>
                                 </div>
-
                                 <div class="mb-3">
                                     <label class="form-label fw-bold">Message *</label>
                                     <textarea name="message" class="form-control" rows="6" required="1" placeholder="Votre message..."></textarea>
                                 </div>
-
-                                <button type="submit" class="btn btn-medical w-100 mt-3">
+                                <button type="submit" class="btn btn-medical w-100 mt-3" style="padding: 16px; font-size: 1.1rem;">
                                     Envoyer le message
                                 </button>
                             </form>
@@ -289,20 +551,20 @@
             </div>
         </t>
     </template>
+
     <template id="mes_rdv" name="Medical - Mes Rendez-vous">
         <t t-call="website.layout">
+            <div style="background: var(--medical-gradient); padding: 60px 0; text-align: center; color: white;">
+                <h1 style="font-size: 2.5rem; font-weight: 800; margin: 0; color: white; text-shadow: 0 2px 15px rgba(0,0,0,0.4);">Mes rendez-vous</h1>
+                <p style="color: rgba(255,255,255,0.95); margin-top: 10px;">Retrouvez l'historique de vos rendez-vous</p>
+            </div>
             <div class="container mt-5 mb-5">
                 <div class="row justify-content-center">
                     <div class="col-md-8">
-                        <h1 class="mb-4">Mes rendez-vous</h1>
-                        <p class="text-muted mb-4">
-                            Entrez vos informations pour retrouver vos rendez-vous.
-                        </p>
-
-                        <div class="medical-card p-4 mb-4">
+                        <div class="medical-card p-5 mb-4">
+                            <h5 style="color: var(--medical-dark); font-weight: 800; border-left: 4px solid var(--medical-secondary); padding-left: 12px; margin-bottom: 25px;">Vos informations</h5>
                             <form action="/medical/mes-rdv/search" method="post" class="rdv-form">
                                 <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
-
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label fw-bold">Prénom *</label>
@@ -313,28 +575,29 @@
                                         <input type="text" name="last_name" class="form-control" required="1" placeholder="Votre nom"/>
                                     </div>
                                 </div>
-                                <div class="mb-3">
+                                <div class="mb-4">
                                     <label class="form-label fw-bold">Référence du rendez-vous *</label>
-                                    <input type="text" name="reference" class="form-control" required="1" placeholder="Ex: APT-JD/00001"/>
+                                    <input type="text" name="reference" class="form-control" required="1" placeholder="Ex: APT/00001"/>
                                 </div>
-
-                                <button type="submit" class="btn btn-medical w-100">
+                                <button type="submit" class="btn btn-medical w-100" style="padding: 16px; font-size: 1.1rem;">
                                     Rechercher mes rendez-vous
                                 </button>
                             </form>
                         </div>
 
                         <t t-if="error">
-                            <div class="alert alert-danger">
+                            <div class="alert alert-danger" style="border-radius: 12px;">
                                 <t t-esc="error"/>
                             </div>
                         </t>
 
                         <t t-if="searched and rdvs">
-                            <h4 class="mb-3">Rendez-vous de <t t-esc="patient.name"/></h4>
+                            <h4 class="mb-3" style="color: var(--medical-dark); font-weight: 800;">
+                                Rendez-vous de <t t-esc="patient.name"/>
+                            </h4>
                             <div class="table-responsive">
-                                <table class="table table-bordered">
-                                    <thead class="table-dark">
+                                <table class="table table-bordered" style="border-radius: 12px; overflow: hidden;">
+                                    <thead style="background: var(--medical-gradient); color: white;">
                                         <tr>
                                             <th>Référence</th>
                                             <th>Médecin</th>
@@ -349,11 +612,7 @@
                                                 <td><t t-esc="rdv.doctor_id.name"/></td>
                                                 <td><t t-esc="rdv.appointment_date" t-options='{"widget": "datetime"}'/></td>
                                                 <td>
-                                                    <span t-attf-class="badge bg-#{
-                                                        'success' if rdv.state == 'done' else
-                                                        'primary' if rdv.state == 'confirmed' else
-                                                        'warning' if rdv.state == 'draft' else
-                                                        'danger'}">
+                                                    <span t-attf-class="badge bg-#{'success' if rdv.state == 'done' else 'primary' if rdv.state == 'confirmed' else 'warning' if rdv.state == 'draft' else 'danger'}">
                                                         <t t-esc="rdv.state"/>
                                                     </span>
                                                 </td>
@@ -364,51 +623,6 @@
                             </div>
                         </t>
                     </div>
-                </div>
-            </div>
-        </t>
-    </template>
-
-    <template id="medecins" name="Medical - Nos Médecins">
-        <t t-call="website.layout">
-            <div style="background: var(--medical-gradient); padding: 60px 0; text-align: center; color: white;">
-                <h1 style="font-size: 2.5rem; font-weight: 800; margin: 0; color: white; text-shadow: 0 2px 15px rgba(0,0,0,0.4);">Nos Médecins</h1>
-                <p style="color: rgba(255,255,255,0.95); margin-top: 10px; text-shadow: 0 1px 8px rgba(0,0,0,0.3);">Choisissez votre médecin et prenez rendez-vous en ligne</p>
-            </div>
-
-            <div class="container mt-5 mb-5">
-                <div class="row">
-                    <t t-foreach="doctors" t-as="doctor">
-                        <div class="col-md-4 mb-4">
-                            <div class="medical-card p-4 h-100 text-center">
-                                <div style="width: 100px; height: 100px; border-radius: 50%; background: var(--medical-gradient); display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
-                                    <svg viewBox="0 0 24 24" style="width: 50px; fill: white;">
-                                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                                    </svg>
-                                </div>
-                                <h4 class="fw-bold mb-1" style="color: var(--medical-dark);">
-                                    <t t-esc="doctor.name"/>
-                                </h4>
-                                <p style="color: var(--medical-secondary); font-weight: 600; margin-bottom: 15px;">
-                                    <t t-esc="doctor.specialty_id.name if doctor.specialty_id else 'Médecin généraliste'"/>
-                                </p>
-                                <p class="text-muted" style="font-size: 0.95rem; line-height: 1.6; margin-bottom: 20px;">
-                                    <t t-esc="doctor.bio if doctor.bio else 'Médecin expérimenté à votre service.'"/>
-                                </p>
-                                <div style="border-top: 1px solid #e1bee7; padding-top: 15px; margin-top: auto;">
-                                    <t t-if="doctor.phone">
-                                        <p style="color: #5d4a6e; font-size: 0.9rem; margin-bottom: 5px;">
-                                            <t t-esc="doctor.phone"/>
-                                        </p>
-                                    </t>
-                                    <a t-att-href="'/medical/rdv?doctor_id=' + str(doctor.id)"
-                                       class="btn btn-medical mt-2" style="width: 100%;">
-                                        Prendre rendez-vous
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </t>
                 </div>
             </div>
         </t>

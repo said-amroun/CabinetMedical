@@ -11,27 +11,25 @@ class MedicalWebsite(http.Controller):
 
     @http.route('/medical/medecins', type='http', auth='public', website=True)
     def medecins(self, **kwargs):
-        doctors = request.env['medical.doctor'].sudo().search([('active', '=', True)])
+        doctors = request.env['medical.doctor'].sudo().search([])
         return request.render('medical_website.medecins', {
             'doctors': doctors,
         })
 
     @http.route('/medical/rdv', type='http', auth='public', website=True)
     def prendre_rdv(self, **kwargs):
-        doctors = request.env['medical.doctor'].sudo().search([('active', '=', True)])
         doctor_id = kwargs.get('doctor_id')
-        selected_doctor = None
-        if doctor_id:
-            selected_doctor = request.env['medical.doctor'].sudo().browse(int(doctor_id))
+        if not doctor_id:
+            return request.redirect('/medical/medecins')
+        selected_doctor = request.env['medical.doctor'].sudo().browse(int(doctor_id))
         return request.render('medical_website.rdv', {
-            'doctors': doctors,
             'selected_doctor': selected_doctor,
             'error': kwargs.get('error'),
         })
 
     @http.route('/medical/rdv/submit', type='http', auth='public', website=True, methods=['POST'], csrf=True)
     def submit_rdv(self, **kwargs):
-        doctors = request.env['medical.doctor'].sudo().search([('active', '=', True)])
+        doctors = request.env['medical.doctor'].sudo().search([])
         try:
             doctor_id = int(kwargs.get('doctor_id', 0))
             appointment_date = kwargs.get('appointment_date')

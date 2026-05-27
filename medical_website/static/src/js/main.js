@@ -40,3 +40,30 @@
     // Backup pour Odoo qui charge le JS en asynchrone
     window.addEventListener('load', initFiltre);
 })();
+// Mode jour/nuit
+function initDarkMode() {
+    var isDark = localStorage.getItem('medicss_dark') === 'true';
+
+    // Créer le bouton
+    var btn = document.createElement('button');
+    btn.id = 'dark-mode-toggle';
+    btn.innerHTML = isDark ? '☀️' : '🌙';
+    btn.title = isDark ? 'Mode jour' : 'Mode nuit';
+    document.body.appendChild(btn);
+
+    if (isDark) document.body.classList.add('dark-mode');
+
+    btn.addEventListener('click', function() {
+        isDark = !isDark;
+        document.body.classList.toggle('dark-mode', isDark);
+        localStorage.setItem('medicss_dark', isDark);
+        btn.innerHTML = isDark ? '☀️' : '🌙';
+        btn.title = isDark ? 'Mode jour' : 'Mode nuit';
+    });
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initDarkMode);
+} else {
+    initDarkMode();
+}
