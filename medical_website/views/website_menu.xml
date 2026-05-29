@@ -1,39 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <data noupdate="1">
+    <data>
         <record id="menu_medical_home" model="website.menu">
             <field name="name">Médical</field>
             <field name="url">/medical</field>
             <field name="parent_id" ref="website.main_menu"/>
             <field name="sequence">10</field>
         </record>
-
         <record id="menu_medical_rdv" model="website.menu">
             <field name="name">Prendre RDV</field>
             <field name="url">/medical/medecins</field>
             <field name="parent_id" ref="website.main_menu"/>
             <field name="sequence">11</field>
         </record>
-
-        <record id="menu_medical_contact" model="website.menu">
-            <field name="name">Contact</field>
-            <field name="url">/medical/contact</field>
+        <record id="menu_medical_medecins" model="website.menu">
+            <field name="name">Nos médecins</field>
+            <field name="url">/medical/medecins</field>
             <field name="parent_id" ref="website.main_menu"/>
             <field name="sequence">12</field>
         </record>
-
         <record id="menu_medical_mes_rdv" model="website.menu">
             <field name="name">Mes rendez-vous</field>
             <field name="url">/medical/mes-rdv</field>
             <field name="parent_id" ref="website.main_menu"/>
             <field name="sequence">13</field>
         </record>
-
-        <record id="menu_medical_medecins" model="website.menu">
-            <field name="name">Nos médecins</field>
-            <field name="url">/medical/medecins</field>
+        <record id="menu_medical_contact" model="website.menu">
+            <field name="name">Contact</field>
+            <field name="url">/medical/contact</field>
             <field name="parent_id" ref="website.main_menu"/>
-            <field name="sequence">12</field>
+            <field name="sequence">14</field>
         </record>
     </data>
 </odoo>

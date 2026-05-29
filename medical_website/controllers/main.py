@@ -4,6 +4,9 @@ from datetime import datetime
 
 
 class MedicalWebsite(http.Controller):
+    @http.route('/', type='http', auth='public', website=True, sitemap=False)
+    def homepage(self, **kwargs):
+        return request.redirect('/medical')
 
     @http.route('/medical', type='http', auth='public', website=True)
     def index(self, **kwargs):
@@ -75,19 +78,19 @@ class MedicalWebsite(http.Controller):
                     'email': email,
                 })
 
-            # Création du RDV avec flush pour déclencher les contraintes immédiatement
+            # Création du RDV
             rdv = request.env['medical.appointment'].sudo().create({
                 'doctor_id': doctor_id,
                 'patient_id': patient.id,
                 'appointment_date': date_utc,
                 'state': 'draft',
             })
-            rdv.flush_recordset()  # Force la vérification des contraintes maintenant
+            rdv.flush_recordset()
 
             return request.redirect(f'/medical/rdv/confirmation/{rdv.id}')
 
         except Exception as e:
-            # Annuler toute création partielle en cas d'erreur
+
             request.env.cr.rollback()
 
             selected_doctor = None
@@ -191,15 +194,17 @@ class MedicalWebsite(http.Controller):
     def mes_rdv_search(self, **kwargs):
         first_name = kwargs.get('first_name', '').strip()
         last_name = kwargs.get('last_name', '').strip()
+        phone = kwargs.get('phone', '').strip()
         reference = kwargs.get('reference', '').strip()
 
         try:
-            if not first_name or not last_name or not reference:
+            if not first_name or not last_name or not phone or not reference:
                 raise ValueError("Tous les champs sont obligatoires.")
 
             patient = request.env['medical.patient'].sudo().search([
                 ('first_name', 'ilike', first_name),
                 ('last_name', 'ilike', last_name),
+                ('phone', '=', phone),
             ], limit=1)
 
             if not patient:
