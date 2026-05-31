@@ -6,19 +6,19 @@ import pytz
 
 class MedicalAppointment(models.Model):
     _name = 'medical.appointment'
-    _description = 'Medical Appointment'
+    _description = 'Rendez-vous Médical'
 
-    name = fields.Char(string='Reference', required=True, copy=False, readonly=True, default='New')
+    name = fields.Char(string='Référence', required=True, copy=False, readonly=True, default='New')
     patient_id = fields.Many2one('medical.patient', string='Patient', required=True)
-    doctor_id = fields.Many2one('medical.doctor', string='Doctor', required=True)
-    appointment_date = fields.Datetime(string='Date & Time', required=True)
-    duration = fields.Float(string='Duration (hours)', default=0.5)
+    doctor_id = fields.Many2one('medical.doctor', string='Docteur', required=True)
+    appointment_date = fields.Datetime(string='Date & Heure', required=True)
+    duration = fields.Float(string='Durée (heures)', default=0.5)
     state = fields.Selection([
-        ('draft', 'Draft'),
-        ('confirmed', 'Confirmed'),
-        ('done', 'Done'),
-        ('cancelled', 'Cancelled')
-    ], string='Status', default='draft', required=True)
+        ('draft', 'Brouillon'),
+        ('confirmed', 'Confirmé'),
+        ('done', 'Terminé'),
+        ('cancelled', 'Annulé')
+    ], string='Statut', default='draft', required=True)
 
     @api.model_create_multi
     def create(self, vals_list):

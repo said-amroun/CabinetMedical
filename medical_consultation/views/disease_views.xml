@@ -4,7 +4,7 @@
         <field name="name">medical.disease.tree</field>
         <field name="model">medical.disease</field>
         <field name="arch" type="xml">
-            <list string="Diseases" editable="bottom">
+            <list string="Maladies" editable="bottom">
                 <field name="name"/>
                 <field name="description"/>
             </list>
@@ -12,7 +12,7 @@
     </record>
 
     <record id="action_medical_disease" model="ir.actions.act_window">
-        <field name="name">Diseases</field>
+        <field name="name">Maladies</field>
         <field name="res_model">medical.disease</field>
         <field name="view_mode">list,form</field>
     </record>

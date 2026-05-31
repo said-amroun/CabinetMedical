@@ -9,19 +9,20 @@ except ImportError:
     phonenumbers = None
 
 PHONE_REGEX = re.compile(r"^\+?[0-9\s\-\.\(\)]+$")
+NAME_REGEX = re.compile(r"^[A-Za-zÀ-ÖØ-öø-ÿ\s\-']+$")
 
 
 class MedicalDoctor(models.Model):
     _name = 'medical.doctor'
     _description = 'Doctor'
 
-    first_name = fields.Char(string='First Name', required=True)
-    last_name = fields.Char(string='Last Name', required=True)
-    name = fields.Char(string='Full Name', compute='_compute_name', store=True)
+    first_name = fields.Char(string='Prénom', required=True)
+    last_name = fields.Char(string='Nom', required=True)
+    name = fields.Char(string='Nom Complet', compute='_compute_name', store=True)
     email = fields.Char(string='Email')
-    phone = fields.Char(string='Phone')
-    specialty_id = fields.Many2one('medical.specialty', string='Specialty')
-    bio = fields.Text(string='Biography')
+    phone = fields.Char(string='Téléphone')
+    specialty_id = fields.Many2one('medical.specialty', string='Spécialité')
+    bio = fields.Text(string='Biographie')
     user_id = fields.Many2one('res.users', string='Utilisateur Odoo', help='Lié à l\'utilisateur du système')
 
     @api.depends('first_name', 'last_name')
@@ -30,6 +31,14 @@ class MedicalDoctor(models.Model):
             first = record.first_name or ''
             last = record.last_name or ''
             record.name = f"{first} {last}".strip()
+
+    @api.constrains('first_name', 'last_name')
+    def _check_name(self):
+        for record in self:
+            if record.first_name and not NAME_REGEX.match(record.first_name):
+                raise ValidationError("Le prénom '%s' ne doit contenir que des lettres (A-Z, accents), espaces, tirets ou apostrophes." % record.first_name)
+            if record.last_name and not NAME_REGEX.match(record.last_name):
+                raise ValidationError("Le nom '%s' ne doit contenir que des lettres (A-Z, accents), espaces, tirets ou apostrophes." % record.last_name)
 
     @api.constrains('email')
     def _check_email(self):

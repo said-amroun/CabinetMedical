@@ -7,13 +7,13 @@
               sequence="16"/>
 
     <menuitem id="medical_disease_menu"
-              name="Diseases"
+              name="Maladies"
               parent="medical_base.medical_configuration_menu"
               action="action_medical_disease"
               sequence="20"/>
 
     <menuitem id="medical_medication_menu"
-              name="Medications"
+              name="Médicaments"
               parent="medical_base.medical_configuration_menu"
               action="action_medical_medication"
               sequence="30"/>

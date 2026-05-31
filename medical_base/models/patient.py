@@ -9,24 +9,25 @@ except ImportError:
     phonenumbers = None
 
 PHONE_REGEX = re.compile(r"^\+?[0-9\s\-\.\(\)]+$")
+NAME_REGEX = re.compile(r"^[A-Za-zÀ-ÖØ-öø-ÿ\s\-']+$")
 
 
 class MedicalPatient(models.Model):
     _name = 'medical.patient'
     _description = 'Patient'
 
-    first_name = fields.Char(string='First Name', required=True)
-    last_name = fields.Char(string='Last Name', required=True)
-    name = fields.Char(string='Full Name', compute='_compute_name', store=True)
-    birth_date = fields.Date(string='Birth Date')
+    first_name = fields.Char(string='Prénom', required=True)
+    last_name = fields.Char(string='Nom', required=True)
+    name = fields.Char(string='Nom Complet', compute='_compute_name', store=True)
+    birth_date = fields.Date(string='Date de Naissance')
     gender = fields.Selection([
-        ('male', 'Male'),
-        ('female', 'Female'),
-        ('other', 'Other'),
-    ], string='Gender')
-    phone = fields.Char(string='Phone')
+        ('male', 'Homme'),
+        ('female', 'Femme'),
+        ('other', 'Autre'),
+    ], string='Genre')
+    phone = fields.Char(string='Téléphone')
     email = fields.Char(string='Email')
-    address = fields.Text(string='Address')
+    address = fields.Text(string='Adresse')
     notes = fields.Text(string='Notes')
 
     @api.depends('first_name', 'last_name')
@@ -35,6 +36,14 @@ class MedicalPatient(models.Model):
             first = record.first_name or ''
             last = record.last_name or ''
             record.name = f"{first} {last}".strip()
+
+    @api.constrains('first_name', 'last_name')
+    def _check_name(self):
+        for record in self:
+            if record.first_name and not NAME_REGEX.match(record.first_name):
+                raise ValidationError("Le prénom '%s' ne doit contenir que des lettres (A-Z, accents), espaces, tirets ou apostrophes." % record.first_name)
+            if record.last_name and not NAME_REGEX.match(record.last_name):
+                raise ValidationError("Le nom '%s' ne doit contenir que des lettres (A-Z, accents), espaces, tirets ou apostrophes." % record.last_name)
 
     @api.constrains('email')
     def _check_email(self):

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <menuitem id="medical_appointment_menu"
-              name="Appointments"
+              name="Rendez-vous"
               parent="medical_base.medical_root_menu"
               action="action_medical_appointment"
               sequence="15"/>

@@ -5,10 +5,10 @@ class MedicalConsultation(models.Model):
     _description = 'Medical Consultation'
 
     name = fields.Char(string='Reference', required=True, copy=False, readonly=True, default='New')
-    appointment_id = fields.Many2one('medical.appointment', string='Appointment', required=True, domain=[('state', '!=', 'done')])
+    appointment_id = fields.Many2one('medical.appointment', string='Rendez-vous', required=True, domain=[('state', '!=', 'done')])
     
     patient_id = fields.Many2one('medical.patient', related='appointment_id.patient_id', string='Patient', readonly=True, store=True)
-    doctor_id = fields.Many2one('medical.doctor', related='appointment_id.doctor_id', string='Doctor', readonly=True, store=True)
+    doctor_id = fields.Many2one('medical.doctor', related='appointment_id.doctor_id', string='Docteur', readonly=True, store=True)
     
     state = fields.Selection([
         ('draft', 'Brouillon'),
@@ -16,11 +16,11 @@ class MedicalConsultation(models.Model):
     ], string='Status', default='draft', required=True)
     consultation_date = fields.Datetime(string='Date de Consultation', readonly=True)
     
-    symptoms = fields.Text(string='Symptoms')
-    disease_id = fields.Many2one('medical.disease', string='Disease/Diagnosis')
+    symptoms = fields.Text(string='Symptômes')
+    disease_id = fields.Many2one('medical.disease', string='Maladie/Diagnostic')
     notes = fields.Text(string='Notes')
     
-    prescription_line_ids = fields.One2many('medical.prescription.line', 'consultation_id', string='Prescriptions')
+    prescription_line_ids = fields.One2many('medical.prescription.line', 'consultation_id', string='Ordonnances')
     document_ids = fields.One2many('medical.consultation.document', 'consultation_id', string='Attestations / Justificatifs')
     city = fields.Char(string='Ville', default='Aix-En-Provence')
     treatment_summary = fields.Text(string='Traitement', compute='_compute_treatment_summary')
@@ -53,9 +53,9 @@ class MedicalPrescriptionLine(models.Model):
     _description = 'Prescription Line'
 
     consultation_id = fields.Many2one('medical.consultation', string='Consultation', ondelete='cascade')
-    medication_id = fields.Many2one('medical.medication', string='Medication', required=True)
-    dosage = fields.Char(string='Dosage', required=True)
-    duration = fields.Char(string='Duration')
+    medication_id = fields.Many2one('medical.medication', string='Médicament', required=True)
+    dosage = fields.Char(string='Posologie', required=True)
+    duration = fields.Char(string='Durée')
     note = fields.Char(string='Notes')
 
 

@@ -8,7 +8,7 @@
               sequence="10"/>
 
     <menuitem id="medical_doctor_menu"
-              name="Doctors"
+              name="Docteurs"
               parent="medical_root_menu"
               action="action_medical_doctor"
               sequence="20"/>

@@ -5,7 +5,7 @@
         <field name="name">medical.specialty.tree</field>
         <field name="model">medical.specialty</field>
         <field name="arch" type="xml">
-            <list string="Specialties">
+            <list string="Spécialités">
                 <field name="name"/>
             </list>
         </field>
@@ -15,7 +15,7 @@
         <field name="name">medical.specialty.form</field>
         <field name="model">medical.specialty</field>
         <field name="arch" type="xml">
-            <form string="Specialty">
+            <form string="Spécialité">
                 <sheet>
                     <group>
                         <field name="name"/>
@@ -27,13 +27,13 @@
     </record>
 
     <record id="action_medical_specialty" model="ir.actions.act_window">
-        <field name="name">Specialties</field>
+        <field name="name">Spécialités</field>
         <field name="res_model">medical.specialty</field>
         <field name="view_mode">list,form</field>
     </record>
 
     <menuitem id="medical_specialty_menu"
-              name="Specialties"
+              name="Spécialités"
               parent="medical_configuration_menu"
               action="action_medical_specialty"
               sequence="10"/>

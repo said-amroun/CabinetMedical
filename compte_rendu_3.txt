@@ -1,0 +1,166 @@
+================================================================================
+          COMPTE RENDU DES MODIFICATIONS - CABINET MEDICAL (ODOO)
+================================================================================
+
+Date : 01/06/2026
+Projet : Cabinet Médical (Odoo - modules custom)
+
+================================================================================
+1. VALIDATION DES CHAMPS NOM ET PRENOM
+================================================================================
+
+POURQUOI ?
+----------
+Les champs "first_name" (Prénom) et "last_name" (Nom) dans les modèles Patient
+et Docteur acceptaient n'importe quel caractère, y compris des chiffres (123),
+des symboles (@#$), etc. Cela pouvait entraîner des données incohérentes et
+des erreurs dans les documents générés (ordonnances, attestations).
+
+CE QUI A ETE FAIT
+-----------------
+Ajout d'une contrainte de validation (@api.constrains) dans les deux modèles
+pour s'assurer que les noms et prénoms ne contiennent que :
+
+  - Lettres majuscules et minuscules (A-Z, a-z)
+  - Lettres accentuées (é, è, ç, ï, ô, ü, etc.)
+  - Espaces (pour les noms composés comme "El Amri")
+  - Tirets (pour "Jean-Pierre", "Ben-Saïd")
+  - Apostrophes (pour "D'Angelo", "N'Diaye")
+  - Chiffres, symboles et caractères spéciaux --> REJETES
+
+FICHIERS MODIFIES
+-----------------
+  - medical_base/models/patient.py  : Ajout de NAME_REGEX + méthode _check_name()
+  - medical_base/models/doctor.py   : Ajout de NAME_REGEX + méthode _check_name()
+
+EXEMPLE DE CODE AJOUTE
+----------------------
+  NAME_REGEX = re.compile(r"^[A-Za-zÀ-ÖØ-öø-ÿ\s\-']+$")
+
+  @api.constrains('first_name', 'last_name')
+  def _check_name(self):
+      for record in self:
+          if record.first_name and not NAME_REGEX.match(record.first_name):
+              raise ValidationError("Le prénom ne doit contenir que des lettres...")
+          if record.last_name and not NAME_REGEX.match(record.last_name):
+              raise ValidationError("Le nom ne doit contenir que des lettres...")
+
+NOTE : Si un utilisateur tente de sauvegarder un patient ou docteur avec un
+nom invalide (ex: "Jean123"), Odoo affichera un message d'erreur clair.
+
+
+================================================================================
+2. TRADUCTION DE L'INTERFACE EN FRANCAIS
+================================================================================
+
+POURQUOI ?
+----------
+L'application étant destinée à un cabinet médical francophone, les libellés
+des menus, champs et vues étaient encore en anglais. Cela rendait l'interface
+moins intuitive pour les utilisateurs finaux (secrétaires, médecins).
+
+CE QUI A ETE FAIT
+-----------------
+Traduction complète de tous les libellés visibles dans l'interface Odoo,
+répartie sur 3 modules.
+
+
+--- MODULE : medical_base ---
+
+  Avant (Anglais)          -->  Après (Français)
+  -------------------------------------------------------
+  Menu "Doctors"           -->  "Docteurs"
+  Menu "Specialties"       -->  "Spécialités"
+  Champ "First Name"       -->  "Prénom"
+  Champ "Last Name"        -->  "Nom"
+  Champ "Full Name"        -->  "Nom Complet"
+  Champ "Birth Date"       -->  "Date de Naissance"
+  Champ "Gender"           -->  "Genre"
+  Sélection "Male"         -->  "Homme"
+  Sélection "Female"       -->  "Femme"
+  Sélection "Other"        -->  "Autre"
+  Champ "Phone"            -->  "Téléphone"
+  Champ "Address"          -->  "Adresse"
+  Champ "Specialty"        -->  "Spécialité"
+  Champ "Biography"        -->  "Biographie"
+  Onglet "Address"         -->  "Adresse"
+  Onglet "Biography"       -->  "Biographie"
+
+  Fichiers modifiés :
+    - medical_base/models/patient.py
+    - medical_base/models/doctor.py
+    - medical_base/models/specialty.py
+    - medical_base/views/doctor_views.xml
+    - medical_base/views/patient_views.xml
+    - medical_base/views/specialty_views.xml
+    - medical_base/views/medical_menu.xml
+
+
+--- MODULE : medical_appointment ---
+
+  Avant (Anglais)          -->  Après (Français)
+  -------------------------------------------------------
+  Menu "Dashboard"         -->  "Accueil"
+  Menu "Appointments"      -->  "Rendez-vous"
+  Champ "Reference"        -->  "Référence"
+  Champ "Doctor"           -->  "Docteur"
+  Champ "Date & Time"      -->  "Date & Heure"
+  Champ "Duration (hours)" -->  "Durée (heures)"
+  Champ "Status"           -->  "Statut"
+  Sélection "Draft"        -->  "Brouillon"
+  Sélection "Confirmed"    -->  "Confirmé"
+  Sélection "Done"         -->  "Terminé"
+  Sélection "Cancelled"    -->  "Annulé"
+  Vue liste/form/calendar  -->  "Rendez-vous"
+
+  Fichiers modifiés :
+    - medical_appointment/models/appointment.py
+    - medical_appointment/views/appointment_views.xml
+    - medical_appointment/views/medical_appointment_menu.xml
+    - medical_appointment/views/dashboard_action.xml
+
+
+--- MODULE : medical_consultation ---
+
+  Avant (Anglais)          -->  Après (Français)
+  -------------------------------------------------------
+  Menu "Diseases"          -->  "Maladies"
+  Menu "Medications"       -->  "Médicaments"
+  Champ "Appointment"      -->  "Rendez-vous"
+  Champ "Doctor"           -->  "Docteur"
+  Champ "Symptoms"         -->  "Symptômes"
+  Champ "Disease/Diagnosis"-->  "Maladie/Diagnostic"
+  Champ "Prescriptions"    -->  "Ordonnances"
+  Champ "Medication"       -->  "Médicament"
+  Champ "Dosage"           -->  "Posologie"
+  Champ "Duration"         -->  "Durée"
+  Champ "Name" (maladie)   -->  "Nom"
+  Champ "Name" (médic.)    -->  "Nom"
+  Champ "Active Ingredient"-->  "Principe Actif"
+  Description "Disease"    -->  "Maladie / Diagnostic"
+  Description "Medication" -->  "Médicament"
+
+  Fichiers modifiés :
+    - medical_consultation/models/consultation.py
+    - medical_consultation/models/disease.py
+    - medical_consultation/models/medication.py
+    - medical_consultation/views/disease_views.xml
+    - medical_consultation/views/medication_views.xml
+    - medical_consultation/views/medical_consultation_menu.xml
+
+
+================================================================================
+RECAPITULATIF
+================================================================================
+
+  #   Modification              Objectif                        Fichiers
+  --- ------------------------  ------------------------------  --------
+  1   Validation nom/prénom     Qualité des données             2
+  2   Traduction FR             Interface en français           16
+                                                          Total : 18
+
+IMPORTANT : Pour appliquer ces changements, il faut redémarrer Odoo et
+mettre à jour les modules (medical_base, medical_appointment,
+medical_consultation) depuis le menu Applications.
+
+================================================================================

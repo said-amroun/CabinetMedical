@@ -5,7 +5,7 @@
         <field name="name">medical.doctor.tree</field>
         <field name="model">medical.doctor</field>
         <field name="arch" type="xml">
-            <list string="Doctors">
+            <list string="Docteurs">
                 <field name="name"/>
                 <field name="email"/>
                 <field name="phone"/>
@@ -18,7 +18,7 @@
         <field name="name">medical.doctor.form</field>
         <field name="model">medical.doctor</field>
         <field name="arch" type="xml">
-            <form string="Doctor">
+            <form string="Docteur">
                 <sheet>
                     <group>
                         <group>
@@ -34,7 +34,7 @@
                         </group>
                     </group>
                     <notebook>
-                        <page string="Biography">
+                        <page string="Biographie">
                             <field name="bio"/>
                         </page>
                     </notebook>
@@ -44,7 +44,7 @@
     </record>
 
     <record id="action_medical_doctor" model="ir.actions.act_window">
-        <field name="name">Doctors</field>
+        <field name="name">Docteurs</field>
         <field name="res_model">medical.doctor</field>
         <field name="view_mode">list,form</field>
     </record>

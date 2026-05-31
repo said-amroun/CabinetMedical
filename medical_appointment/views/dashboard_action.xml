@@ -6,7 +6,7 @@
     </record>
 
     <menuitem id="medical_dashboard_menu"
-              name="Dashboard"
+              name="Accueil"
               parent="medical_base.medical_root_menu"
               action="action_medical_dashboard"
               sequence="5"/>

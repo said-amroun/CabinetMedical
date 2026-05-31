@@ -5,7 +5,7 @@
         <field name="name">medical.appointment.tree</field>
         <field name="model">medical.appointment</field>
         <field name="arch" type="xml">
-            <list string="Appointments">
+            <list string="Rendez-vous">
                 <field name="name"/>
                 <field name="patient_id"/>
                 <field name="doctor_id"/>
@@ -19,7 +19,7 @@
         <field name="name">medical.appointment.form</field>
         <field name="model">medical.appointment</field>
         <field name="arch" type="xml">
-            <form string="Appointment">
+            <form string="Rendez-vous">
                 <header>
                     <button name="action_confirm" string="Confirmer" type="object" class="oe_highlight" invisible="state != 'draft'"/>
                     <button name="action_done" string="Terminer" type="object" class="oe_highlight" invisible="state != 'confirmed'"/>
@@ -50,7 +50,7 @@
         <field name="name">medical.appointment.calendar</field>
         <field name="model">medical.appointment</field>
         <field name="arch" type="xml">
-            <calendar string="Appointments" date_start="appointment_date" date_delay="duration" color="doctor_id" mode="week" quick_create="0">
+            <calendar string="Rendez-vous" date_start="appointment_date" date_delay="duration" color="doctor_id" mode="week" quick_create="0">
                 <field name="name"/>
                 <field name="patient_id"/>
                 <field name="doctor_id"/>
@@ -60,7 +60,7 @@
     </record>
 
     <record id="action_medical_appointment" model="ir.actions.act_window">
-        <field name="name">Appointments</field>
+        <field name="name">Rendez-vous</field>
         <field name="res_model">medical.appointment</field>
         <field name="view_mode">list,calendar,form</field>
     </record>
