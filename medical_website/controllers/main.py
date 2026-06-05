@@ -254,3 +254,14 @@ class MedicalWebsite(http.Controller):
             'rdv_done': rdv_done,
             'rdv_upcoming': rdv_upcoming,
         })
+
+    @http.route('/medical', type='http', auth='public', website=True)
+    def index(self, **kwargs):
+        doctors = request.env['medical.doctor'].sudo().search([], limit=3)
+        return request.render('medical_website.index', {
+            'doctors': doctors,
+        })
+
+    @http.route('/medical/rgpd', type='http', auth='public', website=True)
+    def rgpd(self, **kwargs):
+        return request.render('medical_website.rgpd', {})

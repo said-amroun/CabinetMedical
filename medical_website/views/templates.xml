@@ -3,381 +3,323 @@
     <template id="index" name="Medical - Accueil">
         <t t-call="website.layout">
 
-            <!-- HERO SECTION -->
-            <div class="hero-section">
-                <div class="hero-overlay"></div>
-                <div class="container hero-content">
-                    <div class="row align-items-center" style="min-height: 600px;">
-                        <div class="col-lg-6">
-                            <div class="hero-badge">Cabinet Médical Agréé</div>
-                            <h1 class="hero-title">
-                                Votre santé,<br/>
-                                <span class="hero-title-accent">notre priorité</span>
-                            </h1>
-                            <p class="hero-subtitle">
-                                MédicSS vous offre un accès simplifié à des soins de qualité avec des médecins spécialistes expérimentés, disponibles en ligne 24h/7j.
-                            </p>
-                            <div class="hero-buttons">
-                                <a href="/medical/medecins" class="hero-btn-primary">
-                                    Prendre un rendez-vous
-                                </a>
-                                <a href="/medical/medecins" class="hero-btn-secondary">
-                                    Voir nos médecins
-                                </a>
-                            </div>
-                            <div class="hero-trust">
-                                <div class="hero-trust-item">
-                                    <svg viewBox="0 0 24 24" style="width:20px;fill:#43a047;">
-                                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
-                                    </svg>
-                                    <span>Consultation en ligne</span>
-                                </div>
-                                <div class="hero-trust-item">
-                                    <svg viewBox="0 0 24 24" style="width:20px;fill:#43a047;">
-                                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
-                                    </svg>
-                                    <span>Médecins certifiés</span>
-                                </div>
-                                <div class="hero-trust-item">
-                                    <svg viewBox="0 0 24 24" style="width:20px;fill:#43a047;">
-                                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
-                                    </svg>
-                                    <span>Prise de RDV rapide</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6 d-none d-lg-block">
-                            <div class="hero-card-floating">
-                                <div class="hero-float-card">
-                                    <t t-if="featured_doctor">
-                                        <div style="display:flex;align-items:center;gap:12px;">
-                                            <div style="width:50px;height:50px;border-radius:50%;background:var(--medical-gradient);display:flex;align-items:center;justify-content:center;">
-                                                <svg viewBox="0 0 24 24" style="width:28px;fill:white;">
-                                                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                                                </svg>
-                                            </div>
-                                            <div>
-                                                <p style="margin:0;font-weight:700;color:#333;">Dr. <t t-esc="featured_doctor.name"/></p>
-                                                <p style="margin:0;font-size:0.8rem;color:#9c27b0;">
-                                                    <t t-esc="featured_doctor.specialty_id.name if featured_doctor.specialty_id else 'Médecin généraliste'"/>
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div style="margin-top:15px;background:#f8f4fc;border-radius:10px;padding:10px;">
-                                            <p style="margin:0;font-size:0.8rem;color:#666;">Consultation disponible</p>
-                                            <p style="margin:0;font-weight:700;color:#6a1b9a;">Prenez rendez-vous en ligne</p>
-                                        </div>
-                                        <a t-att-href="'/medical/rdv?doctor_id=' + str(featured_doctor.id)" style="display:block;margin-top:12px;background:var(--medical-gradient);color:white;text-align:center;padding:10px;border-radius:10px;font-weight:700;text-decoration:none;">
-                                            Réserver maintenant
-                                        </a>
-                                    </t>
-                                </div>
-                                <div class="hero-float-stats">
-                                    <div class="hero-stat">
-                                        <span class="hero-stat-number">+500</span>
-                                        <span class="hero-stat-label">Patients</span>
-                                    </div>
-                                    <div class="hero-stat">
-                                        <span class="hero-stat-number">10+</span>
-                                        <span class="hero-stat-label">Médecins</span>
-                                    </div>
-                                    <div class="hero-stat">
-                                        <span class="hero-stat-number">4.9</span>
-                                        <span class="hero-stat-label">Note</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="hero-wave">
-                    <svg viewBox="0 0 1440 80" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M0,40 C360,80 1080,0 1440,40 L1440,80 L0,80 Z" fill="white"/>
-                    </svg>
-                </div>
-            </div>
-
-            <!-- STATS BAR -->
-            <div class="stats-bar">
-                <div class="container">
-                    <div class="row g-4">
-                        <div class="col-6 col-md-3">
-                            <div class="stat-card">
-                                <div class="stat-icon">
-                                    <svg viewBox="0 0 24 24" style="width:28px;fill:white;">
-                                        <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
-                                    </svg>
-                                </div>
-                                <span class="stat-number">+500</span>
-                                <span class="stat-label">Patients satisfaits</span>
-                            </div>
-                        </div>
-                        <div class="col-6 col-md-3">
-                            <div class="stat-card">
-                                <div class="stat-icon">
-                                    <svg viewBox="0 0 24 24" style="width:28px;fill:white;">
-                                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                                    </svg>
-                                </div>
-                                <span class="stat-number">10+</span>
-                                <span class="stat-label">Médecins spécialistes</span>
-                            </div>
-                        </div>
-                        <div class="col-6 col-md-3">
-                            <div class="stat-card">
-                                <div class="stat-icon">
-                                    <svg viewBox="0 0 24 24" style="width:28px;fill:white;">
-                                        <path d="M19 8l-4 4h3c0 3.31-2.69 6-6 6-1.01 0-1.97-.25-2.8-.7l-1.46 1.46C8.97 19.54 10.43 20 12 20c4.42 0 8-3.58 8-8h3l-4-4zM6 12c0-3.31 2.69-6 6-6 1.01 0 1.97.25 2.8.7l1.46-1.46C15.03 4.46 13.57 4 12 4c-4.42 0-8 3.58-8 8H1l4 4 4-4H6z"/>
-                                    </svg>
-                                </div>
-                                <span class="stat-number">15+</span>
-                                <span class="stat-label">Spécialités médicales</span>
-                            </div>
-                        </div>
-                        <div class="col-6 col-md-3">
-                            <div class="stat-card">
-                                <div class="stat-icon">
-                                    <svg viewBox="0 0 24 24" style="width:28px;fill:white;">
-                                        <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
-                                    </svg>
-                                </div>
-                                <span class="stat-number">24/7</span>
-                                <span class="stat-label">Disponible en ligne</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- SERVICES -->
-            <div class="container mt-5 mb-5">
-                <div class="text-center mb-5">
-                    <div class="section-badge">Nos services</div>
-                    <h2 class="section-title mt-3">Tout pour votre santé</h2>
-                    <p class="section-subtitle">Des services médicaux de qualité accessibles en ligne</p>
-                </div>
-                <div class="row g-4">
-                    <div class="col-md-4">
-                        <div class="service-card">
-                            <div class="service-icon-wrap">
-                                <svg viewBox="0 0 24 24" style="width:35px;fill:white;">
-                                    <path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm1 11h-2v2H9v-2H7v-2h2v-2h2v2h2v2z"/>
-                                </svg>
-                            </div>
-                            <h4 class="service-title">Prise de RDV en ligne</h4>
-                            <p class="service-desc">Réservez votre consultation en quelques clics, disponible 24h/24 et 7j/7 sans attente.</p>
-                            <a href="/medical/medecins" class="service-link">
-                                Réserver maintenant
-                                <svg viewBox="0 0 24 24" style="width:16px;fill:var(--medical-primary);margin-left:5px;">
-                                    <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
-                                </svg>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="service-card service-card-featured">
-                            <div class="service-icon-wrap">
-                                <svg viewBox="0 0 24 24" style="width:35px;fill:white;">
-                                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                                </svg>
-                            </div>
-                            <h4 class="service-title">Médecins spécialistes</h4>
-                            <p class="service-desc">Une équipe de médecins qualifiés et expérimentés dans toutes les spécialités médicales.</p>
-                            <a href="/medical/medecins" class="service-link">
-                                Voir nos médecins
-                                <svg viewBox="0 0 24 24" style="width:16px;fill:white;margin-left:5px;">
-                                    <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
-                                </svg>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="service-card">
-                            <div class="service-icon-wrap">
-                                <svg viewBox="0 0 24 24" style="width:35px;fill:white;">
-                                    <path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/>
-                                </svg>
-                            </div>
-                            <h4 class="service-title">Suivi personnalisé</h4>
-                            <p class="service-desc">Consultez vos rendez-vous et votre historique médical à tout moment depuis votre espace.</p>
-                            <a href="/medical/mes-rdv" class="service-link">
-                                Mes rendez-vous
-                                <svg viewBox="0 0 24 24" style="width:16px;fill:var(--medical-primary);margin-left:5px;">
-                                    <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
-                                </svg>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ABOUT -->
-            <div class="about-section">
+            <!-- HERO -->
+            <section class="m-hero">
+                <div class="m-hero-bg-blob"></div>
                 <div class="container">
                     <div class="row align-items-center g-5">
-                        <div class="col-md-6">
-                            <div class="about-image-wrap">
-                                <div class="about-img-main"></div>
+                        <div class="col-lg-6" data-reveal="left">
+                            <img src="/medical_website/static/src/img/logooo.png" alt="Logo MédicSS" class="m-hero-logo"/>
+                            <p class="m-eyebrow"><span class="m-eyebrow-dot"></span>Cabinet médical certifié</p>
+                            <h1 class="m-hero-title">Une approche humaine<br/><em>de la médecine,</em><br/>proche de vous.</h1>
+                            <p class="m-hero-desc">
+                                Rencontrez nos médecins, prenez rendez-vous en quelques clics et accédez à votre suivi médical en ligne. Sans complication, sans attente.
+                            </p>
+                            <div class="m-hero-actions">
+                                <a href="/medical/medecins" class="m-btn-primary">
+                                    Prendre rendez-vous
+                                    <svg viewBox="0 0 24 24" style="width:18px;fill:currentColor;margin-left:8px;">
+                                        <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
+                                    </svg>
+                                </a>
+                                <a href="/medical/medecins" class="m-btn-ghost">Voir nos médecins</a>
+                            </div>
+                            <div class="m-hero-trust">
+                                <span><svg viewBox="0 0 24 24" style="width:16px;fill:#10b981;"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> Sans appel téléphonique</span>
+                                <span><svg viewBox="0 0 24 24" style="width:16px;fill:#10b981;"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> Médecins certifiés</span>
+                                <span><svg viewBox="0 0 24 24" style="width:16px;fill:#10b981;"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> Données sécurisées</span>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="section-badge">À propos de nous</div>
-                            <h2 class="section-title mt-3">Un cabinet médical<br/>moderne et accessible</h2>
-                            <p class="about-text">
-                                MédicSS est un cabinet médical moderne dédié à votre santé et à votre bien-être. Fondé par une équipe de professionnels de santé passionnés, notre cabinet vous offre un accès simplifié à des soins de qualité grâce à notre plateforme de prise de rendez-vous en ligne.
-                            </p>
-                            <p class="about-text">
-                                Notre équipe de médecins spécialistes est à votre écoute pour vous accompagner dans votre parcours de santé, avec bienveillance et professionnalisme.
-                            </p>
-                            <div class="about-features">
-                                <div class="about-feature">
-                                    <div class="about-feature-icon">
-                                        <svg viewBox="0 0 24 24" style="width:20px;fill:white;">
-                                            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
-                                        </svg>
-                                    </div>
-                                    <span>Médecins certifiés et expérimentés</span>
-                                </div>
-                                <div class="about-feature">
-                                    <div class="about-feature-icon">
-                                        <svg viewBox="0 0 24 24" style="width:20px;fill:white;">
-                                            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
-                                        </svg>
-                                    </div>
-                                    <span>Prise de RDV en ligne 24h/7j</span>
-                                </div>
-                                <div class="about-feature">
-                                    <div class="about-feature-icon">
-                                        <svg viewBox="0 0 24 24" style="width:20px;fill:white;">
-                                            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
-                                        </svg>
-                                    </div>
-                                    <span>Suivi médical personnalisé</span>
-                                </div>
+                        <div class="col-lg-6" data-reveal="right">
+                            <div class="m-hero-img-wrap">
+                                <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=900&amp;q=80" alt="Médecin" class="m-hero-img"/>
+                                <div class="m-hero-img-deco"></div>
                             </div>
-                            <a href="/medical/contact" class="btn btn-medical mt-4" style="padding: 14px 35px;">Nous contacter</a>
                         </div>
                     </div>
                 </div>
-            </div>
+            </section>
 
-            <!-- CTA -->
-            <div class="cta-section">
-                <div class="cta-overlay"></div>
-                <div class="container text-center cta-content">
-                    <h2 style="color:white;font-size:2.5rem;font-weight:900;margin-bottom:15px;text-shadow:0 2px 20px rgba(0,0,0,0.3);">
-                        Prêt à prendre soin de vous ?
-                    </h2>
-                    <p style="color:rgba(255,255,255,0.9);font-size:1.15rem;margin-bottom:35px;">
-                        Rejoignez des milliers de patients qui nous font confiance
-                    </p>
-                    <a href="/medical/medecins" class="cta-btn-primary">Prendre un rendez-vous</a>
-                    <a href="/medical/contact" class="cta-btn-secondary">Nous contacter</a>
+            <!-- SERVICES BENTO -->
+            <section class="m-section" data-reveal="up">
+                <div class="container">
+                    <div class="text-center mb-5">
+                        <p class="m-eyebrow"><span class="m-eyebrow-dot"></span>Nos services</p>
+                        <h2 class="m-section-title">Une médecine <em>qui s'adapte à vous</em></h2>
+                    </div>
+                    <div class="m-bento-grid">
+                        <div class="m-bento-large" data-reveal="up">
+                            <div class="m-bento-content">
+                                <div class="m-bento-icon" style="background:rgba(255,255,255,0.15);">
+                                    <svg viewBox="0 0 24 24" style="width:40px;fill:white;"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-1 11h-4v4h-4v-4H6v-4h4V6h4v4h4v4z"/></svg>
+                                </div>
+                                <h3 class="m-bento-title">Consultations en cabinet</h3>
+                                <p class="m-bento-text">Rencontrez votre médecin en personne dans nos locaux modernes, du lundi au vendredi.</p>
+                                <a href="/medical/medecins" class="m-bento-link">Prendre rendez-vous →</a>
+                            </div>
+                            <div class="m-bento-visual"></div>
+                        </div>
+                        <div class="m-bento-small" data-reveal="up" data-reveal-delay="100">
+                            <div class="m-bento-icon-sm" style="background:rgba(16,185,129,0.12);color:#059669;">
+                                <svg viewBox="0 0 24 24" style="width:26px;fill:currentColor;"><path d="M12 2L4 5v6.09c0 5.05 3.41 9.76 8 10.91 4.59-1.15 8-5.86 8-10.91V5l-8-3zm-2 14l-4-4 1.41-1.41L10 13.17l6.59-6.59L18 8l-8 8z"/></svg>
+                            </div>
+                            <h4 class="m-bento-title-sm">Spécialités médicales</h4>
+                            <p class="m-bento-text-sm">Cardiologie, dermatologie, pédiatrie et plus encore.</p>
+                            <a href="/medical/medecins" class="m-bento-link-sm">Voir nos médecins spécialistes →</a>
+                        </div>
+                        <div class="m-bento-small" data-reveal="up" data-reveal-delay="200">
+                            <div class="m-bento-icon-sm" style="background:rgba(13,148,136,0.12);color:#0d9488;">
+                                <svg viewBox="0 0 24 24" style="width:26px;fill:currentColor;"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+                            </div>
+                            <h4 class="m-bento-title-sm">Suivi médical en ligne</h4>
+                            <p class="m-bento-text-sm">Accédez à vos rendez-vous et ordonnances à tout moment.</p>
+                            <a href="/medical/mes-rdv" class="m-bento-link-sm">Mon espace patient →</a>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            </section>
+
+            <!-- ÉQUIPE -->
+            <section class="m-section m-section-alt" data-reveal="up">
+                <div class="container">
+                    <div class="text-center mb-5">
+                        <p class="m-eyebrow"><span class="m-eyebrow-dot"></span>Notre cabinet</p>
+                        <h2 class="m-section-title">Des médecins <em>à votre écoute</em></h2>
+                        <p class="m-section-subtitle">Une équipe diplômée, expérimentée et engagée pour votre santé.</p>
+                    </div>
+                    <div class="row g-4 justify-content-center">
+                        <t t-foreach="doctors[:3]" t-as="doctor">
+                            <div class="col-md-4" data-reveal="up">
+                                <div class="m-doctor-card-v3">
+                                    <span class="m-doctor-status-v2">● Disponible cette semaine</span>
+                                    <h5 class="m-doctor-name-v2">Dr. <t t-esc="doctor.name"/></h5>
+                                    <p class="m-doctor-specialty-v2">
+                                        <t t-esc="doctor.specialty_id.name if doctor.specialty_id else 'Médecin généraliste'"/>
+                                    </p>
+                                    <p class="m-doctor-bio-v2">
+                                        <t t-if="doctor.bio"><t t-esc="doctor.bio"/></t>
+                                        <t t-else="">Médecin diplômé, à l'écoute de ses patients pour un suivi médical de qualité.</t>
+                                    </p>
+                                    <a t-att-href="'/medical/rdv?doctor_id=' + str(doctor.id)" class="m-doctor-btn-v2">Réserver une consultation</a>
+                                </div>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PARCOURS PATIENT -->
+            <section class="m-section" data-reveal="up">
+                <div class="container">
+                    <div class="text-center mb-5">
+                        <p class="m-eyebrow"><span class="m-eyebrow-dot"></span>Notre engagement</p>
+                        <h2 class="m-section-title">Comment nous <em>accompagnons nos patients</em></h2>
+                        <p class="m-section-subtitle">Du premier rendez-vous au suivi long terme, une prise en charge complète.</p>
+                    </div>
+                    <div class="row g-4">
+                        <div class="col-md-6 col-lg-3" data-reveal="up">
+                            <div class="m-care-step">
+                                <div class="m-care-step-num">01</div>
+                                <h4 class="m-care-step-title">Écoute attentive</h4>
+                                <p class="m-care-step-text">Chaque consultation commence par un temps d'écoute. Vos symptômes, vos antécédents, votre quotidien.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-3" data-reveal="up" data-reveal-delay="100">
+                            <div class="m-care-step">
+                                <div class="m-care-step-num">02</div>
+                                <h4 class="m-care-step-title">Diagnostic précis</h4>
+                                <p class="m-care-step-text">Examen clinique, analyses si nécessaire, échanges entre spécialistes du cabinet pour les cas complexes.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-3" data-reveal="up" data-reveal-delay="200">
+                            <div class="m-care-step">
+                                <div class="m-care-step-num">03</div>
+                                <h4 class="m-care-step-title">Traitement adapté</h4>
+                                <p class="m-care-step-text">Prescription expliquée, alternatives proposées quand elles existent. Vos questions trouvent toujours une réponse.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-3" data-reveal="up" data-reveal-delay="300">
+                            <div class="m-care-step">
+                                <div class="m-care-step-num">04</div>
+                                <h4 class="m-care-step-title">Suivi régulier</h4>
+                                <p class="m-care-step-text">Rendez-vous de contrôle, ajustements du traitement, dossier médical accessible depuis votre espace patient.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CTA FINAL -->
+            <section class="m-cta-v2" data-reveal="up">
+                <div class="m-cta-bg"></div>
+                <div class="m-cta-overlay"></div>
+                <div class="container text-center m-cta-content">
+                    <p class="m-cta-eyebrow">Votre santé n'attend pas</p>
+                    <h2 class="m-cta-title">Prenez RDV en 2 minutes,<br/>consultez en toute sérénité</h2>
+                    <a href="/medical/medecins" class="m-btn-light">Prendre rendez-vous maintenant</a>
+                    <div class="m-cta-reassurance">
+                        <span><svg viewBox="0 0 24 24" style="width:18px;fill:white;"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> Sans engagement</span>
+                        <span><svg viewBox="0 0 24 24" style="width:18px;fill:white;"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> Données sécurisées</span>
+                        <span><svg viewBox="0 0 24 24" style="width:18px;fill:white;"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> Consultation remboursée</span>
+                    </div>
+                </div>
+            </section>
 
         </t>
     </template>
 
     <template id="medecins" name="Medical - Nos Médecins">
         <t t-call="website.layout">
-            <div class="medecins-hero">
+
+            <!-- HERO RECHERCHE -->
+            <section class="med-hero">
                 <div class="container">
-                    <div class="row justify-content-center">
-                        <div class="col-md-8 text-center">
-                            <h1 style="color: white; font-weight: 900; font-size: 2.8rem; text-shadow: 0 2px 15px rgba(0,0,0,0.3);">Trouvez votre médecin</h1>
-                            <p style="color: rgba(255,255,255,0.9); font-size: 1.1rem; margin-bottom: 30px;">Prenez rendez-vous en ligne avec nos spécialistes</p>
-                            <div style="background: white; border-radius: 50px; padding: 8px 20px; display: flex; align-items: center; box-shadow: 0 8px 30px rgba(0,0,0,0.15);">
-                                <svg viewBox="0 0 24 24" style="width: 22px; fill: #9c27b0; margin-right: 10px; flex-shrink: 0;">
-                                    <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
-                                </svg>
-                                <input type="text" id="search-doctor" placeholder="Rechercher par nom ou spécialité..." style="border: none; outline: none; width: 100%; font-size: 1rem; color: #333;"/>
-                            </div>
+                    <div class="text-center mb-4">
+                        <p class="m-eyebrow"><span class="m-eyebrow-dot"></span>Trouvez votre médecin</p>
+                        <h1 class="med-hero-title">Plus de 500 médecins <em>près de chez vous</em></h1>
+                    </div>
+                    <div class="med-search-bar">
+                        <div class="med-search-field">
+                            <svg viewBox="0 0 24 24" class="med-search-icon"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+                            <input type="text" id="search-name" placeholder="Nom, spécialité, motif..."/>
                         </div>
                     </div>
                 </div>
-            </div>
+            </section>
 
-            <div style="background: #f8f4fc; min-height: 60vh; padding: 40px 0;">
+            <!-- LISTE AVEC SIDEBAR -->
+            <section class="med-listing">
                 <div class="container">
-                    <p style="color: #8e7b9a; margin-bottom: 25px; font-size: 0.95rem;">
-                        <strong style="color: var(--medical-dark);" id="doctor-count"><t t-esc="len(doctors)"/></strong> médecin(s) disponible(s)
-                    </p>
-                    <div id="doctors-list">
-                        <t t-foreach="doctors" t-as="doctor">
-                            <div class="doctolib-card"
-                                 t-att-data-name="doctor.name.lower()"
-                                 t-att-data-specialty="doctor.specialty_id.name.lower() if doctor.specialty_id else ''">
-                                <div class="doctolib-card-left">
-                                    <div class="doctolib-avatar">
-                                        <svg viewBox="0 0 24 24" style="width: 45px; fill: white;">
-                                            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                                        </svg>
-                                    </div>
+                    <div class="row g-4">
+
+                        <!-- SIDEBAR FILTRES -->
+                        <aside class="col-lg-3">
+                            <div class="med-filters">
+                                <div class="med-filters-header">
+                                    <h5>Filtres</h5>
+                                    <button class="med-filter-reset">Réinitialiser</button>
                                 </div>
-                                <div class="doctolib-card-middle">
-                                    <div class="doctolib-specialty-tag">
-                                        <t t-esc="doctor.specialty_id.name if doctor.specialty_id else 'Médecin généraliste'"/>
-                                    </div>
-                                    <h4 class="doctolib-name">Dr. <t t-esc="doctor.name"/></h4>
-                                    <p class="doctolib-bio">
-                                        <t t-esc="doctor.bio if doctor.bio else 'Médecin expérimenté et dévoué à votre santé et bien-être.'"/>
-                                    </p>
-                                    <div style="display: flex; gap: 20px; flex-wrap: wrap;">
-                                        <t t-if="doctor.phone">
-                                            <span style="color: #8e7b9a; font-size: 0.85rem; display: flex; align-items: center; gap: 5px;">
-                                                <svg viewBox="0 0 24 24" style="width: 14px; fill: var(--medical-secondary);">
-                                                    <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
-                                                </svg>
-                                                <t t-esc="doctor.phone"/>
-                                            </span>
-                                        </t>
-                                        <t t-if="doctor.email">
-                                            <span style="color: #8e7b9a; font-size: 0.85rem; display: flex; align-items: center; gap: 5px;">
-                                                <svg viewBox="0 0 24 24" style="width: 14px; fill: var(--medical-secondary);">
-                                                    <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
-                                                </svg>
-                                                <t t-esc="doctor.email"/>
-                                            </span>
-                                        </t>
-                                    </div>
+
+                                <div class="med-filter-group">
+                                    <p class="med-filter-label">Disponibilités</p>
+                                    <label class="med-filter-radio"><input type="radio" name="dispo" checked="checked"/> <span>Toutes</span></label>
+                                    <label class="med-filter-radio"><input type="radio" name="dispo"/> <span>Aujourd'hui</span></label>
+                                    <label class="med-filter-radio"><input type="radio" name="dispo"/> <span>Demain</span></label>
+                                    <label class="med-filter-radio"><input type="radio" name="dispo"/> <span>Moins de 3 jours</span></label>
+                                    <label class="med-filter-radio"><input type="radio" name="dispo"/> <span>Cette semaine</span></label>
                                 </div>
-                                <div class="doctolib-card-right">
-                                    <p style="color: #43a047; font-weight: 700; font-size: 0.9rem; margin-bottom: 15px;">Disponible en ligne</p>
-                                    <a t-att-href="'/medical/rdv?doctor_id=' + str(doctor.id)" class="btn btn-medical" style="width: 100%; padding: 12px; font-size: 0.95rem;">
-                                        Prendre RDV
-                                    </a>
-                                    <p style="color: #8e7b9a; font-size: 0.8rem; text-align: center; margin-top: 10px;">Consultation en cabinet</p>
+
+                                <div class="med-filter-group">
+                                    <p class="med-filter-label">Spécialités</p>
+                                    <label class="med-filter-check"><input type="checkbox"/> <span>Médecine générale</span></label>
+                                    <label class="med-filter-check"><input type="checkbox"/> <span>Cardiologie</span></label>
+                                    <label class="med-filter-check"><input type="checkbox"/> <span>Dermatologie</span></label>
+                                    <label class="med-filter-check"><input type="checkbox"/> <span>Pédiatrie</span></label>
+                                    <label class="med-filter-check"><input type="checkbox"/> <span>Gynécologie</span></label>
+                                    <label class="med-filter-check"><input type="checkbox"/> <span>Ophtalmologie</span></label>
                                 </div>
                             </div>
-                        </t>
+                        </aside>
+
+                        <!-- LISTE MÉDECINS -->
+                        <div class="col-lg-9">
+                            <!-- TOOLBAR -->
+                            <div class="med-toolbar">
+                                <div>
+                                    <p class="med-results-count"><strong t-esc="len(doctors)"/> médecins trouvés</p>
+                                </div>
+                                <div class="med-toolbar-actions">
+                                    <div class="med-sort">
+                                        <label>Trier par :</label>
+                                        <select>
+                                            <option>Disponibilité</option>
+                                            <option>Nom A-Z</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- VUE LISTE -->
+                            <div class="med-list">
+                                <t t-foreach="doctors" t-as="doctor">
+                                    <div class="med-card" t-att-data-name="doctor.name" t-att-data-specialty="doctor.specialty_id.name if doctor.specialty_id else ''">
+                                        <div class="med-card-main">
+                                            <div class="med-card-left">
+                                                <div class="med-card-avatar">
+                                                    <svg viewBox="0 0 24 24" style="width:42px;fill:white;opacity:0.9;"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                                                </div>
+                                            </div>
+                                            <div class="med-card-info">
+                                                <div class="med-card-header">
+                                                    <div>
+                                                        <h4 class="med-card-name">Dr. <t t-esc="doctor.name"/></h4>
+                                                        <p class="med-card-specialty"><t t-esc="doctor.specialty_id.name if doctor.specialty_id else 'Médecin généraliste'"/></p>
+                                                    </div>
+                                                </div>
+                                                <div class="med-card-tags">
+                                                    <span class="med-tag"><svg viewBox="0 0 24 24" style="width:13px;fill:currentColor;margin-right:4px;"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>Carte Vitale</span>
+                                                    <span class="med-tag"><svg viewBox="0 0 24 24" style="width:13px;fill:currentColor;margin-right:4px;"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>Tiers payant</span>
+                                                    <span class="med-tag"><svg viewBox="0 0 24 24" style="width:13px;fill:currentColor;margin-right:4px;"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>Accès PMR</span>
+                                                </div>
+                                                <div class="med-card-meta">
+                                                    <span><svg viewBox="0 0 24 24" style="width:14px;fill:currentColor;"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg> 14 rue des Lilas, 75011 Paris</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- MINI CALENDRIER -->
+                                        <div class="med-card-calendar">
+                                            <div class="med-cal-header">
+                                                <button class="med-cal-nav" disabled="disabled">‹</button>
+                                                <span class="med-cal-title">Prochaines disponibilités</span>
+                                                <button class="med-cal-nav">›</button>
+                                            </div>
+                                            <div class="med-cal-grid">
+                                                <div class="med-cal-day">
+                                                    <p class="med-cal-day-label">Lun.</p>
+                                                    <p class="med-cal-day-num">8</p>
+                                                    <a t-att-href="'/medical/rdv?doctor_id=' + str(doctor.id)" class="med-cal-slot">09:00</a>
+                                                    <a t-att-href="'/medical/rdv?doctor_id=' + str(doctor.id)" class="med-cal-slot">10:30</a>
+                                                    <a t-att-href="'/medical/rdv?doctor_id=' + str(doctor.id)" class="med-cal-slot">14:00</a>
+                                                </div>
+                                                <div class="med-cal-day">
+                                                    <p class="med-cal-day-label">Mar.</p>
+                                                    <p class="med-cal-day-num">9</p>
+                                                    <a t-att-href="'/medical/rdv?doctor_id=' + str(doctor.id)" class="med-cal-slot">08:30</a>
+                                                    <a t-att-href="'/medical/rdv?doctor_id=' + str(doctor.id)" class="med-cal-slot">11:00</a>
+                                                    <a t-att-href="'/medical/rdv?doctor_id=' + str(doctor.id)" class="med-cal-slot">15:30</a>
+                                                </div>
+                                                <div class="med-cal-day">
+                                                    <p class="med-cal-day-label">Mer.</p>
+                                                    <p class="med-cal-day-num">10</p>
+                                                    <a t-att-href="'/medical/rdv?doctor_id=' + str(doctor.id)" class="med-cal-slot">09:30</a>
+                                                    <a t-att-href="'/medical/rdv?doctor_id=' + str(doctor.id)" class="med-cal-slot">13:00</a>
+                                                    <a t-att-href="'/medical/rdv?doctor_id=' + str(doctor.id)" class="med-cal-slot">16:00</a>
+                                                </div>
+                                            </div>
+                                            <a t-att-href="'/medical/rdv?doctor_id=' + str(doctor.id)" class="med-cal-more">Voir tous les créneaux →</a>
+                                        </div>
+                                    </div>
+                                </t>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
-            </div>
+            </section>
 
             <script>
-                document.addEventListener('DOMContentLoaded', function() {
-                    var searchInput = document.getElementById('search-doctor');
-                    var cards = document.querySelectorAll('.doctolib-card');
-                    var countEl = document.getElementById('doctor-count');
-                    if (searchInput) {
-                        searchInput.addEventListener('input', function() {
-                            var query = this.value.toLowerCase();
-                            var visible = 0;
-                            cards.forEach(function(card) {
-                                var name = card.getAttribute('data-name') || '';
-                                var specialty = card.getAttribute('data-specialty') || '';
-                                if (!query || name.includes(query) || specialty.includes(query)) {
-                                    card.style.display = 'flex';
-                                    visible++;
-                                } else {
-                                    card.style.display = 'none';
-                                }
-                            });
-                            if (countEl) countEl.textContent = visible;
+                var searchInput = document.getElementById('search-name');
+                if (searchInput) {
+                    searchInput.addEventListener('input', function() {
+                        var q = this.value.toLowerCase();
+                        document.querySelectorAll('.med-card').forEach(function(card) {
+                            var name = (card.getAttribute('data-name') || '').toLowerCase();
+                            var spec = (card.getAttribute('data-specialty') || '').toLowerCase();
+                            card.style.display = (name.indexOf(q) !== -1 || spec.indexOf(q) !== -1) ? '' : 'none';
                         });
-                    }
-                });
+                    });
+                }
             </script>
         </t>
     </template>
@@ -1254,6 +1196,114 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </t>
+    </template>
+    <template id="rgpd" name="Medical - RGPD">
+        <t t-call="website.layout">
+            <div class="rgpd-page">
+                <section class="rgpd-hero">
+                    <div class="container">
+                        <p class="m-eyebrow"><span class="m-eyebrow-dot"></span>Données personnelles</p>
+                        <h1 class="rgpd-title">Politique de confidentialité</h1>
+                        <p class="rgpd-subtitle">Dernière mise à jour : 1er janvier 2025</p>
+                    </div>
+                </section>
+
+                <section class="rgpd-content">
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-9">
+
+                                <div class="rgpd-block">
+                                    <h2>1. Responsable du traitement</h2>
+                                    <p>Le responsable du traitement des données personnelles collectées sur ce site est le Cabinet médical <strong>MédicSS</strong>, situé au 14 rue des Lilas, 75011 Paris, France.</p>
+                                    <p><strong>Contact :</strong> medicss5@outlook.fr — +33 6 09 78 65 67</p>
+                                </div>
+
+                                <div class="rgpd-block">
+                                    <h2>2. Données collectées</h2>
+                                    <p>Dans le cadre de la prise de rendez-vous en ligne et du suivi médical, nous collectons les données suivantes :</p>
+                                    <ul>
+                                        <li>Nom, prénom, date de naissance</li>
+                                        <li>Adresse email et numéro de téléphone</li>
+                                        <li>Données de santé (motif de consultation, ordonnances, comptes rendus)</li>
+                                        <li>Historique des rendez-vous</li>
+                                    </ul>
+                                </div>
+
+                                <div class="rgpd-block">
+                                    <h2>3. Finalités du traitement</h2>
+                                    <p>Vos données sont utilisées pour :</p>
+                                    <ul>
+                                        <li>La gestion des rendez-vous médicaux</li>
+                                        <li>Le suivi médical et la coordination des soins</li>
+                                        <li>L'envoi de confirmations et rappels de rendez-vous</li>
+                                        <li>La facturation et la gestion administrative</li>
+                                    </ul>
+                                </div>
+
+                                <div class="rgpd-block">
+                                    <h2>4. Base légale</h2>
+                                    <p>Le traitement de vos données est fondé sur :</p>
+                                    <ul>
+                                        <li>L'exécution du contrat de soins (article 6.1.b du RGPD)</li>
+                                        <li>Le respect des obligations légales du professionnel de santé</li>
+                                        <li>Votre consentement explicite pour les données de santé (article 9.2.a du RGPD)</li>
+                                    </ul>
+                                </div>
+
+                                <div class="rgpd-block">
+                                    <h2>5. Durée de conservation</h2>
+                                    <p>Les données médicales sont conservées 20 ans après la dernière consultation, conformément à l'article R.1112-7 du Code de la santé publique. Les données de contact sont supprimées 3 ans après votre dernière interaction avec le cabinet.</p>
+                                </div>
+
+                                <div class="rgpd-block">
+                                    <h2>6. Destinataires des données</h2>
+                                    <p>Vos données sont accessibles uniquement :</p>
+                                    <ul>
+                                        <li>Aux professionnels de santé du cabinet impliqués dans votre prise en charge</li>
+                                        <li>Au secrétariat médical pour la gestion administrative</li>
+                                        <li>À notre hébergeur agréé Données de Santé (HDS)</li>
+                                    </ul>
+                                    <p>Aucune donnée n'est cédée à des tiers à des fins commerciales.</p>
+                                </div>
+
+                                <div class="rgpd-block">
+                                    <h2>7. Vos droits</h2>
+                                    <p>Conformément au RGPD et à la loi Informatique et Libertés, vous disposez des droits suivants :</p>
+                                    <ul>
+                                        <li><strong>Droit d'accès</strong> à vos données personnelles</li>
+                                        <li><strong>Droit de rectification</strong> en cas d'erreur</li>
+                                        <li><strong>Droit à l'effacement</strong> (dans la limite des obligations légales)</li>
+                                        <li><strong>Droit à la limitation</strong> du traitement</li>
+                                        <li><strong>Droit à la portabilité</strong> de vos données</li>
+                                        <li><strong>Droit d'opposition</strong> au traitement</li>
+                                        <li><strong>Droit de retirer votre consentement</strong> à tout moment</li>
+                                    </ul>
+                                    <p>Pour exercer ces droits, contactez-nous à : <a href="mailto:medicss5@outlook.fr">medicss5@outlook.fr</a></p>
+                                </div>
+
+                                <div class="rgpd-block">
+                                    <h2>8. Sécurité des données</h2>
+                                    <p>Vos données sont hébergées chez un prestataire certifié <strong>HDS (Hébergeur de Données de Santé)</strong>. Les échanges sont chiffrés (HTTPS/TLS). L'accès aux dossiers médicaux est restreint et journalisé.</p>
+                                </div>
+
+                                <div class="rgpd-block">
+                                    <h2>9. Cookies</h2>
+                                    <p>Ce site utilise uniquement des cookies techniques nécessaires à son fonctionnement (session, authentification). Aucun cookie publicitaire ou de traçage tiers n'est utilisé.</p>
+                                </div>
+
+                                <div class="rgpd-block">
+                                    <h2>10. Réclamation</h2>
+                                    <p>Si vous estimez que vos droits ne sont pas respectés, vous pouvez introduire une réclamation auprès de la CNIL :</p>
+                                    <p><strong>Commission Nationale de l'Informatique et des Libertés</strong><br/>3 Place de Fontenoy, TSA 80715, 75334 Paris Cedex 07<br/><a href="https://www.cnil.fr" target="_blank">www.cnil.fr</a></p>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </section>
             </div>
         </t>
     </template>

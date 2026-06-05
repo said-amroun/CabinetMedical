@@ -1,50 +1,32 @@
+// === REVEAL ON SCROLL ===
 (function() {
-    function initFiltre() {
-        var specialtySelect = document.getElementById('specialty_id');
-        var doctorSelect = document.getElementById('doctor_id');
-        var dateInput = document.getElementById('appointment_date');
+    function initReveal() {
+        var elements = document.querySelectorAll('[data-reveal]');
+        if (!elements.length) return;
 
-        if (dateInput) {
-            var now = new Date();
-            now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
-            dateInput.min = now.toISOString().slice(0, 16);
+        if ('IntersectionObserver' in window) {
+            var observer = new IntersectionObserver(function(entries) {
+                entries.forEach(function(entry) {
+                    if (entry.isIntersecting) {
+                        var delay = entry.target.getAttribute('data-reveal-delay') || 0;
+                        setTimeout(function() {
+                            entry.target.classList.add('is-revealed');
+                        }, parseInt(delay));
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
+
+            elements.forEach(function(el) { observer.observe(el); });
+        } else {
+            elements.forEach(function(el) { el.classList.add('is-revealed'); });
         }
-
-        if (!specialtySelect || !doctorSelect) return;
-
-        var allOptions = Array.from(doctorSelect.querySelectorAll('option'));
-
-        specialtySelect.addEventListener('change', function () {
-            var specialtyId = String(this.value);
-
-            while (doctorSelect.options.length > 1) {
-                doctorSelect.remove(1);
-            }
-
-            allOptions.forEach(function (option) {
-                if (option.value === '' || option.value === null) return;
-                var optSpecialty = String(option.getAttribute('data-specialty') || '');
-                if (!specialtyId || specialtyId === '' || optSpecialty === specialtyId) {
-                    doctorSelect.appendChild(option.cloneNode(true));
-                }
-            });
-        });
     }
 
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initFiltre);
+        document.addEventListener('DOMContentLoaded', initReveal);
     } else {
-        initFiltre();
-    }
-
-    // Backup pour Odoo qui charge le JS en asynchrone
-    window.addEventListener('load', initFiltre);
-})();
-// Mode jour/nuit
-(function() {
-    if (localStorage.getItem('medicss_dark') === 'true') {
-        document.documentElement.classList.add('dark-mode');
-        if (document.body) document.body.classList.add('dark-mode');
+        initReveal();
     }
 })();
 

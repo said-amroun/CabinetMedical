@@ -2,6 +2,9 @@
 <odoo>
     <template id="dark_mode_assets" inherit_id="website.layout" name="Dark Mode Assets" priority="1">
         <xpath expr="//head" position="inside">
+            <link rel="preconnect" href="https://fonts.googleapis.com"/>
+            <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="crossorigin"/>
+            <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&amp;family=Inter:wght@400;500;600;700&amp;family=Playfair+Display:ital,wght@0,700;1,700&amp;display=swap" rel="stylesheet"/>
             <script type="text/javascript">
                 (function() {
                     try {
@@ -11,15 +14,6 @@
                     } catch(e) {}
                 })();
             </script>
-            <style>
-                html.dark-mode,
-                html.dark-mode body,
-                html.dark-mode #wrapwrap,
-                html.dark-mode main { background-color: #14101f !important; }
-                html.dark-mode .mesrdv-page,
-                html.dark-mode .espace-page { background: linear-gradient(160deg, #14101f 0%, #1a1428 100%) !important; }
-                html.dark-mode { color-scheme: dark; }
-            </style>
         </xpath>
     </template>
 </odoo>
