@@ -9,6 +9,7 @@
         <field name="print_report_name">'Ordonnance - %s' % (object.name)</field>
         <field name="binding_model_id" ref="model_medical_consultation"/>
         <field name="binding_type">report</field>
+        <field name="paperformat_id" ref="medical_consultation.paperformat_a5"/>
     </record>
 
     <template id="report_prescription_document">

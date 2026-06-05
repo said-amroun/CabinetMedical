@@ -3,6 +3,7 @@ from odoo import models, fields, api
 class MedicalConsultation(models.Model):
     _name = 'medical.consultation'
     _description = 'Medical Consultation'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
 
     name = fields.Char(string='Reference', required=True, copy=False, readonly=True, default='New')
     appointment_id = fields.Many2one('medical.appointment', string='Rendez-vous', required=True, domain=[('state', '!=', 'done')])

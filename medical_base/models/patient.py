@@ -19,14 +19,14 @@ class MedicalPatient(models.Model):
     first_name = fields.Char(string='Prénom', required=True)
     last_name = fields.Char(string='Nom', required=True)
     name = fields.Char(string='Nom Complet', compute='_compute_name', store=True)
-    birth_date = fields.Date(string='Date de Naissance')
+    birth_date = fields.Date(string='Date de Naissance', required=True)
     gender = fields.Selection([
         ('male', 'Homme'),
         ('female', 'Femme'),
         ('other', 'Autre'),
-    ], string='Genre')
-    phone = fields.Char(string='Téléphone')
-    email = fields.Char(string='Email')
+    ], string='Genre', required=True)
+    phone = fields.Char(string='Téléphone', required=True)
+    email = fields.Char(string='Email', required=True)
     address = fields.Text(string='Adresse')
     notes = fields.Text(string='Notes')
 

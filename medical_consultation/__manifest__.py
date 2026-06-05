@@ -5,11 +5,12 @@
     'description': 'Consultation history, symptoms, diseases, and prescriptions.',
     'author': 'DIB Syphax / AMROUN Said',
     'category': 'Healthcare',
-    'depends': ['base', 'medical_appointment'],
+    'depends': ['base', 'medical_appointment', 'mail'],
     'data': [
         'security/security_rules.xml',
         'security/ir.model.access.csv',
         'data/sequence.xml',
+        'data/paperformat.xml',
         'report/prescription_report.xml',
         'report/certificate_report.xml',
         'views/disease_views.xml',

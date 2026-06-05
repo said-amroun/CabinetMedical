@@ -12,6 +12,7 @@
         'data/sequence.xml',
         'views/dashboard_action.xml',
         'views/appointment_views.xml',
+        'views/patient_views.xml',
         'views/medical_appointment_menu.xml',
     ],
     'assets': {
