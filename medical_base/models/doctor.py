@@ -24,6 +24,29 @@ class MedicalDoctor(models.Model):
     specialty_id = fields.Many2one('medical.specialty', string='Spécialité')
     bio = fields.Text(string='Biographie')
     user_id = fields.Many2one('res.users', string='Utilisateur Odoo', help='Lié à l\'utilisateur du système')
+    availability_ids = fields.One2many(
+        'medical.doctor.availability',
+        'doctor_id',
+        string='Disponibilités',
+    )
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        doctors = super().create(vals_list)
+        # Créer les disponibilités par défaut (Lundi-Vendredi, tous les créneaux)
+        all_slots = self.env['medical.time.slot'].search([])
+        if all_slots:
+            for doctor in doctors:
+                if not doctor.availability_ids:
+                    avail_vals = []
+                    for day in range(5):  # 0=Lundi .. 4=Vendredi
+                        avail_vals.append({
+                            'doctor_id': doctor.id,
+                            'day_of_week': str(day),
+                            'slot_ids': [(6, 0, all_slots.ids)],
+                        })
+                    self.env['medical.doctor.availability'].create(avail_vals)
+        return doctors
 
     @api.depends('first_name', 'last_name')
     def _compute_name(self):
