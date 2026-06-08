@@ -45,6 +45,12 @@ class MedicalPatient(models.Model):
             if record.last_name and not NAME_REGEX.match(record.last_name):
                 raise ValidationError("Le nom '%s' ne doit contenir que des lettres (A-Z, accents), espaces, tirets ou apostrophes." % record.last_name)
 
+    @api.constrains('birth_date')
+    def _check_birth_date(self):
+        for record in self:
+            if record.birth_date and record.birth_date >= fields.Date.today():
+                raise ValidationError("La date de naissance doit être antérieure à la date du jour.")
+
     @api.constrains('email')
     def _check_email(self):
         for record in self:
