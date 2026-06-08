@@ -3,547 +3,526 @@
     <template id="index" name="Medical - Accueil">
         <t t-call="website.layout">
 
-            <!-- HERO SECTION -->
-            <div class="hero-section">
-                <div class="hero-overlay"></div>
-                <div class="container hero-content">
-                    <div class="row align-items-center" style="min-height: 600px;">
-                        <div class="col-lg-6">
-                            <div class="hero-badge">Cabinet Médical Agréé</div>
-                            <h1 class="hero-title">
-                                Votre santé,<br/>
-                                <span class="hero-title-accent">notre priorité</span>
-                            </h1>
-                            <p class="hero-subtitle">
-                                MédicSS vous offre un accès simplifié à des soins de qualité avec des médecins spécialistes expérimentés, disponibles en ligne 24h/7j.
-                            </p>
-                            <div class="hero-buttons">
-                                <a href="/medical/medecins" class="hero-btn-primary">
-                                    Prendre un rendez-vous
-                                </a>
-                                <a href="/medical/medecins" class="hero-btn-secondary">
-                                    Voir nos médecins
-                                </a>
-                            </div>
-                            <div class="hero-trust">
-                                <div class="hero-trust-item">
-                                    <svg viewBox="0 0 24 24" style="width:20px;fill:#43a047;">
-                                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
-                                    </svg>
-                                    <span>Consultation en ligne</span>
-                                </div>
-                                <div class="hero-trust-item">
-                                    <svg viewBox="0 0 24 24" style="width:20px;fill:#43a047;">
-                                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
-                                    </svg>
-                                    <span>Médecins certifiés</span>
-                                </div>
-                                <div class="hero-trust-item">
-                                    <svg viewBox="0 0 24 24" style="width:20px;fill:#43a047;">
-                                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
-                                    </svg>
-                                    <span>Prise de RDV rapide</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6 d-none d-lg-block">
-                            <div class="hero-card-floating">
-                                <div class="hero-float-card">
-                                    <t t-if="featured_doctor">
-                                        <div style="display:flex;align-items:center;gap:12px;">
-                                            <div style="width:50px;height:50px;border-radius:50%;background:var(--medical-gradient);display:flex;align-items:center;justify-content:center;">
-                                                <svg viewBox="0 0 24 24" style="width:28px;fill:white;">
-                                                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                                                </svg>
-                                            </div>
-                                            <div>
-                                                <p style="margin:0;font-weight:700;color:#333;">Dr. <t t-esc="featured_doctor.name"/></p>
-                                                <p style="margin:0;font-size:0.8rem;color:#9c27b0;">
-                                                    <t t-esc="featured_doctor.specialty_id.name if featured_doctor.specialty_id else 'Médecin généraliste'"/>
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div style="margin-top:15px;background:#f8f4fc;border-radius:10px;padding:10px;">
-                                            <p style="margin:0;font-size:0.8rem;color:#666;">Consultation disponible</p>
-                                            <p style="margin:0;font-weight:700;color:#6a1b9a;">Prenez rendez-vous en ligne</p>
-                                        </div>
-                                        <a t-att-href="'/medical/rdv?doctor_id=' + str(featured_doctor.id)" style="display:block;margin-top:12px;background:var(--medical-gradient);color:white;text-align:center;padding:10px;border-radius:10px;font-weight:700;text-decoration:none;">
-                                            Réserver maintenant
-                                        </a>
-                                    </t>
-                                </div>
-                                <div class="hero-float-stats">
-                                    <div class="hero-stat">
-                                        <span class="hero-stat-number">+500</span>
-                                        <span class="hero-stat-label">Patients</span>
-                                    </div>
-                                    <div class="hero-stat">
-                                        <span class="hero-stat-number">10+</span>
-                                        <span class="hero-stat-label">Médecins</span>
-                                    </div>
-                                    <div class="hero-stat">
-                                        <span class="hero-stat-number">4.9</span>
-                                        <span class="hero-stat-label">Note</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="hero-wave">
-                    <svg viewBox="0 0 1440 80" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M0,40 C360,80 1080,0 1440,40 L1440,80 L0,80 Z" fill="white"/>
-                    </svg>
-                </div>
-            </div>
-
-            <!-- STATS BAR -->
-            <div class="stats-bar">
-                <div class="container">
-                    <div class="row g-4">
-                        <div class="col-6 col-md-3">
-                            <div class="stat-card">
-                                <div class="stat-icon">
-                                    <svg viewBox="0 0 24 24" style="width:28px;fill:white;">
-                                        <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
-                                    </svg>
-                                </div>
-                                <span class="stat-number">+500</span>
-                                <span class="stat-label">Patients satisfaits</span>
-                            </div>
-                        </div>
-                        <div class="col-6 col-md-3">
-                            <div class="stat-card">
-                                <div class="stat-icon">
-                                    <svg viewBox="0 0 24 24" style="width:28px;fill:white;">
-                                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                                    </svg>
-                                </div>
-                                <span class="stat-number">10+</span>
-                                <span class="stat-label">Médecins spécialistes</span>
-                            </div>
-                        </div>
-                        <div class="col-6 col-md-3">
-                            <div class="stat-card">
-                                <div class="stat-icon">
-                                    <svg viewBox="0 0 24 24" style="width:28px;fill:white;">
-                                        <path d="M19 8l-4 4h3c0 3.31-2.69 6-6 6-1.01 0-1.97-.25-2.8-.7l-1.46 1.46C8.97 19.54 10.43 20 12 20c4.42 0 8-3.58 8-8h3l-4-4zM6 12c0-3.31 2.69-6 6-6 1.01 0 1.97.25 2.8.7l1.46-1.46C15.03 4.46 13.57 4 12 4c-4.42 0-8 3.58-8 8H1l4 4 4-4H6z"/>
-                                    </svg>
-                                </div>
-                                <span class="stat-number">15+</span>
-                                <span class="stat-label">Spécialités médicales</span>
-                            </div>
-                        </div>
-                        <div class="col-6 col-md-3">
-                            <div class="stat-card">
-                                <div class="stat-icon">
-                                    <svg viewBox="0 0 24 24" style="width:28px;fill:white;">
-                                        <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
-                                    </svg>
-                                </div>
-                                <span class="stat-number">24/7</span>
-                                <span class="stat-label">Disponible en ligne</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- SERVICES -->
-            <div class="container mt-5 mb-5">
-                <div class="text-center mb-5">
-                    <div class="section-badge">Nos services</div>
-                    <h2 class="section-title mt-3">Tout pour votre santé</h2>
-                    <p class="section-subtitle">Des services médicaux de qualité accessibles en ligne</p>
-                </div>
-                <div class="row g-4">
-                    <div class="col-md-4">
-                        <div class="service-card">
-                            <div class="service-icon-wrap">
-                                <svg viewBox="0 0 24 24" style="width:35px;fill:white;">
-                                    <path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm1 11h-2v2H9v-2H7v-2h2v-2h2v2h2v2z"/>
-                                </svg>
-                            </div>
-                            <h4 class="service-title">Prise de RDV en ligne</h4>
-                            <p class="service-desc">Réservez votre consultation en quelques clics, disponible 24h/24 et 7j/7 sans attente.</p>
-                            <a href="/medical/medecins" class="service-link">
-                                Réserver maintenant
-                                <svg viewBox="0 0 24 24" style="width:16px;fill:var(--medical-primary);margin-left:5px;">
-                                    <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
-                                </svg>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="service-card service-card-featured">
-                            <div class="service-icon-wrap">
-                                <svg viewBox="0 0 24 24" style="width:35px;fill:white;">
-                                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                                </svg>
-                            </div>
-                            <h4 class="service-title">Médecins spécialistes</h4>
-                            <p class="service-desc">Une équipe de médecins qualifiés et expérimentés dans toutes les spécialités médicales.</p>
-                            <a href="/medical/medecins" class="service-link">
-                                Voir nos médecins
-                                <svg viewBox="0 0 24 24" style="width:16px;fill:white;margin-left:5px;">
-                                    <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
-                                </svg>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="service-card">
-                            <div class="service-icon-wrap">
-                                <svg viewBox="0 0 24 24" style="width:35px;fill:white;">
-                                    <path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/>
-                                </svg>
-                            </div>
-                            <h4 class="service-title">Suivi personnalisé</h4>
-                            <p class="service-desc">Consultez vos rendez-vous et votre historique médical à tout moment depuis votre espace.</p>
-                            <a href="/medical/mes-rdv" class="service-link">
-                                Mes rendez-vous
-                                <svg viewBox="0 0 24 24" style="width:16px;fill:var(--medical-primary);margin-left:5px;">
-                                    <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
-                                </svg>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ABOUT -->
-            <div class="about-section">
+            <!-- HERO -->
+            <section class="m-hero">
+                <div class="m-hero-bg-blob"></div>
                 <div class="container">
                     <div class="row align-items-center g-5">
-                        <div class="col-md-6">
-                            <div class="about-image-wrap">
-                                <div class="about-img-main"></div>
+                        <div class="col-lg-6" data-reveal="left">
+                            <img src="/medical_website/static/src/img/logooo.png" alt="Logo MédicSS" class="m-hero-logo"/>
+                            <p class="m-eyebrow"><span class="m-eyebrow-dot"></span>Cabinet médical certifié</p>
+                            <h1 class="m-hero-title">Une approche humaine<br/><em>de la médecine,</em><br/>proche de vous.</h1>
+                            <p class="m-hero-desc">
+                                Rencontrez nos médecins, prenez rendez-vous en quelques clics et accédez à votre suivi médical en ligne. Sans complication, sans attente.
+                            </p>
+                            <div class="m-hero-actions">
+                                <a href="/medical/medecins" class="m-btn-primary">
+                                    Prendre rendez-vous
+                                    <svg viewBox="0 0 24 24" style="width:18px;fill:currentColor;margin-left:8px;">
+                                        <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
+                                    </svg>
+                                </a>
+                                <a href="/medical/medecins" class="m-btn-ghost">Voir nos médecins</a>
+                            </div>
+                            <div class="m-hero-trust">
+                                <span><svg viewBox="0 0 24 24" style="width:16px;fill:#10b981;"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> Sans appel téléphonique</span>
+                                <span><svg viewBox="0 0 24 24" style="width:16px;fill:#10b981;"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> Médecins certifiés</span>
+                                <span><svg viewBox="0 0 24 24" style="width:16px;fill:#10b981;"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> Données sécurisées</span>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="section-badge">À propos de nous</div>
-                            <h2 class="section-title mt-3">Un cabinet médical<br/>moderne et accessible</h2>
-                            <p class="about-text">
-                                MédicSS est un cabinet médical moderne dédié à votre santé et à votre bien-être. Fondé par une équipe de professionnels de santé passionnés, notre cabinet vous offre un accès simplifié à des soins de qualité grâce à notre plateforme de prise de rendez-vous en ligne.
-                            </p>
-                            <p class="about-text">
-                                Notre équipe de médecins spécialistes est à votre écoute pour vous accompagner dans votre parcours de santé, avec bienveillance et professionnalisme.
-                            </p>
-                            <div class="about-features">
-                                <div class="about-feature">
-                                    <div class="about-feature-icon">
-                                        <svg viewBox="0 0 24 24" style="width:20px;fill:white;">
-                                            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
-                                        </svg>
-                                    </div>
-                                    <span>Médecins certifiés et expérimentés</span>
-                                </div>
-                                <div class="about-feature">
-                                    <div class="about-feature-icon">
-                                        <svg viewBox="0 0 24 24" style="width:20px;fill:white;">
-                                            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
-                                        </svg>
-                                    </div>
-                                    <span>Prise de RDV en ligne 24h/7j</span>
-                                </div>
-                                <div class="about-feature">
-                                    <div class="about-feature-icon">
-                                        <svg viewBox="0 0 24 24" style="width:20px;fill:white;">
-                                            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
-                                        </svg>
-                                    </div>
-                                    <span>Suivi médical personnalisé</span>
-                                </div>
+                        <div class="col-lg-6" data-reveal="right">
+                            <div class="m-hero-img-wrap">
+                                <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=900&amp;q=80" alt="Médecin" class="m-hero-img"/>
+                                <div class="m-hero-img-deco"></div>
                             </div>
-                            <a href="/medical/contact" class="btn btn-medical mt-4" style="padding: 14px 35px;">Nous contacter</a>
                         </div>
                     </div>
                 </div>
-            </div>
+            </section>
 
-            <!-- CTA -->
-            <div class="cta-section">
-                <div class="cta-overlay"></div>
-                <div class="container text-center cta-content">
-                    <h2 style="color:white;font-size:2.5rem;font-weight:900;margin-bottom:15px;text-shadow:0 2px 20px rgba(0,0,0,0.3);">
-                        Prêt à prendre soin de vous ?
-                    </h2>
-                    <p style="color:rgba(255,255,255,0.9);font-size:1.15rem;margin-bottom:35px;">
-                        Rejoignez des milliers de patients qui nous font confiance
-                    </p>
-                    <a href="/medical/medecins" class="cta-btn-primary">Prendre un rendez-vous</a>
-                    <a href="/medical/contact" class="cta-btn-secondary">Nous contacter</a>
+            <!-- SERVICES BENTO -->
+            <section class="m-section" data-reveal="up">
+                <div class="container">
+                    <div class="text-center mb-5">
+                        <p class="m-eyebrow"><span class="m-eyebrow-dot"></span>Nos services</p>
+                        <h2 class="m-section-title">Une médecine <em>qui s'adapte à vous</em></h2>
+                    </div>
+                    <div class="m-bento-grid">
+                        <div class="m-bento-large" data-reveal="up">
+                            <div class="m-bento-content">
+                                <div class="m-bento-icon" style="background:rgba(255,255,255,0.15);">
+                                    <svg viewBox="0 0 24 24" style="width:40px;fill:white;"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-1 11h-4v4h-4v-4H6v-4h4V6h4v4h4v4z"/></svg>
+                                </div>
+                                <h3 class="m-bento-title">Consultations en cabinet</h3>
+                                <p class="m-bento-text">Rencontrez votre médecin en personne dans nos locaux modernes, du lundi au vendredi.</p>
+                                <a href="/medical/medecins" class="m-bento-link">Prendre rendez-vous →</a>
+                            </div>
+                            <div class="m-bento-visual"></div>
+                        </div>
+                        <div class="m-bento-small" data-reveal="up" data-reveal-delay="100">
+                            <div class="m-bento-icon-sm" style="background:rgba(16,185,129,0.12);color:#059669;">
+                                <svg viewBox="0 0 24 24" style="width:26px;fill:currentColor;"><path d="M12 2L4 5v6.09c0 5.05 3.41 9.76 8 10.91 4.59-1.15 8-5.86 8-10.91V5l-8-3zm-2 14l-4-4 1.41-1.41L10 13.17l6.59-6.59L18 8l-8 8z"/></svg>
+                            </div>
+                            <h4 class="m-bento-title-sm">Spécialités médicales</h4>
+                            <p class="m-bento-text-sm">Cardiologie, dermatologie, pédiatrie et plus encore.</p>
+                            <a href="/medical/medecins" class="m-bento-link-sm">Voir nos médecins spécialistes →</a>
+                        </div>
+                        <div class="m-bento-small" data-reveal="up" data-reveal-delay="200">
+                            <div class="m-bento-icon-sm" style="background:rgba(13,148,136,0.12);color:#0d9488;">
+                                <svg viewBox="0 0 24 24" style="width:26px;fill:currentColor;"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+                            </div>
+                            <h4 class="m-bento-title-sm">Suivi médical en ligne</h4>
+                            <p class="m-bento-text-sm">Accédez à vos rendez-vous et ordonnances à tout moment.</p>
+                            <a href="/medical/mes-rdv" class="m-bento-link-sm">Mon espace patient →</a>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            </section>
+
+            <!-- ÉQUIPE -->
+            <section class="m-section m-section-alt" data-reveal="up">
+                <div class="container">
+                    <div class="text-center mb-5">
+                        <p class="m-eyebrow"><span class="m-eyebrow-dot"></span>Notre cabinet</p>
+                        <h2 class="m-section-title">Des médecins <em>à votre écoute</em></h2>
+                        <p class="m-section-subtitle">Une équipe diplômée, expérimentée et engagée pour votre santé.</p>
+                    </div>
+                    <div class="row g-4 justify-content-center">
+                        <t t-foreach="doctors[:3]" t-as="doctor">
+                            <div class="col-md-4" data-reveal="up">
+                                <div class="m-doctor-card-v3">
+                                    <span class="m-doctor-status-v2">● Disponible cette semaine</span>
+                                    <h5 class="m-doctor-name-v2">Dr. <t t-esc="doctor.name"/></h5>
+                                    <p class="m-doctor-specialty-v2">
+                                        <t t-esc="doctor.specialty_id.name if doctor.specialty_id else 'Médecin généraliste'"/>
+                                    </p>
+                                    <p class="m-doctor-bio-v2">
+                                        <t t-if="doctor.bio"><t t-esc="doctor.bio"/></t>
+                                        <t t-else="">Médecin diplômé, à l'écoute de ses patients pour un suivi médical de qualité.</t>
+                                    </p>
+                                    <a t-att-href="'/medical/rdv?doctor_id=' + str(doctor.id)" class="m-doctor-btn-v2">Réserver une consultation</a>
+                                </div>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PARCOURS PATIENT -->
+            <section class="m-section" data-reveal="up">
+                <div class="container">
+                    <div class="text-center mb-5">
+                        <p class="m-eyebrow"><span class="m-eyebrow-dot"></span>Notre engagement</p>
+                        <h2 class="m-section-title">Comment nous <em>accompagnons nos patients</em></h2>
+                        <p class="m-section-subtitle">Du premier rendez-vous au suivi long terme, une prise en charge complète.</p>
+                    </div>
+                    <div class="row g-4">
+                        <div class="col-md-6 col-lg-3" data-reveal="up">
+                            <div class="m-care-step">
+                                <div class="m-care-step-num">01</div>
+                                <h4 class="m-care-step-title">Écoute attentive</h4>
+                                <p class="m-care-step-text">Chaque consultation commence par un temps d'écoute. Vos symptômes, vos antécédents, votre quotidien.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-3" data-reveal="up" data-reveal-delay="100">
+                            <div class="m-care-step">
+                                <div class="m-care-step-num">02</div>
+                                <h4 class="m-care-step-title">Diagnostic précis</h4>
+                                <p class="m-care-step-text">Examen clinique, analyses si nécessaire, échanges entre spécialistes du cabinet pour les cas complexes.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-3" data-reveal="up" data-reveal-delay="200">
+                            <div class="m-care-step">
+                                <div class="m-care-step-num">03</div>
+                                <h4 class="m-care-step-title">Traitement adapté</h4>
+                                <p class="m-care-step-text">Prescription expliquée, alternatives proposées quand elles existent. Vos questions trouvent toujours une réponse.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-3" data-reveal="up" data-reveal-delay="300">
+                            <div class="m-care-step">
+                                <div class="m-care-step-num">04</div>
+                                <h4 class="m-care-step-title">Suivi régulier</h4>
+                                <p class="m-care-step-text">Rendez-vous de contrôle, ajustements du traitement, dossier médical accessible depuis votre espace patient.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CTA FINAL -->
+            <section class="m-cta-v2" data-reveal="up">
+                <div class="m-cta-bg"></div>
+                <div class="m-cta-overlay"></div>
+                <div class="container text-center m-cta-content">
+                    <p class="m-cta-eyebrow">Votre santé n'attend pas</p>
+                    <h2 class="m-cta-title">Prenez RDV en 2 minutes,<br/>consultez en toute sérénité</h2>
+                    <a href="/medical/medecins" class="m-btn-light">Prendre rendez-vous maintenant</a>
+                    <div class="m-cta-reassurance">
+                        <span><svg viewBox="0 0 24 24" style="width:18px;fill:white;"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> Sans engagement</span>
+                        <span><svg viewBox="0 0 24 24" style="width:18px;fill:white;"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> Données sécurisées</span>
+                        <span><svg viewBox="0 0 24 24" style="width:18px;fill:white;"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> Consultation remboursée</span>
+                    </div>
+                </div>
+            </section>
 
         </t>
     </template>
 
     <template id="medecins" name="Medical - Nos Médecins">
         <t t-call="website.layout">
-            <div class="medecins-hero">
+
+            <!-- HERO RECHERCHE -->
+            <section class="med-hero">
                 <div class="container">
-                    <div class="row justify-content-center">
-                        <div class="col-md-8 text-center">
-                            <h1 style="color: white; font-weight: 900; font-size: 2.8rem; text-shadow: 0 2px 15px rgba(0,0,0,0.3);">Trouvez votre médecin</h1>
-                            <p style="color: rgba(255,255,255,0.9); font-size: 1.1rem; margin-bottom: 30px;">Prenez rendez-vous en ligne avec nos spécialistes</p>
-                            <div style="background: white; border-radius: 50px; padding: 8px 20px; display: flex; align-items: center; box-shadow: 0 8px 30px rgba(0,0,0,0.15);">
-                                <svg viewBox="0 0 24 24" style="width: 22px; fill: #9c27b0; margin-right: 10px; flex-shrink: 0;">
-                                    <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
-                                </svg>
-                                <input type="text" id="search-doctor" placeholder="Rechercher par nom ou spécialité..." style="border: none; outline: none; width: 100%; font-size: 1rem; color: #333;"/>
-                            </div>
+                    <div class="text-center mb-4">
+                        <p class="m-eyebrow"><span class="m-eyebrow-dot"></span>Trouvez votre médecin</p>
+                        <h1 class="med-hero-title">Plus de 500 médecins <em>près de chez vous</em></h1>
+                    </div>
+                    <div class="med-search-bar">
+                        <div class="med-search-field">
+                            <svg viewBox="0 0 24 24" class="med-search-icon"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+                            <input type="text" id="search-name" placeholder="Nom, spécialité, motif..."/>
                         </div>
                     </div>
                 </div>
-            </div>
+            </section>
 
-            <div style="background: #f8f4fc; min-height: 60vh; padding: 40px 0;">
+            <!-- LISTE AVEC SIDEBAR -->
+            <section class="med-listing">
                 <div class="container">
-                    <p style="color: #8e7b9a; margin-bottom: 25px; font-size: 0.95rem;">
-                        <strong style="color: var(--medical-dark);" id="doctor-count"><t t-esc="len(doctors)"/></strong> médecin(s) disponible(s)
-                    </p>
-                    <div id="doctors-list">
-                        <t t-foreach="doctors" t-as="doctor">
-                            <div class="doctolib-card"
-                                 t-att-data-name="doctor.name.lower()"
-                                 t-att-data-specialty="doctor.specialty_id.name.lower() if doctor.specialty_id else ''">
-                                <div class="doctolib-card-left">
-                                    <div class="doctolib-avatar">
-                                        <svg viewBox="0 0 24 24" style="width: 45px; fill: white;">
-                                            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                                        </svg>
-                                    </div>
+                    <div class="row g-4">
+
+                        <!-- SIDEBAR FILTRES -->
+                        <aside class="col-lg-3">
+                            <div class="med-filters">
+                                <div class="med-filters-header">
+                                    <h5>Filtres</h5>
+                                    <button class="med-filter-reset">Réinitialiser</button>
                                 </div>
-                                <div class="doctolib-card-middle">
-                                    <div class="doctolib-specialty-tag">
-                                        <t t-esc="doctor.specialty_id.name if doctor.specialty_id else 'Médecin généraliste'"/>
-                                    </div>
-                                    <h4 class="doctolib-name">Dr. <t t-esc="doctor.name"/></h4>
-                                    <p class="doctolib-bio">
-                                        <t t-esc="doctor.bio if doctor.bio else 'Médecin expérimenté et dévoué à votre santé et bien-être.'"/>
-                                    </p>
-                                    <div style="display: flex; gap: 20px; flex-wrap: wrap;">
-                                        <t t-if="doctor.phone">
-                                            <span style="color: #8e7b9a; font-size: 0.85rem; display: flex; align-items: center; gap: 5px;">
-                                                <svg viewBox="0 0 24 24" style="width: 14px; fill: var(--medical-secondary);">
-                                                    <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
-                                                </svg>
-                                                <t t-esc="doctor.phone"/>
-                                            </span>
-                                        </t>
-                                        <t t-if="doctor.email">
-                                            <span style="color: #8e7b9a; font-size: 0.85rem; display: flex; align-items: center; gap: 5px;">
-                                                <svg viewBox="0 0 24 24" style="width: 14px; fill: var(--medical-secondary);">
-                                                    <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
-                                                </svg>
-                                                <t t-esc="doctor.email"/>
-                                            </span>
-                                        </t>
-                                    </div>
+
+                                <div class="med-filter-group">
+                                    <p class="med-filter-label">Disponibilités</p>
+                                    <label class="med-filter-radio"><input type="radio" name="dispo" checked="checked"/> <span>Toutes</span></label>
+                                    <label class="med-filter-radio"><input type="radio" name="dispo"/> <span>Aujourd'hui</span></label>
+                                    <label class="med-filter-radio"><input type="radio" name="dispo"/> <span>Demain</span></label>
+                                    <label class="med-filter-radio"><input type="radio" name="dispo"/> <span>Moins de 3 jours</span></label>
+                                    <label class="med-filter-radio"><input type="radio" name="dispo"/> <span>Cette semaine</span></label>
                                 </div>
-                                <div class="doctolib-card-right">
-                                    <p style="color: #43a047; font-weight: 700; font-size: 0.9rem; margin-bottom: 15px;">Disponible en ligne</p>
-                                    <a t-att-href="'/medical/rdv?doctor_id=' + str(doctor.id)" class="btn btn-medical" style="width: 100%; padding: 12px; font-size: 0.95rem;">
-                                        Prendre RDV
-                                    </a>
-                                    <p style="color: #8e7b9a; font-size: 0.8rem; text-align: center; margin-top: 10px;">Consultation en cabinet</p>
+
+                                <div class="med-filter-group">
+                                    <p class="med-filter-label">Spécialités</p>
+                                    <label class="med-filter-check"><input type="checkbox"/> <span>Médecine générale</span></label>
+                                    <label class="med-filter-check"><input type="checkbox"/> <span>Cardiologie</span></label>
+                                    <label class="med-filter-check"><input type="checkbox"/> <span>Dermatologie</span></label>
+                                    <label class="med-filter-check"><input type="checkbox"/> <span>Pédiatrie</span></label>
+                                    <label class="med-filter-check"><input type="checkbox"/> <span>Gynécologie</span></label>
+                                    <label class="med-filter-check"><input type="checkbox"/> <span>Ophtalmologie</span></label>
                                 </div>
                             </div>
-                        </t>
-                    </div>
-                </div>
-            </div>
+                        </aside>
 
-            <script>
-                document.addEventListener('DOMContentLoaded', function() {
-                    var searchInput = document.getElementById('search-doctor');
-                    var cards = document.querySelectorAll('.doctolib-card');
-                    var countEl = document.getElementById('doctor-count');
-                    if (searchInput) {
-                        searchInput.addEventListener('input', function() {
-                            var query = this.value.toLowerCase();
-                            var visible = 0;
-                            cards.forEach(function(card) {
-                                var name = card.getAttribute('data-name') || '';
-                                var specialty = card.getAttribute('data-specialty') || '';
-                                if (!query || name.includes(query) || specialty.includes(query)) {
-                                    card.style.display = 'flex';
-                                    visible++;
-                                } else {
-                                    card.style.display = 'none';
-                                }
-                            });
-                            if (countEl) countEl.textContent = visible;
-                        });
-                    }
-                });
-            </script>
-        </t>
-    </template>
-
-    <template id="rdv" name="Medical - Rendez-vous">
-        <t t-call="website.layout">
-            <div class="mesrdv-page">
-                <!-- Decorative shapes -->
-                <div class="mesrdv-blob mesrdv-blob-1"></div>
-                <div class="mesrdv-blob mesrdv-blob-2"></div>
-                <div class="mesrdv-blob mesrdv-blob-3"></div>
-
-                <div class="container" style="position:relative;z-index:5;padding:70px 0;">
-                    <div class="row justify-content-center">
-                        <div class="col-lg-10">
-
-                            <!-- Header -->
-                            <div class="text-center mb-5">
-                                <div class="mesrdv-icon-badge">
-                                    <svg viewBox="0 0 24 24" style="width:40px;fill:white;">
-                                        <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/>
-                                    </svg>
+                        <!-- LISTE MÉDECINS -->
+                        <div class="col-lg-9">
+                            <!-- TOOLBAR -->
+                            <div class="med-toolbar">
+                                <div>
+                                    <p class="med-results-count"><strong t-esc="len(doctors)"/> médecins trouvés</p>
                                 </div>
-                                <h1 class="mesrdv-title">Prendre un rendez-vous</h1>
-                                <p class="mesrdv-subtitle">Réservez votre consultation en quelques clics avec votre médecin</p>
+                                <div class="med-toolbar-actions">
+                                    <div class="med-sort">
+                                        <label>Trier par :</label>
+                                        <select>
+                                            <option>Disponibilité</option>
+                                            <option>Nom A-Z</option>
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
 
-                            <t t-if="error">
-                                <div class="alert alert-danger mb-4" style="border-radius: 14px; border: none; background: #fce4ec; color: #880e4f;">
-                                    <strong>Erreur :</strong> <t t-esc="error"/>
-                                </div>
-                            </t>
-
-                            <!-- Glass card -->
-                            <div class="mesrdv-glass-card">
-                                <div class="row g-0">
-                                    <!-- Left panel: doctor info -->
-                                    <div class="col-md-5 mesrdv-left-panel">
-                                        <div class="mesrdv-left-content">
-                                            <h3 style="color:white;font-weight:800;margin-bottom:20px;">Retrouvez vos RDV en 3 étapes</h3>
-                                            <div class="mesrdv-step">
-                                                <div class="mesrdv-step-num">1</div>
-                                                <div>
-                                                    <p style="margin:0;color:white;font-weight:700;">Vos informations</p>
-                                                    <p style="margin:0;color:rgba(255,255,255,0.7);font-size:0.85rem;">Prénom, nom et tél</p>
+                            <!-- VUE LISTE -->
+                            <div class="med-list">
+                                <t t-foreach="doctors" t-as="doctor">
+                                    <div class="med-card" t-att-data-name="doctor.name" t-att-data-specialty="doctor.specialty_id.name if doctor.specialty_id else ''">
+                                        <div class="med-card-main">
+                                            <div class="med-card-left">
+                                                <div class="med-card-avatar">
+                                                    <svg viewBox="0 0 24 24" style="width:42px;fill:white;opacity:0.9;"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
                                                 </div>
                                             </div>
-                                            <div class="mesrdv-step">
-                                                <div class="mesrdv-step-num">2</div>
-                                                <div>
-                                                    <p style="margin:0;color:white;font-weight:700;">Référence du RDV</p>
-                                                    <p style="margin:0;color:rgba(255,255,255,0.7);font-size:0.85rem;">Ex: APT/00001</p>
+                                            <div class="med-card-info">
+                                                <div class="med-card-header">
+                                                    <div>
+                                                        <h4 class="med-card-name">Dr. <t t-esc="doctor.name"/></h4>
+                                                        <p class="med-card-specialty"><t t-esc="doctor.specialty_id.name if doctor.specialty_id else 'Médecin généraliste'"/></p>
+                                                        <p class="med-card-bio">
+                                                            <t t-if="doctor.bio"><t t-esc="doctor.bio"/></t>
+                                                            <t t-else="">Médecin diplômé, à l'écoute de ses patients pour un suivi médical de qualité.</t>
+                                                        </p>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="mesrdv-step">
-                                                <div class="mesrdv-step-num">3</div>
-                                                <div>
-                                                    <p style="margin:0;color:white;font-weight:700;">Consultez l'historique</p>
-                                                    <p style="margin:0;color:rgba(255,255,255,0.7);font-size:0.85rem;">RDV et ordonnances</p>
+                                                <div class="med-card-tags">
+                                                    <span class="med-tag"><svg viewBox="0 0 24 24" style="width:13px;fill:currentColor;margin-right:4px;"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>Carte Vitale</span>
+                                                    <span class="med-tag"><svg viewBox="0 0 24 24" style="width:13px;fill:currentColor;margin-right:4px;"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>Tiers payant</span>
+                                                    <span class="med-tag"><svg viewBox="0 0 24 24" style="width:13px;fill:currentColor;margin-right:4px;"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>Accès PMR</span>
                                                 </div>
-                                            </div>
-                                            <div class="mesrdv-help-box">
-                                                <svg viewBox="0 0 24 24" style="width:24px;fill:white;flex-shrink:0;">
-                                                    <path d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z"/>
-                                                </svg>
-                                                <span style="color:white;font-size:0.85rem;">Votre référence se trouve dans l'email de confirmation</span>
+                                                <div class="med-card-meta">
+                                                    <span><svg viewBox="0 0 24 24" style="width:14px;fill:currentColor;"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg> 14 rue des Lilas, 75011 Paris</span>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
 
-                                    <!-- Right panel: form -->
-                                    <div class="col-md-7 mesrdv-right-panel">
-                                        <h4 style="color:var(--medical-dark);font-weight:800;margin-bottom:25px;">Vos informations</h4>
-                                        <form action="/medical/rdv/submit" method="post" class="rdv-form">
-                                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
-                                            <input type="hidden" name="doctor_id" t-if="selected_doctor" t-att-value="str(selected_doctor.id)"/>
-
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="mesrdv-input-group">
-                                                        <svg viewBox="0 0 24 24" class="mesrdv-input-icon">
-                                                            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                                                        </svg>
-                                                        <input type="text" name="first_name" class="form-control mesrdv-input" required="1" placeholder="Prénom *"
-                                                               t-att-value="form_data.get('first_name', '') if form_data else ''"/>
+                                        <!-- MINI CALENDRIER -->
+                                        <div class="med-card-calendar">
+                                            <div class="med-cal-header">
+                                                <button class="med-cal-nav" disabled="disabled">‹</button>
+                                                <span class="med-cal-title">Prochaines disponibilités</span>
+                                                <button class="med-cal-nav">›</button>
+                                            </div>
+                                            <div class="med-cal-grid">
+                                                <t t-foreach="next_days" t-as="d">
+                                                    <div class="med-cal-day">
+                                                        <p class="med-cal-day-label"><t t-esc="d['label']"/></p>
+                                                        <p class="med-cal-day-num"><t t-esc="d['num']"/></p>
+                                                        <t t-foreach="d['slots']" t-as="slot">
+                                                            <a t-att-href="'/medical/rdv?doctor_id=' + str(doctor.id)" class="med-cal-slot"><t t-esc="slot"/></a>
+                                                        </t>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="mesrdv-input-group">
-                                                        <svg viewBox="0 0 24 24" class="mesrdv-input-icon">
-                                                            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                                                        </svg>
-                                                        <input type="text" name="last_name" class="form-control mesrdv-input" required="1" placeholder="Nom *"
-                                                               t-att-value="form_data.get('last_name', '') if form_data else ''"/>
-                                                    </div>
-                                                </div>
+                                                </t>
                                             </div>
-
-                                            <div class="mesrdv-input-group">
-                                                <svg viewBox="0 0 24 24" class="mesrdv-input-icon">
-                                                    <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
-                                                </svg>
-                                                <input type="tel" name="phone" class="form-control mesrdv-input" placeholder="Téléphone"
-                                                       t-att-value="form_data.get('phone', '') if form_data else ''"/>
-                                            </div>
-
-                                            <div class="mesrdv-input-group">
-                                                <svg viewBox="0 0 24 24" class="mesrdv-input-icon">
-                                                    <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
-                                                </svg>
-                                                <input type="email" name="email" class="form-control mesrdv-input" placeholder="Email"
-                                                       t-att-value="form_data.get('email', '') if form_data else ''"/>
-                                            </div>
-
-                                            <div class="mesrdv-input-group">
-                                                <svg viewBox="0 0 24 24" class="mesrdv-input-icon">
-                                                    <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11z"/>
-                                                </svg>
-                                                <input type="text" name="appointment_date" class="form-control mesrdv-input" required="1" id="appointment_date" placeholder="Date et heure *"
-                                                       t-att-value="form_data.get('appointment_date', '') if form_data else ''"/>
-                                            </div>
-                                            <small style="color:#8e7b9a;display:block;margin-bottom:18px;">Disponible du lundi au vendredi, entre 08h00 et 17h00</small>
-
-                                            <button type="submit" class="mesrdv-submit-btn">
-                                                <svg viewBox="0 0 24 24" style="width:20px;fill:white;margin-right:8px;">
-                                                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
-                                                </svg>
-                                                Confirmer le rendez-vous
-                                            </button>
-                                        </form>
+                                            <a t-att-href="'/medical/rdv?doctor_id=' + str(doctor.id)" class="med-cal-more">Voir tous les créneaux →</a>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-
-                            <div class="text-center mt-4">
-                                <a href="/medical/medecins" style="color:var(--medical-primary);font-weight:600;">Voir tous nos médecins</a>
+                                </t>
                             </div>
                         </div>
+
                     </div>
                 </div>
-            </div>
+            </section>
 
-            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"/>
-            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/material_blue.css"/>
-            <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-            <script src="https://npmcdn.com/flatpickr/dist/l10n/fr.js"></script>
             <script>
-                document.addEventListener('DOMContentLoaded', function() {
-                    if (typeof flatpickr !== 'undefined') {
-                        flatpickr("#appointment_date", {
-                            enableTime: true,
-                            dateFormat: "Y-m-d\\TH:i",
-                            altInput: true,
-                            altFormat: "d/m/Y à H:i",
-                            locale: "fr",
-                            minDate: "today",
-                            minTime: "08:00",
-                            maxTime: "17:00",
-                            time_24hr: true,
-                            disable: [ function(date) { return (date.getDay() === 0 || date.getDay() === 6); } ]
+                var searchInput = document.getElementById('search-name');
+                if (searchInput) {
+                    searchInput.addEventListener('input', function() {
+                        var q = this.value.toLowerCase();
+                        document.querySelectorAll('.med-card').forEach(function(card) {
+                            var name = (card.getAttribute('data-name') || '').toLowerCase();
+                            var spec = (card.getAttribute('data-specialty') || '').toLowerCase();
+                            card.style.display = (name.indexOf(q) !== -1 || spec.indexOf(q) !== -1) ? '' : 'none';
                         });
-                    }
-                });
+                    });
+                }
             </script>
         </t>
     </template>
+
+    <template id="rdv" name="Medical - Prise de RDV">
+        <t t-call="website.layout">
+
+            <section class="rdv-hero">
+                <div class="container">
+                    <p class="m-eyebrow"><span class="m-eyebrow-dot"></span>Prise de rendez-vous</p>
+                    <h1 class="rdv-hero-title">Réservez votre <em>consultation</em></h1>
+                    <p class="rdv-hero-sub">Sélectionnez une date, un créneau et renseignez vos informations.</p>
+                </div>
+            </section>
+
+            <t t-if="not selected_doctor">
+                <section class="rdv-section">
+                    <div class="container">
+                        <div class="rdv-doctor-picker">
+                            <h3 class="rdv-step-title"><span class="rdv-step-num">1</span> Choisissez votre médecin</h3>
+                            <div class="row g-3 mt-3">
+                                <t t-foreach="doctors" t-as="doc">
+                                    <div class="col-md-6 col-lg-4">
+                                        <a t-att-href="'/medical/rdv?doctor_id=' + str(doc.id)" class="rdv-doctor-pick">
+                                            <div class="rdv-doctor-pick-avatar">
+                                                <svg viewBox="0 0 24 24" style="width:32px;fill:white;"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                                            </div>
+                                            <div>
+                                                <p class="rdv-doctor-pick-name">Dr. <t t-esc="doc.name"/></p>
+                                                <p class="rdv-doctor-pick-spec"><t t-esc="doc.specialty_id.name if doc.specialty_id else 'Médecin généraliste'"/></p>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </t>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </t>
+
+            <t t-if="selected_doctor">
+                <section class="rdv-section">
+                    <div class="container">
+
+                        <div class="rdv-doctor-recap">
+                            <div class="rdv-doctor-recap-avatar">
+                                <svg viewBox="0 0 24 24" style="width:42px;fill:white;"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                            </div>
+                            <div class="rdv-doctor-recap-info">
+                                <p class="rdv-doctor-recap-label">Votre rendez-vous avec</p>
+                                <h3 class="rdv-doctor-recap-name">Dr. <t t-esc="selected_doctor.name"/></h3>
+                                <p class="rdv-doctor-recap-spec"><t t-esc="selected_doctor.specialty_id.name if selected_doctor.specialty_id else 'Médecin généraliste'"/> · 14 rue des Lilas, 75011 Paris</p>
+                            </div>
+                            <a href="/medical/rdv" class="rdv-doctor-change">Changer de médecin</a>
+                        </div>
+
+                        <!-- ÉTAPE 1 : DATE PICKER -->
+                        <div class="rdv-slots-section">
+                            <h3 class="rdv-step-title"><span class="rdv-step-num">1</span> Choisissez une date</h3>
+                            <p class="rdv-step-sub">Sélectionnez le jour qui vous convient</p>
+
+                            <div class="rdv-date-picker">
+                                <input type="date" id="rdv-date-input" t-att-min="today" t-att-max="max_date" t-att-value="today" class="rdv-date-field"/>
+                                <div class="rdv-date-info">
+                                    <svg viewBox="0 0 24 24" style="width:18px;fill:var(--m-primary);"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM5 8V6h14v2H5z"/></svg>
+                                    <span id="rdv-date-label">Aujourd'hui</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ÉTAPE 2 : CRÉNEAUX DU JOUR -->
+                        <div class="rdv-slots-section">
+                            <h3 class="rdv-step-title"><span class="rdv-step-num">2</span> Choisissez un créneau</h3>
+                            <p class="rdv-step-sub">Consultations de 30 minutes · 8h - 17h</p>
+
+                            <div class="rdv-slots-day" id="rdv-slots-container">
+                                <!-- généré en JS -->
+                            </div>
+                        </div>
+
+                        <!-- ÉTAPE 3 : FORMULAIRE -->
+                        <div class="rdv-form-section" id="rdv-form-section" style="display:none;">
+                            <h3 class="rdv-step-title"><span class="rdv-step-num">3</span> Vos informations</h3>
+
+                            <div class="rdv-selected-slot">
+                                <svg viewBox="0 0 24 24" style="width:22px;fill:#0d9488;"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zM5 8V6h14v2H5zm2 4h5v5H7z"/></svg>
+                                <div>
+                                    <p class="rdv-selected-label">Créneau sélectionné</p>
+                                    <p class="rdv-selected-value" id="rdv-selected-text">—</p>
+                                </div>
+                                <button type="button" class="rdv-change-slot" onclick="document.getElementById('rdv-slots-container').scrollIntoView({behavior:'smooth'})">Modifier</button>
+                            </div>
+
+                            <form method="post" action="/medical/rdv/submit" class="rdv-form-v2">
+                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                <input type="hidden" name="doctor_id" t-att-value="selected_doctor.id"/>
+                                <input type="hidden" name="appointment_date" id="appointment_date_input" value=""/>
+
+                                <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <div class="mesrdv-v2-field">
+                                                <input type="text" id="first_name" name="first_name" class="mesrdv-v2-input" placeholder=" " required="required"/>
+                                                <label for="first_name" class="mesrdv-v2-label">Prénom</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="mesrdv-v2-field">
+                                                <input type="text" id="last_name" name="last_name" class="mesrdv-v2-input" placeholder=" " required="required"/>
+                                                <label for="last_name" class="mesrdv-v2-label">Nom</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="mesrdv-v2-field">
+                                                <input type="email" id="email" name="email" class="mesrdv-v2-input" placeholder=" " required="required"/>
+                                                <label for="email" class="mesrdv-v2-label">Adresse email</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="mesrdv-v2-field">
+                                                <input type="date" id="birth_date" name="birth_date" class="mesrdv-v2-input" placeholder=" " required="required"/>
+                                                <label for="birth_date" class="mesrdv-v2-label mesrdv-v2-label-date">Date de naissance</label>
+                                            </div>
+                                        </div>
+                                </div>
+
+                                <div class="rdv-form-consent">
+                                    <label>
+                                        <input type="checkbox" required="required"/>
+                                        <span>J'accepte que mes données soient traitées conformément à la <a href="/medical/rgpd" target="_blank">politique de confidentialité</a>.</span>
+                                    </label>
+                                </div>
+
+                                <button type="submit" class="rdv-submit-v2">
+                                    Confirmer mon rendez-vous
+                                    <svg viewBox="0 0 24 24" style="width:18px;fill:white;margin-left:8px;"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
+                                </button>
+                            </form>
+                        </div>
+
+                    </div>
+                </section>
+            </t>
+
+            <script>
+                (function() {
+                    var dateInput = document.getElementById('rdv-date-input');
+                    var dateLabel = document.getElementById('rdv-date-label');
+                    var slotsContainer = document.getElementById('rdv-slots-container');
+                    var selectedText = document.getElementById('rdv-selected-text');
+                    var dateInputHidden = document.getElementById('appointment_date_input');
+                    var formSection = document.getElementById('rdv-form-section');
+                    if (!dateInput) return;
+
+                    var days = ['dimanche','lundi','mardi','mercredi','jeudi','vendredi','samedi'];
+                    var months = ['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
+
+                    function renderSlots() {
+                        var dateStr = dateInput.value;
+                        if (!dateStr) return;
+                        var parts = dateStr.split('-');
+                        var d = new Date(parseInt(parts[0]), parseInt(parts[1])-1, parseInt(parts[2]));
+                        var today = new Date();
+                        today.setHours(0,0,0,0);
+
+                        dateLabel.textContent = days[d.getDay()].charAt(0).toUpperCase() + days[d.getDay()].slice(1) + ' ' + d.getDate() + ' ' + months[d.getMonth()] + ' ' + d.getFullYear();
+
+                        // Dimanche fermé
+                        if (d.getDay() === 0) {
+                            slotsContainer.innerHTML = '&lt;p class="rdv-no-slots"&gt;Le cabinet est fermé le dimanche. Sélectionnez un autre jour.&lt;/p&gt;';
+                            return;
+                        }
+
+                        var html = '';
+                        var now = new Date();
+                        var isToday = (d.getTime() === today.getTime());
+
+                        for (var h = 8; h &lt; 17; h++) {
+                            for (var m = 0; m &lt; 60; m += 30) {
+                                var slotDate = new Date(d);
+                                slotDate.setHours(h, m, 0, 0);
+                                if (isToday &amp;&amp; slotDate &lt; now) continue;
+                                var hh = String(h).padStart(2,'0');
+                                var mm = String(m).padStart(2,'0');
+                                var val = parts[0]+'-'+parts[1]+'-'+parts[2]+'T'+hh+':'+mm;
+                                var lbl = days[d.getDay()] + ' ' + d.getDate() + ' ' + months[d.getMonth()] + ' à ' + hh + ':' + mm;
+                                html += '&lt;button type="button" class="rdv-slot-btn" data-value="'+val+'" data-label="'+lbl+'"&gt;'+hh+':'+mm+'&lt;/button&gt;';
+                            }
+                        }
+                        if (!html) html = '&lt;p class="rdv-no-slots"&gt;Aucun créneau disponible ce jour.&lt;/p&gt;';
+                        slotsContainer.innerHTML = html;
+
+                        slotsContainer.querySelectorAll('.rdv-slot-btn').forEach(function(btn) {
+                            btn.addEventListener('click', function() {
+                                slotsContainer.querySelectorAll('.rdv-slot-btn').forEach(function(b) { b.classList.remove('selected'); });
+                                btn.classList.add('selected');
+                                dateInputHidden.value = btn.getAttribute('data-value');
+                                selectedText.textContent = btn.getAttribute('data-label');
+                                formSection.style.display = 'block';
+                                setTimeout(function() { formSection.scrollIntoView({behavior:'smooth', block:'start'}); }, 100);
+                            });
+                        });
+                    }
+
+                    dateInput.addEventListener('change', renderSlots);
+                    renderSlots();
+                })();
+            </script>
+        </t>
+    </template>
+
+
 
     <template id="confirmation" name="Medical - Confirmation RDV">
         <t t-call="website.layout">
@@ -837,127 +816,107 @@
 
     <template id="mes_rdv" name="Medical - Mes Rendez-vous">
         <t t-call="website.layout">
-            <div class="mesrdv-page">
+            <div class="mesrdv-v2-page">
 
-
-                <div class="mesrdv-blob mesrdv-blob-1"></div>
-                <div class="mesrdv-blob mesrdv-blob-2"></div>
-                <div class="mesrdv-blob mesrdv-blob-3"></div>
-
-                <div class="container" style="position:relative;z-index:5;padding:70px 0;">
+                <div class="container mesrdv-v2-container">
                     <div class="row justify-content-center">
-                        <div class="col-lg-10">
+                        <div class="col-lg-7 col-md-9">
 
-                            <!-- Header -->
-                            <div class="text-center mb-5">
-                                <div class="mesrdv-icon-badge">
-                                    <svg viewBox="0 0 24 24" style="width:40px;fill:white;">
-                                        <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/>
-                                    </svg>
-                                </div>
-                                <h1 class="mesrdv-title">Mes rendez-vous</h1>
-                                <p class="mesrdv-subtitle">Accédez à l'historique complet de vos consultations médicales en toute simplicité</p>
+                            <!-- HEADER -->
+                            <div class="mesrdv-v2-header">
+                                <span class="mesrdv-v2-eyebrow">
+                                    Espace patient sécurisé
+                                </span>
+                                <h1 class="mesrdv-v2-title">Retrouvez vos <em>rendez-vous</em></h1>
+                                <p class="mesrdv-v2-sub">Accédez à l'historique de vos consultations et ordonnances en quelques secondes.</p>
                             </div>
 
-                            <!-- Glass card -->
-                            <div class="mesrdv-glass-card">
-                                <div class="row g-0">
-                                    <!-- Left info panel -->
-                                    <div class="col-md-5 mesrdv-left-panel">
-                                        <div class="mesrdv-left-content">
-                                            <h3 style="color:white;font-weight:800;margin-bottom:20px;">Retrouvez vos RDV en 3 étapes</h3>
-                                            <div class="mesrdv-step">
-                                                <div class="mesrdv-step-num">1</div>
-                                                <div>
-                                                    <p style="margin:0;color:white;font-weight:700;">Vos informations</p>
-                                                    <p style="margin:0;color:rgba(255,255,255,0.7);font-size:0.85rem;">Prénom et nom</p>
-                                                </div>
+                            <!-- TIMELINE ÉTAPES -->
+                            <div class="mesrdv-v2-stepper">
+                                <div class="mesrdv-v2-step">
+                                    <div class="mesrdv-v2-step-dot"></div>
+                                    <p class="mesrdv-v2-step-label">Identité</p>
+                                </div>
+                                <div class="mesrdv-v2-step-line"></div>
+                                <div class="mesrdv-v2-step">
+                                    <div class="mesrdv-v2-step-dot"></div>
+                                    <p class="mesrdv-v2-step-label">Vérification</p>
+                                </div>
+                                <div class="mesrdv-v2-step-line"></div>
+                                <div class="mesrdv-v2-step">
+                                    <div class="mesrdv-v2-step-dot"></div>
+                                    <p class="mesrdv-v2-step-label">Accès</p>
+                                </div>
+                            </div>
+
+                            <!-- CARTE FORMULAIRE -->
+                            <div class="mesrdv-v2-card">
+                                <form action="/medical/mes-rdv/search" method="post" class="mesrdv-v2-form">
+                                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <div class="mesrdv-v2-field">
+                                                <input type="text" id="first_name" name="first_name" class="mesrdv-v2-input" placeholder=" " required="required"/>
+                                                <label for="first_name" class="mesrdv-v2-label">Prénom</label>
                                             </div>
-                                            <div class="mesrdv-step">
-                                                <div class="mesrdv-step-num">2</div>
-                                                <div>
-                                                    <p style="margin:0;color:white;font-weight:700;">Référence du RDV</p>
-                                                    <p style="margin:0;color:rgba(255,255,255,0.7);font-size:0.85rem;">Ex: APT/00001</p>
-                                                </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="mesrdv-v2-field">
+                                                <input type="text" id="last_name" name="last_name" class="mesrdv-v2-input" placeholder=" " required="required"/>
+                                                <label for="last_name" class="mesrdv-v2-label">Nom</label>
                                             </div>
-                                            <div class="mesrdv-step">
-                                                <div class="mesrdv-step-num">3</div>
-                                                <div>
-                                                    <p style="margin:0;color:white;font-weight:700;">Consultez l'historique</p>
-                                                    <p style="margin:0;color:rgba(255,255,255,0.7);font-size:0.85rem;">RDV et ordonnances</p>
-                                                </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="mesrdv-v2-field">
+                                                <input type="email" id="email" name="email" class="mesrdv-v2-input" placeholder=" " required="required"/>
+                                                <label for="email" class="mesrdv-v2-label">Adresse email</label>
                                             </div>
-                                            <div class="mesrdv-help-box">
-                                                <svg viewBox="0 0 24 24" style="width:24px;fill:white;flex-shrink:0;">
-                                                    <path d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z"/>
-                                                </svg>
-                                                <span style="color:white;font-size:0.85rem;">Votre référence se trouve dans l'email de confirmation</span>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="mesrdv-v2-field">
+                                                <input type="date" id="birth_date" name="birth_date" class="mesrdv-v2-input" placeholder=" " required="required"/>
+                                                <label for="birth_date" class="mesrdv-v2-label mesrdv-v2-label-date">Date de naissance</label>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <!-- Right form panel -->
-                                    <div class="col-md-7 mesrdv-right-panel">
-                                        <h4 style="color:var(--medical-dark);font-weight:800;margin-bottom:25px;">Rechercher</h4>
-                                        <form action="/medical/mes-rdv/search" method="post" class="rdv-form">
-                                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                    <button type="submit" class="mesrdv-v2-submit">
+                                        <span>Accéder à mon espace</span>
+                                        <svg viewBox="0 0 24 24" style="width:18px;fill:currentColor;margin-left:10px;"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
+                                    </button>
 
-                                            <div class="mesrdv-input-group">
-                                                <svg viewBox="0 0 24 24" class="mesrdv-input-icon">
-                                                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                                                </svg>
-                                                <input type="text" name="first_name" class="form-control mesrdv-input" required="1" placeholder="Votre prénom"/>
-                                            </div>
-
-                                            <div class="mesrdv-input-group">
-                                                <svg viewBox="0 0 24 24" class="mesrdv-input-icon">
-                                                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                                                </svg>
-                                                <input type="text" name="last_name" class="form-control mesrdv-input" required="1" placeholder="Votre nom"/>
-                                            </div>
-
-                                            <div class="mesrdv-input-group">
-                                                <svg viewBox="0 0 24 24" class="mesrdv-input-icon">
-                                                    <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
-                                                </svg>
-                                                <input type="tel" name="phone" class="form-control mesrdv-input" required="1" placeholder="Téléphone"/>
-                                            </div>
-
-                                            <div class="mesrdv-input-group">
-                                                <svg viewBox="0 0 24 24" class="mesrdv-input-icon">
-                                                    <path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/>
-                                                </svg>
-                                                <input type="text" name="reference" class="form-control mesrdv-input" required="1" placeholder="Référence (Ex: APT/00001)"/>
-                                            </div>
-
-                                            <button type="submit" class="mesrdv-submit-btn">
-                                                <svg viewBox="0 0 24 24" style="width:20px;fill:white;margin-right:8px;">
-                                                    <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
-                                                </svg>
-                                                Rechercher mes rendez-vous
-                                            </button>
-                                        </form>
+                                    <!-- BADGES RGPD/HDS -->
+                                    <div class="mesrdv-v2-trust">
+                                        <span>Données chiffrées</span>
+                                        <span class="mesrdv-v2-trust-sep">·</span>
+                                        <span>Hébergement HDS</span>
+                                        <span class="mesrdv-v2-trust-sep">·</span>
+                                        <span>Conforme RGPD</span>
                                     </div>
-                                </div>
+                                </form>
                             </div>
 
+                            <p class="mesrdv-v2-help">
+                                Saisissez les informations utilisées lors de votre prise de rendez-vous pour accéder à votre dossier sécurisé.
+                            </p>
+
                             <t t-if="error">
-                                <div class="alert alert-danger mt-4" style="border-radius: 14px; border: none; background: #fce4ec; color: #880e4f;">
-                                    <strong>Erreur :</strong> <t t-esc="error"/>
+                                <div class="mesrdv-v2-alert mesrdv-v2-alert-error">
+                                    <svg viewBox="0 0 24 24" style="width:18px;fill:currentColor;flex-shrink:0;"><path d="M11 15h2v2h-2zm0-8h2v6h-2zm.99-5C6.47 2 2 6.5 2 12s4.47 10 9.99 10C17.52 22 22 17.5 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"/></svg>
+                                    <span><t t-esc="error"/></span>
                                 </div>
                             </t>
 
-                            <!-- RENDEZ-VOUS -->
+                            <!-- RÉSULTATS RDV -->
                             <t t-if="searched and rdvs">
                                 <div class="results-header mt-5">
                                     <div class="results-avatar">
-                                        <svg viewBox="0 0 24 24" style="width:30px;fill:white;">
-                                            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                                        </svg>
+                                        <svg viewBox="0 0 24 24" style="width:30px;fill:white;"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
                                     </div>
                                     <div>
-                                        <h4 style="margin:0;color:var(--medical-dark);font-weight:800;"><t t-esc="patient.name"/></h4>
-                                        <p style="margin:0;color:#8e7b9a;font-size:0.9rem;"><t t-esc="len(rdvs)"/> rendez-vous trouvé(s)</p>
+                                        <h4 style="margin:0;color:var(--m-text);font-weight:700;"><t t-esc="patient.name"/></h4>
+                                        <p style="margin:0;color:var(--m-text-muted);font-size:0.9rem;"><t t-esc="len(rdvs)"/> rendez-vous trouvé(s)</p>
                                     </div>
                                 </div>
 
@@ -971,10 +930,9 @@
                                             <div class="rdv-item-content">
                                                 <div style="display:flex;justify-content:space-between;align-items:start;flex-wrap:wrap;gap:10px;width:100%;">
                                                     <div>
-                                                        <h5 style="margin:0;color:var(--medical-dark);font-weight:800;">Dr. <t t-esc="rdv.doctor_id.name"/></h5>
-                                                        <p style="margin:4px 0;color:#8e7b9a;font-size:0.85rem;">
-                                                            Réf: <t t-esc="rdv.name"/> •
-                                                            <t t-esc="rdv.appointment_date" t-options='{"widget": "datetime"}'/>
+                                                        <h5 style="margin:0;color:var(--m-text);font-weight:700;">Dr. <t t-esc="rdv.doctor_id.name"/></h5>
+                                                        <p style="margin:4px 0;color:var(--m-text-muted);font-size:0.85rem;">
+                                                            Réf: <t t-esc="rdv.name"/> · <t t-esc="rdv.appointment_date" t-options='{"widget": "datetime"}'/>
                                                         </p>
                                                     </div>
                                                     <span t-attf-class="rdv-badge rdv-badge-#{'done' if rdv.state == 'done' else 'confirmed' if rdv.state == 'confirmed' else 'draft' if rdv.state == 'draft' else 'cancel'}">
@@ -988,212 +946,175 @@
                                         </div>
                                     </t>
                                 </div>
-                            </t>
 
-                            <!-- ORDONNANCES -->
-                            <t t-if="searched and consultations">
-                                <div class="results-header mt-5">
-                                    <div class="results-avatar">
-                                        <svg viewBox="0 0 24 24" style="width:30px;fill:white;">
-                                            <path d="M19 8h-1V3H6v5H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zM8 5h8v3H8V5zm8 12v2H8v-4h8v2zm2-2v-2H6v2H4v-4c0-.55.45-1 1-1h14c.55 0 1 .45 1 1v4h-2z"/>
-                                        </svg>
-                                    </div>
-                                    <div>
-                                        <h4 style="margin:0;color:var(--medical-dark);font-weight:800;">Mes ordonnances</h4>
-                                        <p style="margin:0;color:#8e7b9a;font-size:0.9rem;">Vos prescriptions médicales</p>
-                                    </div>
-                                </div>
-
-                                <div class="ordonnance-list mt-4">
-                                    <t t-foreach="consultations" t-as="consult">
-                                        <t t-if="consult.prescription_line_ids">
-                                            <div class="ordonnance-card">
-                                                <div class="ordonnance-header">
-                                                    <div>
-                                                        <h5 style="margin:0;color:var(--medical-dark);font-weight:800;">
-                                                            Consultation du <t t-esc="consult.consultation_date" t-options='{"widget": "date"}'/>
-                                                        </h5>
-                                                        <p style="margin:4px 0;color:#8e7b9a;font-size:0.85rem;">
-                                                            Dr. <t t-esc="consult.doctor_id.name"/>
-                                                            <t t-if="consult.disease_id"> • <t t-esc="consult.disease_id.name"/></t>
-                                                        </p>
-                                                    </div>
-                                                    <div class="ordonnance-icon">
-                                                        <svg viewBox="0 0 24 24" style="width:24px;fill:white;">
-                                                            <path d="M19 8h-1V3H6v5H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zM8 5h8v3H8V5zm8 12v2H8v-4h8v2zm2-2v-2H6v2H4v-4c0-.55.45-1 1-1h14c.55 0 1 .45 1 1v4h-2z"/>
-                                                        </svg>
-                                                    </div>
-                                                </div>
-                                                <div class="ordonnance-meds">
-                                                    <t t-foreach="consult.prescription_line_ids" t-as="line">
-                                                        <div class="ordonnance-med-item">
-                                                            <div class="med-bullet"></div>
-                                                            <div style="flex:1;">
-                                                                <p style="margin:0;font-weight:700;color:var(--medical-dark);">
-                                                                    <t t-esc="line.medication_id.name"/>
-                                                                </p>
-                                                                <p style="margin:0;color:#8e7b9a;font-size:0.85rem;">
-                                                                    <t t-if="line.dosage">Dosage: <t t-esc="line.dosage"/></t>
-                                                                    <t t-if="line.duration"> • Durée: <t t-esc="line.duration"/></t>
-                                                                </p>
-                                                                <t t-if="line.note">
-                                                                    <p style="margin:2px 0 0;color:#a08bb0;font-size:0.8rem;font-style:italic;">
-                                                                        <t t-esc="line.note"/>
-                                                                    </p>
-                                                                </t>
-                                                            </div>
-                                                        </div>
-                                                    </t>
-                                                </div>
-                                            </div>
-                                        </t>
-                                    </t>
+                                <div class="text-center mt-4">
+                                    <a t-att-href="'/medical/espace-patient/' + str(patient.id)" class="m-btn-primary">Accéder à mon espace complet →</a>
                                 </div>
                             </t>
 
                             <t t-if="searched and not rdvs and not error">
-                                <div class="alert alert-info mt-4" style="border-radius:14px;">
-                                    Aucun rendez-vous trouvé avec ces informations.
+                                <div class="mesrdv-v2-alert mesrdv-v2-alert-info mt-4">
+                                    <svg viewBox="0 0 24 24" style="width:18px;fill:currentColor;flex-shrink:0;"><path d="M11 7h2v2h-2zm1 13c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-18C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15h2v-6h-2v6z"/></svg>
+                                    <span>Aucun rendez-vous trouvé avec ces informations.</span>
                                 </div>
                             </t>
+
                         </div>
                     </div>
                 </div>
             </div>
         </t>
     </template>
+
     <template id="espace_patient" name="Medical - Espace Patient">
         <t t-call="website.layout">
-            <div class="espace-page">
-                <!-- Decorative shapes -->
-                <div class="mesrdv-blob mesrdv-blob-1"></div>
-                <div class="mesrdv-blob mesrdv-blob-2"></div>
+            <div class="esp-v2-page">
 
-                <!-- HEADER PATIENT -->
-                <div class="espace-header">
+                <!-- HEADER -->
+                <div class="esp-v2-header">
                     <div class="container">
-                        <div class="espace-profile">
-                            <div class="espace-avatar">
-                                <svg viewBox="0 0 24 24" style="width:50px;fill:white;">
-                                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                                </svg>
+                        <div class="esp-v2-profile">
+                            <div class="esp-v2-avatar">
+                                <span><t t-esc="(patient.first_name[:1] if patient.first_name else 'P') + (patient.last_name[:1] if patient.last_name else '')"/></span>
                             </div>
-                            <div class="espace-profile-info">
-                                <div class="espace-welcome">Espace patient</div>
-                                <h1 class="espace-name"><t t-esc="patient.name"/></h1>
-                                <div class="espace-contact">
+                            <div class="esp-v2-profile-info">
+                                <span class="esp-v2-welcome">Bonjour</span>
+                                <h1 class="esp-v2-name"><t t-esc="patient.name"/></h1>
+                                <div class="esp-v2-contact">
                                     <t t-if="patient.email">
-                                        <span class="espace-contact-item">
-                                            <svg viewBox="0 0 24 24" style="width:16px;fill:rgba(255,255,255,0.8);">
-                                                <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
-                                            </svg>
-                                            <t t-esc="patient.email"/>
-                                        </span>
+                                        <span><t t-esc="patient.email"/></span>
+                                    </t>
+                                    <t t-if="patient.email and patient.phone">
+                                        <span class="esp-v2-sep">·</span>
                                     </t>
                                     <t t-if="patient.phone">
-                                        <span class="espace-contact-item">
-                                            <svg viewBox="0 0 24 24" style="width:16px;fill:rgba(255,255,255,0.8);">
-                                                <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
-                                            </svg>
-                                            <t t-esc="patient.phone"/>
-                                        </span>
+                                        <span><t t-esc="patient.phone"/></span>
                                     </t>
                                 </div>
                             </div>
-                            <a href="/medical/mes-rdv" class="espace-logout">Déconnexion</a>
+                            <a href="/medical/mes-rdv" class="esp-v2-logout">Déconnexion</a>
                         </div>
                     </div>
                 </div>
 
-                <div class="container" style="position:relative;z-index:5;padding-bottom:70px;">
+                <div class="container esp-v2-main">
 
-                    <!-- STATS -->
-                    <div class="row g-4 espace-stats-row">
+                    <!-- STATS CARDS -->
+                    <div class="row g-3 esp-v2-stats">
                         <div class="col-md-4">
-                            <div class="espace-stat-card">
-                                <div class="espace-stat-icon" style="background:linear-gradient(135deg,#6a1b9a,#9c27b0);">
-                                    <svg viewBox="0 0 24 24" style="width:26px;fill:white;">
-                                        <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11z"/>
+                            <div class="esp-v2-stat esp-v2-stat-total">
+                                <div class="esp-v2-stat-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:22px;height:22px;">
+                                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
                                     </svg>
                                 </div>
                                 <div>
-                                    <span class="espace-stat-num"><t t-esc="total_rdv"/></span>
-                                    <span class="espace-stat-label">Rendez-vous total</span>
+                                    <span class="esp-v2-stat-num"><t t-esc="total_rdv"/></span>
+                                    <span class="esp-v2-stat-label">Rendez-vous total</span>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-4">
-                            <div class="espace-stat-card">
-                                <div class="espace-stat-icon" style="background:linear-gradient(135deg,#1565c0,#42a5f5);">
-                                    <svg viewBox="0 0 24 24" style="width:26px;fill:white;">
-                                        <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
+                            <div class="esp-v2-stat esp-v2-stat-upcoming">
+                                <div class="esp-v2-stat-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:22px;height:22px;">
+                                        <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
                                     </svg>
                                 </div>
                                 <div>
-                                    <span class="espace-stat-num"><t t-esc="rdv_upcoming"/></span>
-                                    <span class="espace-stat-label">À venir</span>
+                                    <span class="esp-v2-stat-num"><t t-esc="rdv_upcoming"/></span>
+                                    <span class="esp-v2-stat-label">À venir</span>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-4">
-                            <div class="espace-stat-card">
-                                <div class="espace-stat-icon" style="background:linear-gradient(135deg,#2e7d32,#66bb6a);">
-                                    <svg viewBox="0 0 24 24" style="width:26px;fill:white;">
-                                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                            <div class="esp-v2-stat esp-v2-stat-done">
+                                <div class="esp-v2-stat-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:22px;height:22px;">
+                                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
                                     </svg>
                                 </div>
                                 <div>
-                                    <span class="espace-stat-num"><t t-esc="rdv_done"/></span>
-                                    <span class="espace-stat-label">Terminés</span>
+                                    <span class="esp-v2-stat-num"><t t-esc="rdv_done"/></span>
+                                    <span class="esp-v2-stat-label">Terminés</span>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <div class="row g-4 mt-2">
-                        <!-- RENDEZ-VOUS -->
+
+                        <!-- RDV -->
                         <div class="col-lg-6">
-                            <div class="espace-section">
-                                <div class="espace-section-header">
-                                    <div class="espace-section-icon">
-                                        <svg viewBox="0 0 24 24" style="width:24px;fill:white;">
-                                            <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11z"/>
-                                        </svg>
+                            <div class="esp-v2-block">
+                                <div class="esp-v2-block-header">
+                                    <div>
+                                        <h4 class="esp-v2-block-title">Mes rendez-vous</h4>
+                                        <p class="esp-v2-block-sub">Historique de vos consultations</p>
                                     </div>
-                                    <h4 style="margin:0;color:var(--medical-dark);font-weight:800;">Mes rendez-vous</h4>
                                 </div>
 
                                 <t t-if="rdvs">
-                                    <div class="espace-rdv-list">
+                                    <div class="esp-v2-rdv-list">
                                         <t t-foreach="rdvs" t-as="rdv">
-                                            <div class="espace-rdv-item">
-                                                <div class="espace-rdv-date">
-                                                    <span class="espace-rdv-day"><t t-esc="rdv.appointment_date.strftime('%d') if rdv.appointment_date else '--'"/></span>
-                                                    <span class="espace-rdv-month"><t t-esc="rdv.appointment_date.strftime('%b') if rdv.appointment_date else ''"/></span>
+                                            <t t-set="doc_initials" t-value="(rdv.doctor_id.name[:1] if rdv.doctor_id.name else 'D')"/>
+                                            <t t-set="months_fr" t-value="['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre']"/>
+                                            <t t-set="days_fr" t-value="['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche']"/>
+                                            <div class="esp-v2-rdv-item">
+                                                <div class="esp-v2-doc-badge">
+                                                    <span><t t-esc="doc_initials.upper()"/></span>
                                                 </div>
-                                                <div style="flex:1;">
-                                                    <h6 style="margin:0;color:var(--medical-dark);font-weight:700;">Dr. <t t-esc="rdv.doctor_id.name"/></h6>
-                                                    <p style="margin:2px 0;color:#8e7b9a;font-size:0.8rem;">
-                                                        <t t-esc="rdv.name"/> • <t t-esc="rdv.appointment_date" t-options='{"widget": "datetime"}'/>
+                                                <div class="esp-v2-rdv-info">
+                                                    <h6 class="esp-v2-rdv-doc">Dr. <t t-esc="rdv.doctor_id.name"/></h6>
+                                                    <p class="esp-v2-rdv-date">
+                                                        <t t-if="rdv.appointment_date">
+                                                            <t t-esc="days_fr[rdv.appointment_date.weekday()]"/>
+                                                            <t t-esc="rdv.appointment_date.strftime(' %d ')"/>
+                                                            <t t-esc="months_fr[rdv.appointment_date.month - 1]"/>
+                                                            <t t-esc="rdv.appointment_date.strftime(' à %Hh%M')"/>
+                                                        </t>
                                                     </p>
+                                                    <p class="esp-v2-rdv-ref"><t t-esc="rdv.name"/></p>
                                                 </div>
-                                                <span t-attf-class="rdv-badge rdv-badge-#{'done' if rdv.state == 'done' else 'confirmed' if rdv.state == 'confirmed' else 'draft' if rdv.state == 'draft' else 'cancel'}">
-                                                    <t t-if="rdv.state == 'draft'">En attente</t>
-                                                    <t t-elif="rdv.state == 'confirmed'">Confirmé</t>
-                                                    <t t-elif="rdv.state == 'done'">Terminé</t>
-                                                    <t t-else="">Annulé</t>
-                                                </span>
+                                                <div class="esp-v2-rdv-right">
+                                                    <span t-attf-class="esp-v2-status esp-v2-status-#{'done' if rdv.state == 'done' else 'confirmed' if rdv.state == 'confirmed' else 'draft' if rdv.state == 'draft' else 'cancel'}">
+                                                        <t t-if="rdv.state == 'draft'">En attente</t>
+                                                        <t t-elif="rdv.state == 'confirmed'">Confirmé</t>
+                                                        <t t-elif="rdv.state == 'done'">Terminé</t>
+                                                        <t t-else="">Annulé</t>
+                                                    </span>
+                                                    <div class="esp-v2-actions">
+                                                        <a t-att-href="'/medical/rdv/details/' + str(rdv.id)" class="esp-v2-btn esp-v2-btn-details">Détails</a>
+                                                        <t t-if="rdv.state in ('draft', 'confirmed')">
+                                                            <form method="post" action="/medical/rdv/cancel" style="display:inline;" onsubmit="return confirm('Annuler ce rendez-vous ? Cette action est irréversible.');">
+                                                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                                                <input type="hidden" name="rdv_id" t-att-value="rdv.id"/>
+                                                                <input type="hidden" name="patient_id" t-att-value="patient.id"/>
+                                                                <button type="submit" class="esp-v2-btn esp-v2-btn-cancel">Annuler</button>
+                                                            </form>
+                                                        </t>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </t>
                                     </div>
+                                    <div class="esp-v2-fade"></div>
                                 </t>
                                 <t t-else="">
-                                    <p class="text-muted text-center py-4">Aucun rendez-vous</p>
+                                    <div class="esp-v2-empty">
+                                        <div class="esp-v2-empty-icon">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" style="width:54px;height:54px;opacity:0.4;">
+                                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+                                            </svg>
+                                        </div>
+                                        <h5 class="esp-v2-empty-title">Aucun rendez-vous</h5>
+                                        <p class="esp-v2-empty-text">Réservez votre prochaine consultation avec l'un de nos médecins.</p>
+                                    </div>
                                 </t>
 
-                                <a href="/medical/medecins" class="espace-add-btn">
-                                    <svg viewBox="0 0 24 24" style="width:18px;fill:white;margin-right:6px;">
-                                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+                                <a href="/medical/medecins" class="esp-v2-cta-btn">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="width:16px;height:16px;margin-right:8px;">
+                                        <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
                                     </svg>
                                     Prendre un nouveau rendez-vous
                                 </a>
@@ -1202,41 +1123,45 @@
 
                         <!-- ORDONNANCES -->
                         <div class="col-lg-6">
-                            <div class="espace-section">
-                                <div class="espace-section-header">
-                                    <div class="espace-section-icon">
-                                        <svg viewBox="0 0 24 24" style="width:24px;fill:white;">
-                                            <path d="M19 8h-1V3H6v5H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zM8 5h8v3H8V5zm8 12v2H8v-4h8v2zm2-2v-2H6v2H4v-4c0-.55.45-1 1-1h14c.55 0 1 .45 1 1v4h-2z"/>
-                                        </svg>
+                            <div class="esp-v2-block">
+                                <div class="esp-v2-block-header">
+                                    <div>
+                                        <h4 class="esp-v2-block-title">Mes ordonnances</h4>
+                                        <p class="esp-v2-block-sub">Prescriptions délivrées par vos médecins</p>
                                     </div>
-                                    <h4 style="margin:0;color:var(--medical-dark);font-weight:800;">Mes ordonnances</h4>
                                 </div>
 
                                 <t t-if="consultations">
-                                    <div class="espace-ord-list">
+                                    <div class="esp-v2-ord-list">
+                                        <t t-set="months_fr" t-value="['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre']"/>
+                                        <t t-set="days_fr" t-value="['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche']"/>
                                         <t t-foreach="consultations" t-as="consult">
                                             <t t-if="consult.prescription_line_ids">
-                                                <div class="espace-ord-card">
-                                                    <div class="espace-ord-top">
+                                                <div class="esp-v2-ord-card">
+                                                    <div class="esp-v2-ord-top">
                                                         <div>
-                                                            <h6 style="margin:0;color:var(--medical-dark);font-weight:700;">
-                                                                <t t-esc="consult.consultation_date" t-options='{"widget": "date"}'/>
+                                                            <h6 class="esp-v2-ord-date">
+                                                                <t t-if="consult.consultation_date">
+                                                                    <t t-esc="days_fr[consult.consultation_date.weekday()]"/>
+                                                                    <t t-esc="consult.consultation_date.strftime(' %d ')"/>
+                                                                    <t t-esc="months_fr[consult.consultation_date.month - 1]"/>
+                                                                </t>
                                                             </h6>
-                                                            <p style="margin:0;color:#8e7b9a;font-size:0.8rem;">
+                                                            <p class="esp-v2-ord-doc">
                                                                 Dr. <t t-esc="consult.doctor_id.name"/>
-                                                                <t t-if="consult.disease_id"> • <t t-esc="consult.disease_id.name"/></t>
+                                                                <t t-if="consult.disease_id"> · <t t-esc="consult.disease_id.name"/></t>
                                                             </p>
                                                         </div>
                                                     </div>
-                                                    <div class="espace-ord-meds">
+                                                    <div class="esp-v2-ord-meds">
                                                         <t t-foreach="consult.prescription_line_ids" t-as="line">
-                                                            <div class="espace-med">
-                                                                <div class="med-bullet"></div>
+                                                            <div class="esp-v2-med">
+                                                                <div class="esp-v2-med-dot"></div>
                                                                 <div>
-                                                                    <span style="font-weight:700;color:var(--medical-dark);font-size:0.9rem;"><t t-esc="line.medication_id.name"/></span>
-                                                                    <span style="color:#8e7b9a;font-size:0.8rem;display:block;">
+                                                                    <span class="esp-v2-med-name"><t t-esc="line.medication_id.name"/></span>
+                                                                    <span class="esp-v2-med-detail">
                                                                         <t t-if="line.dosage"><t t-esc="line.dosage"/></t>
-                                                                        <t t-if="line.duration"> • <t t-esc="line.duration"/></t>
+                                                                        <t t-if="line.duration"> · <t t-esc="line.duration"/></t>
                                                                     </span>
                                                                 </div>
                                                             </div>
@@ -1248,8 +1173,207 @@
                                     </div>
                                 </t>
                                 <t t-else="">
-                                    <p class="text-muted text-center py-4">Aucune ordonnance</p>
+                                    <div class="esp-v2-empty">
+                                        <div class="esp-v2-empty-icon">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" style="width:54px;height:54px;opacity:0.4;">
+                                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/>
+                                            </svg>
+                                        </div>
+                                        <h5 class="esp-v2-empty-title">Aucune ordonnance</h5>
+                                        <p class="esp-v2-empty-text">Vos ordonnances délivrées par nos médecins apparaîtront ici après chaque consultation.</p>
+                                    </div>
                                 </t>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+    <template id="rgpd" name="Medical - RGPD">
+        <t t-call="website.layout">
+            <div class="rgpd-page">
+                <section class="rgpd-hero">
+                    <div class="container">
+                        <p class="m-eyebrow"><span class="m-eyebrow-dot"></span>Données personnelles</p>
+                        <h1 class="rgpd-title">Politique de confidentialité</h1>
+                        <p class="rgpd-subtitle">Dernière mise à jour : 1er janvier 2025</p>
+                    </div>
+                </section>
+
+                <section class="rgpd-content">
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-9">
+
+                                <div class="rgpd-block">
+                                    <h2>1. Responsable du traitement</h2>
+                                    <p>Le responsable du traitement des données personnelles collectées sur ce site est le Cabinet médical <strong>MédicSS</strong>, situé au 14 rue des Lilas, 75011 Paris, France.</p>
+                                    <p><strong>Contact :</strong> medicss5@outlook.fr — +33 6 09 78 65 67</p>
+                                </div>
+
+                                <div class="rgpd-block">
+                                    <h2>2. Données collectées</h2>
+                                    <p>Dans le cadre de la prise de rendez-vous en ligne et du suivi médical, nous collectons les données suivantes :</p>
+                                    <ul>
+                                        <li>Nom, prénom, date de naissance</li>
+                                        <li>Adresse email et numéro de téléphone</li>
+                                        <li>Données de santé (motif de consultation, ordonnances, comptes rendus)</li>
+                                        <li>Historique des rendez-vous</li>
+                                    </ul>
+                                </div>
+
+                                <div class="rgpd-block">
+                                    <h2>3. Finalités du traitement</h2>
+                                    <p>Vos données sont utilisées pour :</p>
+                                    <ul>
+                                        <li>La gestion des rendez-vous médicaux</li>
+                                        <li>Le suivi médical et la coordination des soins</li>
+                                        <li>L'envoi de confirmations et rappels de rendez-vous</li>
+                                        <li>La facturation et la gestion administrative</li>
+                                    </ul>
+                                </div>
+
+                                <div class="rgpd-block">
+                                    <h2>4. Base légale</h2>
+                                    <p>Le traitement de vos données est fondé sur :</p>
+                                    <ul>
+                                        <li>L'exécution du contrat de soins (article 6.1.b du RGPD)</li>
+                                        <li>Le respect des obligations légales du professionnel de santé</li>
+                                        <li>Votre consentement explicite pour les données de santé (article 9.2.a du RGPD)</li>
+                                    </ul>
+                                </div>
+
+                                <div class="rgpd-block">
+                                    <h2>5. Durée de conservation</h2>
+                                    <p>Les données médicales sont conservées 20 ans après la dernière consultation, conformément à l'article R.1112-7 du Code de la santé publique. Les données de contact sont supprimées 3 ans après votre dernière interaction avec le cabinet.</p>
+                                </div>
+
+                                <div class="rgpd-block">
+                                    <h2>6. Destinataires des données</h2>
+                                    <p>Vos données sont accessibles uniquement :</p>
+                                    <ul>
+                                        <li>Aux professionnels de santé du cabinet impliqués dans votre prise en charge</li>
+                                        <li>Au secrétariat médical pour la gestion administrative</li>
+                                        <li>À notre hébergeur agréé Données de Santé (HDS)</li>
+                                    </ul>
+                                    <p>Aucune donnée n'est cédée à des tiers à des fins commerciales.</p>
+                                </div>
+
+                                <div class="rgpd-block">
+                                    <h2>7. Vos droits</h2>
+                                    <p>Conformément au RGPD et à la loi Informatique et Libertés, vous disposez des droits suivants :</p>
+                                    <ul>
+                                        <li><strong>Droit d'accès</strong> à vos données personnelles</li>
+                                        <li><strong>Droit de rectification</strong> en cas d'erreur</li>
+                                        <li><strong>Droit à l'effacement</strong> (dans la limite des obligations légales)</li>
+                                        <li><strong>Droit à la limitation</strong> du traitement</li>
+                                        <li><strong>Droit à la portabilité</strong> de vos données</li>
+                                        <li><strong>Droit d'opposition</strong> au traitement</li>
+                                        <li><strong>Droit de retirer votre consentement</strong> à tout moment</li>
+                                    </ul>
+                                    <p>Pour exercer ces droits, contactez-nous à : <a href="mailto:medicss5@outlook.fr">medicss5@outlook.fr</a></p>
+                                </div>
+
+                                <div class="rgpd-block">
+                                    <h2>8. Sécurité des données</h2>
+                                    <p>Vos données sont hébergées chez un prestataire certifié <strong>HDS (Hébergeur de Données de Santé)</strong>. Les échanges sont chiffrés (HTTPS/TLS). L'accès aux dossiers médicaux est restreint et journalisé.</p>
+                                </div>
+
+                                <div class="rgpd-block">
+                                    <h2>9. Cookies</h2>
+                                    <p>Ce site utilise uniquement des cookies techniques nécessaires à son fonctionnement (session, authentification). Aucun cookie publicitaire ou de traçage tiers n'est utilisé.</p>
+                                </div>
+
+                                <div class="rgpd-block">
+                                    <h2>10. Réclamation</h2>
+                                    <p>Si vous estimez que vos droits ne sont pas respectés, vous pouvez introduire une réclamation auprès de la CNIL :</p>
+                                    <p><strong>Commission Nationale de l'Informatique et des Libertés</strong><br/>3 Place de Fontenoy, TSA 80715, 75334 Paris Cedex 07<br/><a href="https://www.cnil.fr" target="_blank">www.cnil.fr</a></p>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </t>
+    </template>
+    <template id="rdv_details" name="Medical - Détails RDV">
+        <t t-call="website.layout">
+            <div class="esp-v2-page">
+                <div class="container" style="padding:60px 0;">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-8">
+
+                            <a t-att-href="'/medical/espace-patient/' + str(rdv.patient_id.id)" class="m-btn-ghost mb-3" style="display:inline-flex;">← Retour à mon espace</a>
+
+                            <div class="esp-v2-block">
+                                <div class="esp-v2-block-header">
+                                    <div>
+                                        <h2 class="esp-v2-block-title">Détails du rendez-vous</h2>
+                                        <p class="esp-v2-block-sub">Référence : <strong><t t-esc="rdv.name"/></strong></p>
+                                    </div>
+                                    <span t-attf-class="esp-v2-status esp-v2-status-#{'done' if rdv.state == 'done' else 'confirmed' if rdv.state == 'confirmed' else 'draft' if rdv.state == 'draft' else 'cancel'}">
+                                        <t t-if="rdv.state == 'draft'">En attente</t>
+                                        <t t-elif="rdv.state == 'confirmed'">Confirmé</t>
+                                        <t t-elif="rdv.state == 'done'">Terminé</t>
+                                        <t t-else="">Annulé</t>
+                                    </span>
+                                </div>
+
+                                <t t-set="months_fr" t-value="['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre']"/>
+                                <t t-set="days_fr" t-value="['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche']"/>
+
+                                <div class="row g-4">
+                                    <div class="col-md-6">
+                                        <p class="esp-v2-detail-label">Date et heure</p>
+                                        <p class="esp-v2-detail-value">
+                                            <t t-if="rdv.appointment_date">
+                                                <t t-esc="days_fr[rdv.appointment_date.weekday()]"/>
+                                                <t t-esc="rdv.appointment_date.strftime(' %d ')"/>
+                                                <t t-esc="months_fr[rdv.appointment_date.month - 1]"/>
+                                                <t t-esc="rdv.appointment_date.strftime(' %Y à %Hh%M')"/>
+                                            </t>
+                                        </p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p class="esp-v2-detail-label">Médecin</p>
+                                        <p class="esp-v2-detail-value">Dr. <t t-esc="rdv.doctor_id.name"/></p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p class="esp-v2-detail-label">Spécialité</p>
+                                        <p class="esp-v2-detail-value"><t t-esc="rdv.doctor_id.specialty_id.name if rdv.doctor_id.specialty_id else 'Médecin généraliste'"/></p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p class="esp-v2-detail-label">Patient</p>
+                                        <p class="esp-v2-detail-value"><t t-esc="rdv.patient_id.name"/></p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p class="esp-v2-detail-label">Durée</p>
+                                        <p class="esp-v2-detail-value">30 minutes</p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p class="esp-v2-detail-label">Lieu</p>
+                                        <p class="esp-v2-detail-value">14 rue des Lilas, 75011 Paris</p>
+                                    </div>
+                                </div>
+
+                                <div class="esp-v2-detail-note">
+                                    <strong>À savoir :</strong> Veuillez vous présenter 15 minutes avant l'heure du rendez-vous. Munissez-vous de votre carte vitale et d'une pièce d'identité.
+                                </div>
+
+                                <div class="esp-v2-detail-actions">
+                                    <a t-att-href="'/medical/rdv/pdf/' + str(rdv.id)" class="esp-v2-cta-btn" style="margin:0;flex:1;">Télécharger le PDF</a>
+                                    <t t-if="rdv.state in ('draft', 'confirmed')">
+                                        <form method="post" action="/medical/rdv/cancel" style="flex:1;" onsubmit="return confirm('Annuler ce rendez-vous ?');">
+                                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                            <input type="hidden" name="rdv_id" t-att-value="rdv.id"/>
+                                            <input type="hidden" name="patient_id" t-att-value="rdv.patient_id.id"/>
+                                            <button type="submit" class="esp-v2-btn-cancel-big">Annuler ce rendez-vous</button>
+                                        </form>
+                                    </t>
+                                </div>
+
                             </div>
                         </div>
                     </div>
