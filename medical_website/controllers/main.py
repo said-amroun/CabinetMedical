@@ -90,7 +90,7 @@ class MedicalWebsite(http.Controller):
             if not doctor_id or not appointment_date or not first_name or not last_name:
                 raise ValueError("Tous les champs obligatoires doivent être remplis.")
 
-            # Validation date de naissance (doit être passée)
+            # Validation date de naissance (doit être dans le passé)
             if not birth_date:
                 raise ValueError("La date de naissance est obligatoire.")
             try:
@@ -104,9 +104,10 @@ class MedicalWebsite(http.Controller):
             if gender not in ('male', 'female'):
                 raise ValueError("Veuillez sélectionner un genre.")
 
-            # Heure LOCALE choisie
+            # Heure LOCALE choisie par l'utilisateur
             date_local = datetime.strptime(appointment_date, '%Y-%m-%dT%H:%M')
 
+            # Validations sur l'heure LOCALE (avant conversion UTC)
             if not (8 <= date_local.hour < 17):
                 raise ValueError("Les RDV sont disponibles uniquement entre 08h00 et 17h00.")
 
@@ -142,6 +143,31 @@ class MedicalWebsite(http.Controller):
                 # Mise à jour des infos si patient existant
                 patient.sudo().write(patient_vals)
 
+            # ===== CONTRAINTE 1 : un seul RDV par jour avec le même médecin =====
+            start_of_day = date_local.replace(hour=0, minute=0, second=0, microsecond=0)
+            end_of_day = date_local.replace(hour=23, minute=59, second=59, microsecond=0)
+            start_utc = user_tz.localize(start_of_day).astimezone(pytz.utc).replace(tzinfo=None)
+            end_utc = user_tz.localize(end_of_day).astimezone(pytz.utc).replace(tzinfo=None)
+
+            existing_same_doctor = request.env['medical.appointment'].sudo().search([
+                ('patient_id', '=', patient.id),
+                ('doctor_id', '=', doctor_id),
+                ('appointment_date', '>=', start_utc),
+                ('appointment_date', '<=', end_utc),
+                ('state', '!=', 'cancelled'),
+            ], limit=1)
+            if existing_same_doctor:
+                raise ValueError("Vous avez déjà un rendez-vous avec ce médecin ce jour-là.")
+
+            # ===== CONTRAINTE 2 : pas de RDV au même créneau avec un autre médecin =====
+            existing_same_slot = request.env['medical.appointment'].sudo().search([
+                ('patient_id', '=', patient.id),
+                ('appointment_date', '=', date_utc),
+                ('state', '!=', 'cancelled'),
+            ], limit=1)
+            if existing_same_slot:
+                raise ValueError("Vous avez déjà un rendez-vous à cette heure avec un autre médecin.")
+
             # Création du RDV
             rdv = request.env['medical.appointment'].sudo().create({
                 'doctor_id': doctor_id,
@@ -161,6 +187,7 @@ class MedicalWebsite(http.Controller):
             if doctor_id_raw:
                 selected_doctor = request.env['medical.doctor'].sudo().browse(int(doctor_id_raw))
 
+            # Nettoyer le message d'erreur
             error_msg = str(e)
             if 'ValidationError' in error_msg:
                 error_msg = error_msg.split('\n')[-1]
@@ -263,37 +290,43 @@ class MedicalWebsite(http.Controller):
     def mes_rdv_search(self, **kwargs):
         first_name = kwargs.get('first_name', '').strip()
         last_name = kwargs.get('last_name', '').strip()
-        phone = kwargs.get('phone', '').strip()
-        reference = kwargs.get('reference', '').strip()
+        email = kwargs.get('email', '').strip()
+        birth_date = kwargs.get('birth_date', '').strip()
 
-        try:
-            if not first_name or not last_name or not phone or not reference:
-                raise ValueError("Tous les champs sont obligatoires.")
-
-            patient = request.env['medical.patient'].sudo().search([
-                ('first_name', 'ilike', first_name),
-                ('last_name', 'ilike', last_name),
-                ('phone', '=', phone),
-            ], limit=1)
-
-            if not patient:
-                raise ValueError("Aucun patient trouvé avec ces informations.")
-
-            rdv = request.env['medical.appointment'].sudo().search([
-                ('patient_id', '=', patient.id),
-                ('name', '=', reference),
-            ], limit=1)
-
-            if not rdv:
-                raise ValueError("Aucun rendez-vous trouvé avec cette référence.")
-
-            return request.redirect(f'/medical/espace-patient/{patient.id}')
-
-        except Exception as e:
+        if not first_name or not last_name or not email or not birth_date:
             return request.render('medical_website.mes_rdv', {
-                'searched': True,
-                'error': str(e),
+                'error': "Tous les champs sont obligatoires.",
+                'searched': False,
             })
+
+        patient = request.env['medical.patient'].sudo().search([
+            ('first_name', 'ilike', first_name),
+            ('last_name', 'ilike', last_name),
+            ('email', '=ilike', email),
+            ('birth_date', '=', birth_date),
+        ], limit=1)
+
+        if not patient:
+            return request.render('medical_website.mes_rdv', {
+                'error': "Aucun patient trouvé avec ces informations.",
+                'searched': True,
+                'rdvs': False,
+            })
+
+        rdvs = request.env['medical.appointment'].sudo().search([
+            ('patient_id', '=', patient.id),
+        ], order='appointment_date desc')
+
+        consultations = request.env['medical.consultation'].sudo().search([
+            ('patient_id', '=', patient.id),
+        ], order='consultation_date desc')
+
+        return request.render('medical_website.mes_rdv', {
+            'searched': True,
+            'patient': patient,
+            'rdvs': rdvs,
+            'consultations': consultations,
+        })
 
     @http.route('/medical/espace-patient/<int:patient_id>', type='http', auth='public', website=True)
     def espace_patient(self, patient_id, **kwargs):

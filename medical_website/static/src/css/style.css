@@ -2680,3 +2680,446 @@ body.dark-mode .esp-v2-med { background: #14211e !important; }
     background: #fee2e2;
     border-color: #ef4444;
 }
+
+.mesrdv-v2-label-date {
+    top: 14px !important;
+    transform: translateY(0) !important;
+    font-size: 0.72rem !important;
+    font-weight: 600 !important;
+    color: var(--m-primary-dark) !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+}
+input[type="date"].mesrdv-v2-input {
+    padding-top: 26px;
+}
+
+.mesrdv-v2-input {
+    padding: 24px 16px 8px !important;
+    height: auto !important;
+    line-height: 1.4 !important;
+}
+.mesrdv-v2-label {
+    top: 18px !important;
+    left: 16px !important;
+}
+.mesrdv-v2-input:focus + .mesrdv-v2-label,
+.mesrdv-v2-input:not(:placeholder-shown) + .mesrdv-v2-label {
+    top: 6px !important;
+    font-size: 0.68rem !important;
+}
+.mesrdv-v2-field {
+    margin-bottom: 0;
+}
+
+
+/* Espacement correct entre label et texte dans floating labels */
+.rdv-form-v2 .mesrdv-v2-input {
+    padding: 26px 16px 8px !important;
+    height: auto !important;
+    line-height: 1.4 !important;
+    font-size: 0.95rem !important;
+}
+.rdv-form-v2 .mesrdv-v2-label {
+    top: 18px !important;
+    left: 16px !important;
+    font-size: 0.92rem !important;
+}
+.rdv-form-v2 .mesrdv-v2-input:focus + .mesrdv-v2-label,
+.rdv-form-v2 .mesrdv-v2-input:not(:placeholder-shown) + .mesrdv-v2-label {
+    top: 7px !important;
+    font-size: 0.68rem !important;
+    transform: none !important;
+}
+
+/* Label flottant pour input date (toujours en haut) */
+.rdv-form-v2 .mesrdv-v2-label-date {
+    top: 7px !important;
+    transform: none !important;
+    font-size: 0.68rem !important;
+    font-weight: 600 !important;
+    color: var(--m-primary-dark) !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+}
+.rdv-form-v2 input[type="date"].mesrdv-v2-input {
+    padding-top: 26px !important;
+}
+
+/* Label "Genre" aligné comme les autres */
+.rdv-gender-label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--m-primary-dark);
+    font-size: 0.68rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Boutons genre Homme/Femme */
+.rdv-gender-group {
+    display: flex;
+    gap: 10px;
+}
+.rdv-gender-opt {
+    flex: 1;
+    cursor: pointer;
+    margin: 0;
+}
+.rdv-gender-opt input[type="radio"] {
+    display: none;
+}
+.rdv-gender-opt span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    border: 1.5px solid rgba(13,148,136,0.2);
+    border-radius: 12px;
+    background: white;
+    color: var(--m-text-muted);
+    font-weight: 500;
+    font-size: 0.92rem;
+    transition: all 0.25s;
+}
+.rdv-gender-opt input[type="radio"]:checked + span {
+    border-color: var(--m-primary);
+    background: rgba(13,148,136,0.06);
+    color: var(--m-primary-dark);
+    font-weight: 600;
+    box-shadow: 0 0 0 3px rgba(13,148,136,0.08);
+}
+.rdv-gender-opt:hover span {
+    border-color: rgba(13,148,136,0.4);
+}
+/* RGPD BLOCK */
+.m-rgpd-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+.m-rgpd-card {
+    background: white;
+    border-radius: 16px;
+    padding: 22px;
+    border: 1px solid rgba(13,148,136,0.08);
+    box-shadow: 0 4px 12px -4px rgba(13,148,136,0.06);
+    transition: all 0.3s;
+}
+.m-rgpd-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 25px -8px rgba(13,148,136,0.15);
+    border-color: rgba(13,148,136,0.2);
+}
+.m-rgpd-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 14px;
+}
+.m-rgpd-card h5 {
+    font-family: var(--m-font-serif);
+    color: var(--m-text);
+    font-weight: 700;
+    margin: 0 0 6px;
+    font-size: 1rem;
+    letter-spacing: -0.2px;
+}
+.m-rgpd-card p {
+    color: var(--m-text-muted);
+    font-size: 0.85rem;
+    margin: 0;
+    line-height: 1.6;
+}
+@media (max-width: 768px) {
+    .m-rgpd-grid { grid-template-columns: 1fr; }
+}
+
+/* Dark mode */
+body.dark-mode .m-rgpd-card {
+    background: #14211e !important;
+    border-color: rgba(52,211,153,0.15) !important;
+}
+body.dark-mode .m-rgpd-card h5 { color: #a7f3d0 !important; }
+/* ========== CONTACT V2 ========== */
+.ctc-v2-page {
+    position: relative;
+    padding: 70px 0 100px;
+    min-height: 100vh;
+    z-index: 1;
+}
+.ctc-v2-container { position: relative; z-index: 2; }
+
+.ctc-v2-header {
+    text-align: center;
+    margin-bottom: 40px;
+    max-width: 720px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.ctc-v2-title {
+    font-family: var(--m-font-serif);
+    font-size: 3rem;
+    color: var(--m-text);
+    font-weight: 700;
+    letter-spacing: -1.5px;
+    margin: 14px 0;
+}
+.ctc-v2-title em {
+    font-style: italic;
+    background: var(--m-gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+.ctc-v2-sub {
+    color: var(--m-text-muted);
+    font-size: 1.05rem;
+    line-height: 1.7;
+    margin: 0;
+}
+.ctc-v2-sub strong {
+    color: var(--m-text);
+    font-weight: 600;
+}
+
+/* FORM CARD */
+.ctc-v2-form-card {
+    background: white;
+    border-radius: 22px;
+    padding: 40px;
+    border: 1px solid rgba(13,148,136,0.08);
+    box-shadow: 0 4px 14px -4px rgba(13,148,136,0.08);
+    height: 100%;
+}
+.ctc-v2-form-title {
+    font-family: var(--m-font-serif);
+    color: var(--m-text);
+    font-weight: 700;
+    margin: 0 0 6px;
+    font-size: 1.5rem;
+    letter-spacing: -0.5px;
+}
+.ctc-v2-form-sub {
+    color: var(--m-text-muted);
+    font-size: 0.88rem;
+    margin: 0 0 28px;
+}
+
+/* Floating labels (réutilise mesrdv-v2-*) */
+.ctc-v2-form .mesrdv-v2-input {
+    padding: 24px 16px 8px !important;
+    height: auto !important;
+}
+.ctc-v2-form .mesrdv-v2-label {
+    top: 18px !important;
+    left: 16px !important;
+    font-size: 0.92rem !important;
+}
+.ctc-v2-form .mesrdv-v2-input:focus + .mesrdv-v2-label,
+.ctc-v2-form .mesrdv-v2-input:not(:placeholder-shown) + .mesrdv-v2-label {
+    top: 7px !important;
+    font-size: 0.68rem !important;
+    transform: none !important;
+}
+
+/* TEXTAREA */
+.ctc-v2-textarea-wrap {
+    position: relative;
+}
+.ctc-v2-textarea {
+    width: 100%;
+    padding: 24px 16px 14px;
+    border: 1.5px solid rgba(13,148,136,0.2);
+    border-radius: 10px;
+    background: white;
+    font-size: 0.95rem;
+    color: var(--m-text);
+    transition: all 0.25s;
+    outline: none;
+    resize: vertical;
+    min-height: 140px;
+    font-family: inherit;
+    line-height: 1.6;
+}
+.ctc-v2-textarea::placeholder { color: transparent; }
+.ctc-v2-textarea:focus {
+    border-color: var(--m-primary);
+    box-shadow: 0 0 0 4px rgba(13,148,136,0.1);
+}
+.ctc-v2-textarea-label {
+    position: absolute;
+    left: 16px;
+    top: 18px;
+    color: var(--m-text-muted);
+    font-size: 0.92rem;
+    pointer-events: none;
+    transition: all 0.25s;
+    margin: 0;
+}
+.ctc-v2-textarea:focus + .ctc-v2-textarea-label,
+.ctc-v2-textarea:not(:placeholder-shown) + .ctc-v2-textarea-label {
+    top: 7px;
+    font-size: 0.68rem;
+    font-weight: 600;
+    color: var(--m-primary-dark);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* FORM FOOTER */
+.ctc-v2-form-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-top: 28px;
+    flex-wrap: wrap;
+}
+.ctc-v2-form-note {
+    color: var(--m-text-muted);
+    font-size: 0.82rem;
+    margin: 0;
+    display: flex;
+    align-items: center;
+}
+
+/* SUBMIT */
+.ctc-v2-submit {
+    background: linear-gradient(135deg, #0d9488 0%, #10b981 100%);
+    color: white;
+    border: none;
+    padding: 14px 28px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    transition: all 0.3s;
+    box-shadow: 0 8px 20px -6px rgba(13,148,136,0.45);
+}
+.ctc-v2-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px -6px rgba(13,148,136,0.65);
+}
+.ctc-v2-submit:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+}
+.ctc-v2-submit-spinner circle {
+    animation: ctc-spin 0.8s linear infinite;
+    transform-origin: center;
+}
+@keyframes ctc-spin { to { transform: rotate(360deg); } }
+
+/* INFO CARD */
+.ctc-v2-info-card {
+    background: white;
+    border-radius: 22px;
+    padding: 30px;
+    border: 1px solid rgba(13,148,136,0.08);
+    box-shadow: 0 4px 14px -4px rgba(13,148,136,0.08);
+    margin-bottom: 16px;
+}
+.ctc-v2-info-title {
+    font-family: var(--m-font-serif);
+    color: var(--m-text);
+    font-weight: 700;
+    margin: 0 0 22px;
+    font-size: 1.2rem;
+    padding-bottom: 14px;
+    border-bottom: 1px solid rgba(13,148,136,0.08);
+}
+.ctc-v2-info-item {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    padding: 12px 0;
+    border-bottom: 1px dashed rgba(13,148,136,0.08);
+}
+.ctc-v2-info-item:last-child { border-bottom: none; }
+.ctc-v2-info-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: rgba(13,148,136,0.08);
+    color: var(--m-primary-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+.ctc-v2-info-label {
+    margin: 0 0 2px;
+    color: var(--m-text-muted);
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+}
+.ctc-v2-info-value {
+    margin: 0;
+    color: var(--m-text);
+    font-size: 0.92rem;
+    font-weight: 500;
+    line-height: 1.5;
+}
+
+/* MAP */
+.ctc-v2-map-card {
+    background: white;
+    border-radius: 22px;
+    overflow: hidden;
+    border: 1px solid rgba(13,148,136,0.08);
+    box-shadow: 0 4px 14px -4px rgba(13,148,136,0.08);
+    position: relative;
+}
+.ctc-v2-map {
+    width: 100%;
+    height: 220px;
+    border: none;
+    display: block;
+}
+.ctc-v2-map-link {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    background: white;
+    color: var(--m-primary-dark);
+    padding: 6px 12px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.78rem;
+    display: inline-flex;
+    align-items: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    transition: all 0.2s;
+}
+.ctc-v2-map-link:hover {
+    color: white;
+    background: var(--m-primary);
+}
+
+/* Dark mode */
+body.dark-mode .ctc-v2-form-card,
+body.dark-mode .ctc-v2-info-card,
+body.dark-mode .ctc-v2-map-card {
+    background: #14211e !important;
+    border-color: rgba(52,211,153,0.15) !important;
+}
+body.dark-mode .ctc-v2-title,
+body.dark-mode .ctc-v2-form-title,
+body.dark-mode .ctc-v2-info-title,
+body.dark-mode .ctc-v2-info-value { color: #a7f3d0 !important; }
+body.dark-mode .ctc-v2-textarea {
+    background: #1a2624 !important;
+    border-color: rgba(52,211,153,0.2) !important;
+    color: #e2e8f0 !important;
+}
