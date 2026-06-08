@@ -57,14 +57,45 @@ class MedicalAppointment(models.Model):
             if record.appointment_date < fields.Datetime.now():
                 raise ValidationError("Vous ne pouvez pas prendre ou modifier un rendez-vous à une date et heure passées.")
 
-    @api.constrains('appointment_date')
-    def _check_working_hours(self):
+    @api.constrains('doctor_id', 'appointment_date')
+    def _check_doctor_availability(self):
+        """Vérifie que le rendez-vous tombe sur un jour et créneau disponible du médecin."""
+        user_tz = pytz.timezone(self.env.user.tz or 'Europe/Paris')
         for record in self:
-            if not record.appointment_date:
+            if not record.appointment_date or not record.doctor_id:
                 continue
-            hour = record.appointment_date.hour
-            if not (8 <= hour < 17):
-                raise ValidationError("Les rendez-vous doivent avoir lieu entre 08:00 et 17:00.")
+
+            # Convertir la date UTC en heure locale pour vérifier jour et créneau
+            local_dt = pytz.utc.localize(record.appointment_date).astimezone(user_tz)
+            day_of_week = str(local_dt.weekday())  # 0=Lundi .. 6=Dimanche
+            local_hour = local_dt.hour + local_dt.minute / 60.0
+
+            # Chercher la ligne de disponibilité du médecin pour ce jour
+            availability = record.doctor_id.availability_ids.filtered(
+                lambda a: a.day_of_week == day_of_week
+            )
+
+            day_names = {
+                '0': 'Lundi', '1': 'Mardi', '2': 'Mercredi',
+                '3': 'Jeudi', '4': 'Vendredi', '5': 'Samedi', '6': 'Dimanche',
+            }
+            day_name = day_names.get(day_of_week, day_of_week)
+
+            if not availability:
+                raise ValidationError(
+                    f"Le Dr {record.doctor_id.name} n'est pas disponible le {day_name}."
+                )
+
+            # Vérifier que l'heure correspond à un créneau coché
+            matching_slot = availability.slot_ids.filtered(
+                lambda s: abs(s.start_hour - local_hour) < 0.01
+            )
+            if not matching_slot:
+                hour_str = local_dt.strftime('%H:%M')
+                raise ValidationError(
+                    f"Le Dr {record.doctor_id.name} n'a pas de créneau disponible "
+                    f"le {day_name} à {hour_str}."
+                )
 
     @api.constrains('doctor_id', 'appointment_date')
     def _check_overlap(self):

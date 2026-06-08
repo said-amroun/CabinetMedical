@@ -9,6 +9,7 @@
     'data': [
         'security/security.xml',
         'security/ir.model.access.csv',
+        'data/time_slot_data.xml',
         'views/medical_menu.xml',
         'views/specialty_views.xml',
         'views/doctor_views.xml',

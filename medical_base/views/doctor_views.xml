@@ -37,6 +37,14 @@
                         <page string="Biographie">
                             <field name="bio"/>
                         </page>
+                        <page string="Disponibilités">
+                            <field name="availability_ids">
+                                <list editable="bottom">
+                                    <field name="day_of_week"/>
+                                    <field name="slot_ids" widget="many2many_tags"/>
+                                </list>
+                            </field>
+                        </page>
                     </notebook>
                 </sheet>
             </form>

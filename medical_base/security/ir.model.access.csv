@@ -8,3 +8,9 @@ access_medical_patient_doc,access.medical.patient.doc,model_medical_patient,grou
 access_medical_specialty_admin,access.medical.specialty.admin,model_medical_specialty,base.group_erp_manager,1,1,1,1
 access_medical_doctor_admin,access.medical.doctor.admin,model_medical_doctor,base.group_erp_manager,1,1,1,1
 access_medical_patient_admin,access.medical.patient.admin,model_medical_patient,base.group_erp_manager,1,1,1,1
+access_medical_time_slot_sec,access.medical.time.slot.sec,model_medical_time_slot,group_medical_secretary,1,0,0,0
+access_medical_time_slot_doc,access.medical.time.slot.doc,model_medical_time_slot,group_medical_doctor,1,0,0,0
+access_medical_time_slot_admin,access.medical.time.slot.admin,model_medical_time_slot,base.group_erp_manager,1,1,1,1
+access_medical_doctor_availability_sec,access.medical.doctor.availability.sec,model_medical_doctor_availability,group_medical_secretary,1,1,1,1
+access_medical_doctor_availability_doc,access.medical.doctor.availability.doc,model_medical_doctor_availability,group_medical_doctor,1,1,1,1
+access_medical_doctor_availability_admin,access.medical.doctor.availability.admin,model_medical_doctor_availability,base.group_erp_manager,1,1,1,1
