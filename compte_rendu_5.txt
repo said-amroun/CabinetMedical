@@ -1,0 +1,178 @@
+================================================================================
+          COMPTE RENDU DES MODIFICATIONS - CABINET MEDICAL (ODOO)
+================================================================================
+
+Date : 08/06/2026
+Projet : Cabinet Médical (Odoo - modules custom)
+Compte Rendu N° : 5 (Corrections affichage, disponibilités médecins, validation patient)
+
+================================================================================
+1. CORRECTION DE L'AFFICHAGE DES HEURES SUR LE TABLEAU DE BORD
+================================================================================
+
+POURQUOI ?
+----------
+Les rendez-vous affichés sur le tableau de bord (dashboard) apparaissaient avec
+2 heures d'avance par rapport à l'heure réelle. Par exemple, un rendez-vous
+programmé à 10h30 s'affichait à 08h30.
+
+La cause : Odoo stocke toutes les dates/heures en UTC (temps universel) dans sa
+base de données. Le code JavaScript du dashboard récupérait l'heure brute UTC
+et l'affichait telle quelle, sans la convertir dans le fuseau horaire local de
+l'utilisateur (Europe/Paris = UTC+2 en été).
+
+CE QUI A ETE FAIT
+-----------------
+- Modification de la logique d'affichage de l'heure dans le fichier JavaScript
+  du tableau de bord.
+- Au lieu de découper la chaîne de caractères UTC reçue de la base de données,
+  on construit désormais un objet Date JavaScript en marquant explicitement la
+  chaîne comme UTC (ajout du suffixe "Z"), puis on extrait les heures et minutes
+  en heure locale via getHours() et getMinutes().
+- L'heure affichée s'adapte désormais automatiquement au fuseau horaire du
+  navigateur de l'utilisateur.
+
+FICHIERS MODIFIES
+-----------------
+- medical_appointment/static/src/js/dashboard.js
+
+
+================================================================================
+2. GESTION DES DISPONIBILITES DES MEDECINS PAR JOUR ET CRENEAUX DE 30 MIN
+================================================================================
+
+POURQUOI ?
+----------
+Auparavant, la seule contrainte horaire était une vérification statique globale
+(rendez-vous autorisés uniquement entre 08h00 et 17h00, identique pour tous les
+médecins). Cela ne permettait pas de gérer les cas réels où un médecin ne
+travaille pas certains jours (ex : mercredi), ou n'est disponible que sur
+certains créneaux spécifiques (ex : uniquement le matin le vendredi).
+
+Il fallait donc un système configurable par médecin, permettant de définir pour
+chaque jour de la semaine les créneaux de 30 minutes où il est disponible.
+
+CE QUI A ETE FAIT
+-----------------
+
+A) Nouveau modèle "medical.time.slot" (Créneau horaire)
+   - Représente un créneau fixe de 30 minutes (ex: "08:00 - 08:30").
+   - Contient un nom lisible, une heure de début et une heure de fin.
+   - 18 créneaux pré-chargés automatiquement de 08:00 à 17:00 via un fichier
+     de données XML (data/time_slot_data.xml).
+
+B) Nouveau modèle "medical.doctor.availability" (Disponibilité par jour)
+   - Associe un médecin à un jour de la semaine (Lundi, Mardi, etc.).
+   - Pour chaque jour, on peut sélectionner les créneaux de 30 minutes où le
+     médecin est disponible (relation Many2many vers medical.time.slot).
+   - Contrainte d'unicité : un seul enregistrement par médecin et par jour.
+
+C) Modification du modèle "medical.doctor"
+   - Ajout d'un champ One2many "availability_ids" vers les lignes de disponibilité.
+   - Automatisation à la création : lorsqu'un nouveau médecin est créé, le
+     système génère automatiquement 5 lignes de disponibilité (Lundi à Vendredi)
+     avec tous les créneaux de 08:00 à 17:00 cochés par défaut.
+
+D) Nouvelle vue "Disponibilités" dans le formulaire Docteur
+   - Ajout d'un onglet "Disponibilités" dans la fiche du médecin, à côté de
+     l'onglet "Biographie" existant.
+   - Affichage sous forme de liste éditable : chaque ligne correspond à un jour,
+     et les créneaux sont affichés sous forme de tags sélectionnables.
+   - Le médecin ou la secrétaire peut ajouter/supprimer des jours et cocher ou
+     décocher des créneaux en un clic.
+
+E) Remplacement de la validation statique des rendez-vous
+   - L'ancienne contrainte "_check_working_hours" (08h-17h pour tous) a été
+     supprimée et remplacée par une nouvelle contrainte dynamique
+     "_check_doctor_availability".
+   - Cette nouvelle validation :
+     * Convertit la date/heure du rendez-vous (stockée en UTC) vers le fuseau
+       horaire local (Europe/Paris) pour identifier correctement le jour et l'heure.
+     * Vérifie que le médecin possède une ligne de disponibilité pour ce jour.
+     * Vérifie que l'heure du rendez-vous correspond à un créneau coché.
+   - Messages d'erreur explicites :
+     * "Le Dr X n'est pas disponible le Mercredi."
+     * "Le Dr X n'a pas de créneau disponible le Lundi à 10:00."
+
+F) Droits d'accès (sécurité)
+   - Ajout des règles d'accès pour les deux nouveaux modèles :
+     * medical.time.slot : lecture seule pour secrétaire et médecin, complet
+       pour l'administrateur (les créneaux sont des données de référence).
+     * medical.doctor.availability : lecture et écriture pour secrétaire et
+       médecin, complet pour l'administrateur.
+
+LOGIQUE DE FONCTIONNEMENT
+-------------------------
+  - Pas de ligne pour un jour     => Médecin non disponible ce jour
+  - Ligne avec des créneaux       => Disponible uniquement sur ces créneaux
+  - Ligne sans aucun créneau      => Non disponible ce jour (aucun créneau)
+  - Par défaut (nouveau médecin)  => Lundi-Vendredi, 08:00-17:00 (tous créneaux)
+
+FICHIERS CREES / MODIFIES
+--------------------------
+- [NEW] medical_base/models/time_slot.py
+- [NEW] medical_base/models/doctor_availability.py
+- [NEW] medical_base/data/time_slot_data.xml
+- medical_base/models/doctor.py
+- medical_base/models/__init__.py
+- medical_base/__manifest__.py
+- medical_base/security/ir.model.access.csv
+- medical_base/views/doctor_views.xml
+- medical_appointment/models/appointment.py
+
+
+================================================================================
+3. VALIDATION DE LA DATE DE NAISSANCE DU PATIENT
+================================================================================
+
+POURQUOI ?
+----------
+Aucune vérification n'était en place pour empêcher la saisie d'une date de
+naissance dans le futur. Un utilisateur pouvait donc créer un patient avec une
+date de naissance ultérieure à la date du jour, ce qui n'a pas de sens et
+pourrait fausser le calcul de l'âge du patient.
+
+CE QUI A ETE FAIT
+-----------------
+- Ajout d'une contrainte Python "@api.constrains('birth_date')" dans le modèle
+  du patient (medical.patient).
+- La validation vérifie que la date de naissance est strictement antérieure à
+  la date du jour. Si ce n'est pas le cas, un message d'erreur clair s'affiche :
+  "La date de naissance doit être antérieure à la date du jour."
+
+FICHIERS MODIFIES
+-----------------
+- medical_base/models/patient.py
+
+
+================================================================================
+RECAPITULATIF DES FICHIERS CONCERNES
+================================================================================
+
+  #   Fichier                                         Action      Module
+  --- ----------------------------------------------  ----------  --------------------
+  1   static/src/js/dashboard.js                      [Modifié]   medical_appointment
+  2   models/time_slot.py                             [Nouveau]   medical_base
+  3   models/doctor_availability.py                   [Nouveau]   medical_base
+  4   data/time_slot_data.xml                         [Nouveau]   medical_base
+  5   models/doctor.py                                [Modifié]   medical_base
+  6   models/__init__.py                              [Modifié]   medical_base
+  7   __manifest__.py                                 [Modifié]   medical_base
+  8   security/ir.model.access.csv                    [Modifié]   medical_base
+  9   views/doctor_views.xml                          [Modifié]   medical_base
+  10  models/appointment.py                           [Modifié]   medical_appointment
+  11  models/patient.py                               [Modifié]   medical_base
+
+================================================================================
+MISE A JOUR
+================================================================================
+
+Pour appliquer toutes ces modifications, relancer Odoo avec la commande :
+
+  python odoo-bin -u medical_base,medical_appointment -d <nom_de_la_base>
+
+Note : Les médecins déjà existants en base n'auront pas de disponibilités
+générées automatiquement. Il faudra les configurer manuellement via l'onglet
+"Disponibilités" de leur fiche, ou exécuter un script de migration.
+
+================================================================================
