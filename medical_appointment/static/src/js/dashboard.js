@@ -73,9 +73,13 @@ export class MedicalDashboard extends Component {
 
             appointments.forEach(app => {
                 if (app.appointment_date) {
-                    const timePart = app.appointment_date.split(' ')[1];
-                    if (timePart) {
-                        app.time_display = timePart.substring(0, 5);
+                    // Convert "YYYY-MM-DD HH:mm:ss" UTC string to ISO "YYYY-MM-DDTHH:mm:ssZ"
+                    const utcStr = app.appointment_date.replace(' ', 'T') + 'Z';
+                    const localDate = new Date(utcStr);
+                    if (!isNaN(localDate.getTime())) {
+                        const hours = String(localDate.getHours()).padStart(2, '0');
+                        const minutes = String(localDate.getMinutes()).padStart(2, '0');
+                        app.time_display = `${hours}:${minutes}`;
                     } else {
                         app.time_display = "--:--";
                     }
