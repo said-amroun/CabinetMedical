@@ -1,5 +1,5 @@
 from odoo import models, fields, api
-from odoo.exceptions import ValidationError
+from odoo.exceptions import ValidationError, AccessError
 
 class MedicalDoctor(models.Model):
     _inherit = 'medical.doctor'
@@ -44,12 +44,30 @@ class MedicalConsultation(models.Model):
             else:
                 rec.treatment_summary = ''
 
+    def _check_doctor_access(self, appointment_id):
+        """Vérifie qu'un médecin ne crée/modifie que ses propres consultations."""
+        if self.env.user.has_group('medical_base.group_medical_doctor') \
+                and not self.env.user.has_group('medical_base.group_medical_secretary') \
+                and not self.env.user.has_group('medical_base.group_medical_admin'):
+            if appointment_id:
+                appointment = self.env['medical.appointment'].browse(appointment_id)
+                if appointment.doctor_id and appointment.doctor_id.user_id \
+                        and appointment.doctor_id.user_id.id != self.env.uid:
+                    raise AccessError("Accès refusé, vous pouvez créer seulement vos propres consultations.")
+
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
+            self._check_doctor_access(vals.get('appointment_id'))
             if vals.get('name', 'New') == 'New':
                 vals['name'] = self.env['ir.sequence'].next_by_code('medical.consultation') or 'New'
         return super(MedicalConsultation, self).create(vals_list)
+
+    def write(self, vals):
+        if 'appointment_id' in vals:
+            for rec in self:
+                self._check_doctor_access(vals.get('appointment_id'))
+        return super(MedicalConsultation, self).write(vals)
 
     def action_confirm(self):
         for rec in self:

@@ -1,5 +1,5 @@
 from odoo import models, fields, api
-from odoo.exceptions import ValidationError
+from odoo.exceptions import ValidationError, AccessError
 from datetime import timedelta
 import pytz
 
@@ -21,9 +21,21 @@ class MedicalAppointment(models.Model):
         ('cancelled', 'Annulé')
     ], string='Statut', default='draft', required=True)
 
+    def _check_doctor_access(self, doctor_id):
+        """Vérifie qu'un médecin ne crée/modifie que ses propres rendez-vous."""
+        if self.env.user.has_group('medical_base.group_medical_doctor') \
+                and not self.env.user.has_group('medical_base.group_medical_secretary') \
+                and not self.env.user.has_group('medical_base.group_medical_admin'):
+            my_doctor = self.env['medical.doctor'].search([('user_id', '=', self.env.uid)], limit=1)
+            if my_doctor and doctor_id and doctor_id != my_doctor.id:
+                raise AccessError("Accès refusé, vous pouvez créer seulement vos propres rendez-vous.")
+
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
+            # Vérifier que le médecin ne crée pas un rdv pour un autre médecin
+            self._check_doctor_access(vals.get('doctor_id'))
+
             if vals.get('name', 'New') == 'New':
                 # Get the patient's initials
                 patient_id = vals.get('patient_id')
@@ -47,6 +59,13 @@ class MedicalAppointment(models.Model):
                 
                 vals['name'] = f"APT-{initials}/{seq_num}"
         return super(MedicalAppointment, self).create(vals_list)
+
+    def write(self, vals):
+        # Si le médecin tente de réassigner le rdv à un autre médecin
+        if 'doctor_id' in vals:
+            for rec in self:
+                self._check_doctor_access(vals.get('doctor_id'))
+        return super(MedicalAppointment, self).write(vals)
 
 
     @api.constrains('appointment_date')

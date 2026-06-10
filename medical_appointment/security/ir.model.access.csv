@@ -1,4 +1,4 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_medical_appointment_secretary,access.medical.appointment,model_medical_appointment,medical_base.group_medical_secretary,1,1,1,1
-access_medical_appointment_doctor,access.medical.appointment.doc,model_medical_appointment,medical_base.group_medical_doctor,1,1,1,0
-access_medical_appointment_admin,access.medical.appointment.admin,model_medical_appointment,base.group_erp_manager,1,1,1,1
+access_medical_appointment_doctor,access.medical.appointment.doc,model_medical_appointment,medical_base.group_medical_doctor,1,1,1,1
+access_medical_appointment_admin,access.medical.appointment.admin,model_medical_appointment,medical_base.group_medical_admin,1,1,1,1
