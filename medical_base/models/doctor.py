@@ -15,7 +15,10 @@ NAME_REGEX = re.compile(r"^[A-Za-zÀ-ÖØ-öø-ÿ\s\-']+$")
 class MedicalDoctor(models.Model):
     _name = 'medical.doctor'
     _description = 'Doctor'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
 
+    code = fields.Char(string='Code', required=True, default='New')
+    
     first_name = fields.Char(string='Prénom', required=True)
     last_name = fields.Char(string='Nom', required=True)
     name = fields.Char(string='Nom Complet', compute='_compute_name', store=True)
@@ -32,6 +35,9 @@ class MedicalDoctor(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
+        for vals in vals_list:
+            if not vals.get('code') or vals.get('code') == 'New':
+                vals['code'] = self.env['ir.sequence'].next_by_code('medical.doctor') or 'DOC/000'
         doctors = super().create(vals_list)
         # Créer les disponibilités par défaut (Lundi-Vendredi, tous les créneaux)
         all_slots = self.env['medical.time.slot'].search([])

@@ -28,5 +28,31 @@
         <field name="privilege_id" ref="privilege_medical_role"/>
     </record>
 
+    <!-- Record Rules for medical.doctor -->
+    <record id="rule_doctor_own_record" model="ir.rule">
+        <field name="name">Doctor: Own Record Only</field>
+        <field name="model_id" ref="model_medical_doctor"/>
+        <field name="domain_force">[('doctor_id.user_id', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('group_medical_doctor'))]"/>
+        <field name="perm_read" eval="1"/>
+        <field name="perm_write" eval="1"/>
+        <field name="perm_create" eval="0"/>
+        <field name="perm_unlink" eval="0"/>
+    </record>
+
+    <record id="rule_doctor_secretary_all" model="ir.rule">
+        <field name="name">Secretary: All Doctors</field>
+        <field name="model_id" ref="model_medical_doctor"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('group_medical_secretary'))]"/>
+    </record>
+
+    <record id="rule_doctor_admin_all" model="ir.rule">
+        <field name="name">Admin: All Doctors</field>
+        <field name="model_id" ref="model_medical_doctor"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('group_medical_admin'))]"/>
+    </record>
+
 </odoo>
 

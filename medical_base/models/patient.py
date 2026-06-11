@@ -15,11 +15,14 @@ NAME_REGEX = re.compile(r"^[A-Za-zÀ-ÖØ-öø-ÿ\s\-']+$")
 class MedicalPatient(models.Model):
     _name = 'medical.patient'
     _description = 'Patient'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
 
-    first_name = fields.Char(string='Prénom', required=True)
-    last_name = fields.Char(string='Nom', required=True)
+    code = fields.Char(string='Code', required=True, default='New')
+    first_name = fields.Char(string='Prénom', required=True, tracking=True)
+    last_name = fields.Char(string='Nom', required=True, tracking=True)
     name = fields.Char(string='Nom Complet', compute='_compute_name', store=True)
-    birth_date = fields.Date(string='Date de Naissance', required=True)
+    birth_date = fields.Date(string='Date de Naissance', required=True, tracking=True)
+    age = fields.Integer(string='Age')
     gender = fields.Selection([
         ('male', 'Homme'),
         ('female', 'Femme'),
@@ -29,6 +32,13 @@ class MedicalPatient(models.Model):
     email = fields.Char(string='Email', required=True)
     address = fields.Text(string='Adresse')
     notes = fields.Text(string='Notes')
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if not vals.get('code') or vals.get('code') == 'New':
+                vals['code'] = self.env['ir.sequence'].next_by_code('medical.patient') or 'PAT/00000'
+        return super().create(vals_list)
 
     @api.depends('first_name', 'last_name')
     def _compute_name(self):
