@@ -1,0 +1,218 @@
+================================================================================
+          COMPTE RENDU DES MODIFICATIONS - CABINET MEDICAL (ODOO)
+================================================================================
+
+Date : 12/06/2026
+Projet : Cabinet Médical (Odoo - modules custom)
+Compte Rendu N° : 6 (Séquences auto, dépendance mail, dashboard docteur, sécurité)
+
+
+================================================================================
+1. GENERATION AUTOMATIQUE DES CODES (SEQUENCES) POUR DOCTEURS ET PATIENTS
+================================================================================
+
+POURQUOI ?
+----------
+Le fichier data/sequence.xml du module medical_appointment définissait trois
+séquences automatiques (ir.sequence) :
+  - medical.appointment  → génère les références des rendez-vous
+  - medical.doctor       → préfixe DOC/, padding 3 (DOC/001, DOC/002...)
+  - medical.patient      → préfixe PAT/, padding 5 (PAT/00001, PAT/00002...)
+
+Or, seule la séquence "medical.appointment" était réellement appelée dans le
+code Python. Les deux autres (doctor et patient) étaient définies mais jamais
+utilisées. Les champs "code" des modèles medical.doctor et medical.patient
+étaient marqués required=True, ce qui obligeait l'utilisateur à saisir
+manuellement un code à chaque création — source d'erreurs et d'incohérence.
+
+CE QUI A ETE FAIT
+-----------------
+A) Modèle medical.doctor (medical_base/models/doctor.py)
+   - Ajout de default='New' sur le champ "code" pour que le formulaire affiche
+     "New" avant la sauvegarde.
+   - Modification de la méthode create() existante : avant d'appeler super(),
+     on vérifie si le code est vide ou vaut 'New', et on le remplace par la
+     valeur retournée par :
+       self.env['ir.sequence'].next_by_code('medical.doctor')
+     Résultat : DOC/001, DOC/002, DOC/003...
+
+B) Modèle medical.patient (medical_base/models/patient.py)
+   - Ajout de default='New' sur le champ "code".
+   - Création d'une nouvelle méthode create() avec le décorateur
+     @api.model_create_multi, qui génère automatiquement le code via :
+       self.env['ir.sequence'].next_by_code('medical.patient')
+     Résultat : PAT/00001, PAT/00002, PAT/00003...
+
+FICHIERS MODIFIES
+-----------------
+- medical_base/models/doctor.py
+- medical_base/models/patient.py
+
+
+================================================================================
+2. CORRECTION DE LA DEPENDANCE AU MODULE "MAIL"
+================================================================================
+
+POURQUOI ?
+----------
+Au lancement d'Odoo, l'erreur suivante apparaissait :
+
+  TypeError: Model 'medical.doctor' inherits from non-existing model
+  'mail.thread'.
+
+Les modèles medical.doctor et medical.patient héritent tous les deux de
+'mail.thread' et 'mail.activity.mixin' (pour le chatter, le suivi et les
+activités). Or, le __manifest__.py du module medical_base ne déclarait que
+['base'] dans ses dépendances, sans inclure 'mail'. Odoo ne chargeait donc pas
+le module mail avant medical_base, et les modèles mail.thread/mail.activity.mixin
+n'existaient pas encore au moment du chargement.
+
+CE QUI A ETE FAIT
+-----------------
+- Modification de la liste 'depends' dans medical_base/__manifest__.py :
+    Avant :  'depends': ['base'],
+    Après :  'depends': ['base', 'mail'],
+
+FICHIERS MODIFIES
+-----------------
+- medical_base/__manifest__.py
+
+
+================================================================================
+3. CORRECTION DU DASHBOARD POUR L'IDENTIFICATION DU MEDECIN CONNECTE
+================================================================================
+
+POURQUOI ?
+----------
+Le tableau de bord (dashboard) devait afficher un message personnalisé :
+  - Pour un médecin : "Voici votre planning pour aujourd'hui"
+  - Pour les autres (secrétaire/admin) : "Voici tous les rendez-vous d'aujourd'hui"
+
+Deux problèmes empêchaient ce fonctionnement :
+
+Problème 1 : Recherche du médecin par nom (peu fiable)
+  Le code JavaScript cherchait le médecin connecté en comparant session.name
+  (le nom d'affichage de l'utilisateur Odoo) avec le champ "name" du médecin
+  via un filtre "ilike". Cette correspondance échouait souvent car le nom
+  d'affichage de l'utilisateur et le nom complet du médecin pouvaient différer.
+  Résultat : is_doctor restait toujours false, et le message affiché était
+  systématiquement "Voici tous les rendez-vous d'aujourd'hui", même pour un
+  médecin.
+
+Problème 2 : Détection du rôle basée sur le record plutôt que sur le groupe
+  Le flag state.is_doctor n'était mis à true que si un enregistrement
+  medical.doctor avec user_id correspondant était trouvé en base. Si le champ
+  user_id n'était pas renseigné sur la fiche du médecin, la détection échouait
+  même si l'utilisateur appartenait bien au groupe "Doctor".
+
+CE QUI A ETE FAIT
+-----------------
+A) Remplacement de la recherche par nom par une recherche par user_id :
+     Avant :  [["name", "ilike", session.name]]
+     Après :  [["user_id", "=", session.uid]]
+   Le filtre des rendez-vous utilise maintenant le lien user_id du médecin.
+
+B) Détection du rôle par groupe utilisateur :
+   Le flag state.is_doctor est désormais défini directement depuis la
+   vérification de groupe (user.hasGroup), qui est fiable et indépendante de
+   l'existence d'un enregistrement médecin :
+     this.state.is_doctor = await user.hasGroup("medical_base.group_medical_doctor");
+
+C) Séparation des deux logiques :
+   - Le MESSAGE affiché (template XML) se base sur le GROUPE (state.is_doctor)
+   - Le FILTRE des rendez-vous se base sur le RECORD médecin (user_id)
+   Ainsi, même si le champ user_id n'est pas renseigné, le message sera correct.
+
+FICHIERS MODIFIES
+-----------------
+- medical_appointment/static/src/js/dashboard.js
+
+
+================================================================================
+4. RESTRICTION D'ACCES DES MEDECINS SUR LE MODELE MEDICAL.DOCTOR
+================================================================================
+
+POURQUOI ?
+----------
+Auparavant, un utilisateur du groupe "Doctor" avait un accès en lecture seule
+(perm_read=1) sur le modèle medical.doctor, sans aucune restriction de portée
+(record rule). Cela signifiait qu'un médecin pouvait voir la liste de TOUS les
+médecins (leurs informations, emails, téléphones, etc.), mais ne pouvait pas
+modifier sa propre fiche.
+
+Le besoin exprimé :
+  - Un médecin doit pouvoir LIRE et MODIFIER uniquement SA PROPRE fiche
+  - Un médecin ne doit PAS pouvoir voir les fiches des autres médecins
+  - Un médecin ne doit PAS pouvoir créer de nouveaux médecins
+  - Un médecin ne doit PAS pouvoir supprimer des médecins
+  - Les secrétaires et admins conservent un accès complet
+
+CE QUI A ETE FAIT
+-----------------
+A) Modification des droits d'accès (ir.model.access.csv)
+   Ligne du groupe Doctor sur medical.doctor :
+     Avant :  perm_read=1, perm_write=0, perm_create=0, perm_unlink=0
+     Après :  perm_read=1, perm_write=1, perm_create=0, perm_unlink=0
+   Le droit d'écriture est accordé au niveau ACL, mais la portée sera
+   restreinte par la record rule ci-dessous.
+
+B) Ajout de record rules (ir.rule) dans security.xml
+
+   Règle 1 : "Doctor: Own Record Only"
+     - Groupe : group_medical_doctor
+     - Domaine : [('user_id', '=', user.id)]
+     - Permissions : read=1, write=1, create=0, unlink=0
+     - Effet : le médecin ne peut voir et modifier que l'enregistrement
+       medical.doctor dont le champ user_id correspond à son propre utilisateur.
+
+   Règle 2 : "Secretary: All Doctors"
+     - Groupe : group_medical_secretary
+     - Domaine : [(1, '=', 1)]  (aucune restriction)
+     - Effet : la secrétaire voit et gère tous les médecins.
+
+   Règle 3 : "Admin: All Doctors"
+     - Groupe : group_medical_admin
+     - Domaine : [(1, '=', 1)]  (aucune restriction)
+     - Effet : l'administrateur voit et gère tous les médecins.
+
+IMPORTANT : Le champ user_id de chaque fiche médecin doit être renseigné
+(lié au compte utilisateur Odoo correspondant). Si ce champ est vide, le
+médecin ne pourra pas voir sa propre fiche.
+
+FICHIERS MODIFIES
+-----------------
+- medical_base/security/ir.model.access.csv
+- medical_base/security/security.xml
+
+
+================================================================================
+RECAPITULATIF DES FICHIERS CONCERNES
+================================================================================
+
+  #   Fichier                                         Action      Module
+  --- ----------------------------------------------  ----------  --------------------
+  1   models/doctor.py                                [Modifié]   medical_base
+  2   models/patient.py                               [Modifié]   medical_base
+  3   __manifest__.py                                 [Modifié]   medical_base
+  4   security/ir.model.access.csv                    [Modifié]   medical_base
+  5   security/security.xml                           [Modifié]   medical_base
+  6   static/src/js/dashboard.js                      [Modifié]   medical_appointment
+
+
+================================================================================
+MISE A JOUR
+================================================================================
+
+Pour appliquer toutes ces modifications, relancer Odoo avec la commande :
+
+  python odoo-bin -u medical_base,medical_appointment -d <nom_de_la_base>
+
+Notes importantes :
+  - Vérifier que le champ user_id est bien renseigné sur chaque fiche médecin,
+    sinon le médecin ne pourra ni voir sa fiche ni accéder à ses rendez-vous
+    sur le dashboard.
+  - Les patients et médecins déjà existants en base garderont leur ancien code
+    (saisi manuellement). Les nouveaux enregistrements auront un code généré
+    automatiquement par les séquences.
+
+================================================================================
