@@ -169,24 +169,6 @@
                         <div class="col-lg-7" data-reveal="right">
                             <div class="m-rgpd-grid">
                                 <div class="m-rgpd-card">
-                                    <div class="m-rgpd-icon" style="background:rgba(13,148,136,0.1);color:#0d9488;">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:22px;height:22px;">
-                                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-                                        </svg>
-                                    </div>
-                                    <h5>Hébergement HDS</h5>
-                                    <p>Données stockées chez un hébergeur agréé Données de Santé, certifié par l'État.</p>
-                                </div>
-                                <div class="m-rgpd-card">
-                                    <div class="m-rgpd-icon" style="background:rgba(16,185,129,0.1);color:#059669;">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:22px;height:22px;">
-                                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-                                        </svg>
-                                    </div>
-                                    <h5>Chiffrement TLS</h5>
-                                    <p>Toutes les communications sont chiffrées de bout en bout pour garantir la confidentialité.</p>
-                                </div>
-                                <div class="m-rgpd-card">
                                     <div class="m-rgpd-icon" style="background:rgba(59,130,246,0.1);color:#2563eb;">
                                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:22px;height:22px;">
                                             <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="15" x2="15" y2="15"/>
@@ -332,25 +314,14 @@
                                             </div>
                                         </div>
 
-                                        <!-- MINI CALENDRIER -->
-                                        <div class="med-card-calendar">
-                                            <div class="med-cal-header">
-                                                <button class="med-cal-nav" disabled="disabled">‹</button>
-                                                <span class="med-cal-title">Prochaines disponibilités</span>
-                                                <button class="med-cal-nav">›</button>
-                                            </div>
-                                            <div class="med-cal-grid">
-                                                <t t-foreach="next_days" t-as="d">
-                                                    <div class="med-cal-day">
-                                                        <p class="med-cal-day-label"><t t-esc="d['label']"/></p>
-                                                        <p class="med-cal-day-num"><t t-esc="d['num']"/></p>
-                                                        <t t-foreach="d['slots']" t-as="slot">
-                                                            <a t-att-href="'/medical/rdv?doctor_id=' + str(doctor.id)" class="med-cal-slot"><t t-esc="slot"/></a>
-                                                        </t>
-                                                    </div>
-                                                </t>
-                                            </div>
-                                            <a t-att-href="'/medical/rdv?doctor_id=' + str(doctor.id)" class="med-cal-more">Voir tous les créneaux →</a>
+                                        <!-- BOUTON RDV -->
+                                        <div class="med-card-action">
+                                            <a t-att-href="'/medical/rdv?doctor_id=' + str(doctor.id)" class="med-card-btn">
+                                                Prendre rendez-vous
+                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;margin-left:8px;">
+                                                    <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+                                                </svg>
+                                            </a>
                                         </div>
                                     </div>
                                 </t>
@@ -1098,7 +1069,7 @@
                                     </t>
                                 </div>
                             </div>
-                            <a href="/medical/mes-rdv" class="esp-v2-logout">Déconnexion</a>
+                            <a href="/medical/logout" class="esp-v2-logout">Déconnexion</a>
                         </div>
                     </div>
                 </div>

@@ -10,9 +10,9 @@ class MedicalWebsite(http.Controller):
 
     @http.route('/medical', type='http', auth='public', website=True)
     def index(self, **kwargs):
-        doctor = request.env['medical.doctor'].sudo().search([], limit=1)
+        doctors = request.env['medical.doctor'].sudo().search([], limit=3)
         return request.render('medical_website.index', {
-            'featured_doctor': doctor,
+            'doctors': doctors,
         })
 
     @http.route('/medical/medecins', type='http', auth='public', website=True)
@@ -27,11 +27,10 @@ class MedicalWebsite(http.Controller):
         now = datetime.now()
         cursor = now.replace(hour=0, minute=0, second=0, microsecond=0)
 
-        # Boucle jusqu'à avoir 3 jours avec créneaux dispo (max 14 jours d'essai)
         for _ in range(14):
             if len(next_days) >= 3:
                 break
-            if cursor.weekday() < 6:  # Lundi=0 ... Samedi=5 (exclut dimanche=6)
+            if cursor.weekday() < 6:
                 available = []
                 for s in slot_pool:
                     h, m = int(s[:2]), int(s[3:5])
@@ -55,7 +54,6 @@ class MedicalWebsite(http.Controller):
     def rdv(self, doctor_id=None, **kwargs):
         from datetime import datetime, timedelta
 
-        # Si pas de médecin sélectionné, rediriger vers la liste
         if not doctor_id:
             return request.redirect('/medical/medecins')
 
@@ -90,7 +88,7 @@ class MedicalWebsite(http.Controller):
             if not doctor_id or not appointment_date or not first_name or not last_name:
                 raise ValueError("Tous les champs obligatoires doivent être remplis.")
 
-            # Validation date de naissance (doit être dans le passé)
+            # Validation date de naissance
             if not birth_date:
                 raise ValueError("La date de naissance est obligatoire.")
             try:
@@ -107,7 +105,6 @@ class MedicalWebsite(http.Controller):
             # Heure LOCALE choisie par l'utilisateur
             date_local = datetime.strptime(appointment_date, '%Y-%m-%dT%H:%M')
 
-            # Validations sur l'heure LOCALE (avant conversion UTC)
             if not (8 <= date_local.hour < 17):
                 raise ValueError("Les RDV sont disponibles uniquement entre 08h00 et 17h00.")
 
@@ -120,6 +117,15 @@ class MedicalWebsite(http.Controller):
 
             if date_utc < datetime.utcnow():
                 raise ValueError("La date choisie est déjà passée.")
+
+            # ===== CONTRAINTE A : créneau déjà pris (vérifié AVANT création/recherche patient) =====
+            existing_slot_taken = request.env['medical.appointment'].sudo().search([
+                ('doctor_id', '=', doctor_id),
+                ('appointment_date', '=', date_utc),
+                ('state', '!=', 'cancelled'),
+            ], limit=1)
+            if existing_slot_taken:
+                raise ValueError("Ce créneau est déjà réservé. Veuillez choisir un autre horaire.")
 
             # Recherche / création du patient
             patient = request.env['medical.patient'].sudo().search([
@@ -140,10 +146,9 @@ class MedicalWebsite(http.Controller):
             if not patient:
                 patient = request.env['medical.patient'].sudo().create(patient_vals)
             else:
-                # Mise à jour des infos si patient existant
                 patient.sudo().write(patient_vals)
 
-            # ===== CONTRAINTE 1 : un seul RDV par jour avec le même médecin =====
+            # ===== CONTRAINTE B : un seul RDV par jour avec le même médecin =====
             start_of_day = date_local.replace(hour=0, minute=0, second=0, microsecond=0)
             end_of_day = date_local.replace(hour=23, minute=59, second=59, microsecond=0)
             start_utc = user_tz.localize(start_of_day).astimezone(pytz.utc).replace(tzinfo=None)
@@ -159,7 +164,7 @@ class MedicalWebsite(http.Controller):
             if existing_same_doctor:
                 raise ValueError("Vous avez déjà un rendez-vous avec ce médecin ce jour-là.")
 
-            # ===== CONTRAINTE 2 : pas de RDV au même créneau avec un autre médecin =====
+            # ===== CONTRAINTE C : pas de RDV au même créneau avec un autre médecin =====
             existing_same_slot = request.env['medical.appointment'].sudo().search([
                 ('patient_id', '=', patient.id),
                 ('appointment_date', '=', date_utc),
@@ -187,7 +192,6 @@ class MedicalWebsite(http.Controller):
             if doctor_id_raw:
                 selected_doctor = request.env['medical.doctor'].sudo().browse(int(doctor_id_raw))
 
-            # Nettoyer le message d'erreur
             error_msg = str(e)
             if 'ValidationError' in error_msg:
                 error_msg = error_msg.split('\n')[-1]
@@ -313,23 +317,19 @@ class MedicalWebsite(http.Controller):
                 'rdvs': False,
             })
 
-        rdvs = request.env['medical.appointment'].sudo().search([
-            ('patient_id', '=', patient.id),
-        ], order='appointment_date desc')
+        # AUTHENTIFICATION SESSION
+        request.session['authenticated_patient_id'] = patient.id
 
-        consultations = request.env['medical.consultation'].sudo().search([
-            ('patient_id', '=', patient.id),
-        ], order='consultation_date desc')
-
-        return request.render('medical_website.mes_rdv', {
-            'searched': True,
-            'patient': patient,
-            'rdvs': rdvs,
-            'consultations': consultations,
-        })
+        # Redirection directe vers l'espace patient
+        return request.redirect('/medical/espace-patient/' + str(patient.id))
 
     @http.route('/medical/espace-patient/<int:patient_id>', type='http', auth='public', website=True)
     def espace_patient(self, patient_id, **kwargs):
+        # VÉRIFICATION SESSION
+        session_patient_id = request.session.get('authenticated_patient_id')
+        if not session_patient_id or session_patient_id != patient_id:
+            return request.redirect('/medical/mes-rdv')
+
         patient = request.env['medical.patient'].sudo().browse(patient_id)
         if not patient.exists():
             return request.redirect('/medical/mes-rdv')
@@ -343,7 +343,6 @@ class MedicalWebsite(http.Controller):
             ('state', '=', 'done'),
         ], order='consultation_date desc')
 
-        # Statistiques
         total_rdv = len(rdvs)
         rdv_done = len(rdvs.filtered(lambda r: r.state == 'done'))
         rdv_upcoming = len(rdvs.filtered(lambda r: r.state in ['draft', 'confirmed']))
@@ -357,12 +356,10 @@ class MedicalWebsite(http.Controller):
             'rdv_upcoming': rdv_upcoming,
         })
 
-    @http.route('/medical', type='http', auth='public', website=True)
-    def index(self, **kwargs):
-        doctors = request.env['medical.doctor'].sudo().search([], limit=3)
-        return request.render('medical_website.index', {
-            'doctors': doctors,
-        })
+    @http.route('/medical/logout', type='http', auth='public', website=True)
+    def medical_logout(self, **kwargs):
+        request.session.pop('authenticated_patient_id', None)
+        return request.redirect('/medical/mes-rdv')
 
     @http.route('/medical/rgpd', type='http', auth='public', website=True)
     def rgpd(self, **kwargs):
@@ -374,9 +371,14 @@ class MedicalWebsite(http.Controller):
         patient_id = kwargs.get('patient_id')
         if not rdv_id or not patient_id:
             return request.redirect('/medical/mes-rdv')
+
+        # VÉRIFICATION SESSION
+        session_patient_id = request.session.get('authenticated_patient_id')
+        if not session_patient_id or session_patient_id != int(patient_id):
+            return request.redirect('/medical/mes-rdv')
+
         try:
             rdv = request.env['medical.appointment'].sudo().browse(int(rdv_id))
-            # Sécurité : on vérifie que le RDV appartient bien au patient
             if rdv and rdv.patient_id.id == int(patient_id) and rdv.state in ('draft', 'confirmed'):
                 rdv.sudo().write({'state': 'cancelled'})
         except Exception:
@@ -388,6 +390,12 @@ class MedicalWebsite(http.Controller):
         rdv = request.env['medical.appointment'].sudo().browse(rdv_id)
         if not rdv.exists():
             return request.redirect('/medical/mes-rdv')
+
+        # VÉRIFICATION SESSION
+        session_patient_id = request.session.get('authenticated_patient_id')
+        if not session_patient_id or session_patient_id != rdv.patient_id.id:
+            return request.redirect('/medical/mes-rdv')
+
         return request.render('medical_website.rdv_details', {
             'rdv': rdv,
         })
