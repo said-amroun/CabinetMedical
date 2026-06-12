@@ -24,6 +24,7 @@ export class MedicalDashboard extends Component {
             const isAdmin = await user.hasGroup("base.group_erp_manager");
             
             this.state.has_access = isDoctor || isSecretary || isAdmin;
+            this.state.is_doctor = isDoctor;
             
             if (!this.state.has_access) {
                 return;
@@ -45,24 +46,22 @@ export class MedicalDashboard extends Component {
             const todayStr = formatToUTCString(today);
             const tomorrowStr = formatToUTCString(tomorrow);
 
-            // Try to find a doctor matching the user's name
-            const doctors = await this.orm.searchRead(
-                "medical.doctor", 
-                [["name", "ilike", session.name]], 
-                ["id"]
-            );
-            
             let domain = [
                 ["appointment_date", ">=", todayStr],
                 ["appointment_date", "<", tomorrowStr],
                 ["state", "!=", "cancelled"]
             ];
-            
-            if (doctors.length > 0) {
-                domain.push(["doctor_id", "=", doctors[0].id]);
-                this.state.is_doctor = true;
-            } else {
-                this.state.is_doctor = false;
+
+            // If the user is a doctor, filter by their doctor record
+            if (isDoctor) {
+                const doctors = await this.orm.searchRead(
+                    "medical.doctor", 
+                    [["user_id", "=", session.uid]], 
+                    ["id"]
+                );
+                if (doctors.length > 0) {
+                    domain.push(["doctor_id", "=", doctors[0].id]);
+                }
             }
 
             const appointments = await this.orm.searchRead(

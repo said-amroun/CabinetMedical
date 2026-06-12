@@ -1,9 +1,9 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_medical_specialty,access.medical.specialty,model_medical_specialty,group_medical_secretary,1,1,1,1
+access_medical_specialty,access.medical.specialty,model_medical_specialty,group_medical_secretary,0,0,0,0
 access_medical_doctor,access.medical.doctor,model_medical_doctor,group_medical_secretary,1,1,1,1
 access_medical_patient,access.medical.patient,model_medical_patient,group_medical_secretary,1,1,1,1
 access_medical_specialty_doc,access.medical.specialty.doc,model_medical_specialty,group_medical_doctor,1,0,0,0
-access_medical_doctor_doc,access.medical.doctor.doc,model_medical_doctor,group_medical_doctor,1,0,0,0
+access_medical_doctor_doc,access.medical.doctor.doc,model_medical_doctor,group_medical_doctor,1,1,0,0
 access_medical_patient_doc,access.medical.patient.doc,model_medical_patient,group_medical_doctor,1,1,1,0
 access_medical_specialty_admin,access.medical.specialty.admin,model_medical_specialty,base.group_erp_manager,1,1,1,1
 access_medical_doctor_admin,access.medical.doctor.admin,model_medical_doctor,base.group_erp_manager,1,1,1,1

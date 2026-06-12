@@ -5,7 +5,7 @@
     'description': 'Manage doctors, patients and specialties.',
     'author': 'DIB Syphax / AMROUN Said',
     'category': 'Healthcare',
-    'depends': ['base'],
+    'depends': ['base', 'mail'],
     'data': [
         'security/security.xml',
         'security/ir.model.access.csv',

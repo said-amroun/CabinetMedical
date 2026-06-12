@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <menuitem id="medical_root_menu" name="Medical"/>
+    <menuitem id="medical_root_menu" name="Medical" web_icon="medical_base,static/description/icon.png"/>
 
     <menuitem id="medical_configuration_menu"
               name="Configuration"
               parent="medical_root_menu"
-              sequence="10"/>
+
+              sequence="100"/>
 
     <menuitem id="medical_doctor_menu"
               name="Docteurs"
