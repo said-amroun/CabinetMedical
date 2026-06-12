@@ -116,7 +116,7 @@ class MedicalAppointment(models.Model):
                 lambda app: app.appointment_date < end_date and (app.appointment_date + timedelta(minutes=30)) > start_date
             )
             if overlapping:
-                raise ValidationError("Le médecin a déjà un rendez-vous (de 30 min) à cette heure.")
+                raise ValidationError("Ce créneau est déjà réservé. Veuillez choisir un autre horaire.")
 
     def action_confirm(self):
         for rec in self:
