@@ -18,6 +18,7 @@ class MedicalPatient(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
     code = fields.Char(string='Code', required=True, default='New')
+    image_1920 = fields.Image(string='Photo', max_width=1920, max_height=1920)
     first_name = fields.Char(string='Prénom', required=True, tracking=True)
     last_name = fields.Char(string='Nom', required=True, tracking=True)
     name = fields.Char(string='Nom Complet', compute='_compute_name', store=True)
@@ -28,10 +29,10 @@ class MedicalPatient(models.Model):
         ('female', 'Femme'),
         ('other', 'Autre'),
     ], string='Genre', required=True)
-    phone = fields.Char(string='Téléphone', required=True)
-    email = fields.Char(string='Email', required=True)
+    phone = fields.Char(string='Téléphone', required=True, tracking=True)
+    email = fields.Char(string='Email', required=True, tracking=True)
     address = fields.Text(string='Adresse')
-    notes = fields.Text(string='Notes')
+    notes = fields.Html(string='Notes')
 
     @api.model_create_multi
     def create(self, vals_list):

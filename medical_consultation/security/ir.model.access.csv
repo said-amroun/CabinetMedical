@@ -1,7 +1,7 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_medical_disease_sec,access.medical.disease,model_medical_disease,medical_base.group_medical_secretary,0,0,0,0
 access_medical_medication_sec,access.medical.medication,model_medical_medication,medical_base.group_medical_secretary,0,0,0,0
-access_medical_consultation_sec,access.medical.consultation,model_medical_consultation,medical_base.group_medical_secretary,0,0,0,0
+access_medical_consultation_sec,access.medical.consultation,model_medical_consultation,medical_base.group_medical_secretary,1,0,0,0
 access_medical_prescription_line_sec,access.medical.prescription.line,model_medical_prescription_line,medical_base.group_medical_secretary,0,0,0,0
 access_medical_disease_doc,access.medical.disease.doc,model_medical_disease,medical_base.group_medical_doctor,1,1,1,1
 access_medical_medication_doc,access.medical.medication.doc,model_medical_medication,medical_base.group_medical_doctor,1,1,1,1

@@ -22,7 +22,8 @@ class MedicalConsultation(models.Model):
     
     state = fields.Selection([
         ('draft', 'Brouillon'),
-        ('done', 'Confirmé')
+        ('done', 'Confirmé'),
+        ('locked', 'Verrouillé')
     ], string='Status', default='draft', required=True)
     consultation_date = fields.Datetime(string='Date de Consultation', readonly=True)
     
@@ -32,6 +33,12 @@ class MedicalConsultation(models.Model):
     
     prescription_line_ids = fields.One2many('medical.prescription.line', 'consultation_id', string='Ordonnances')
     document_ids = fields.One2many('medical.consultation.document', 'consultation_id', string='Attestations / Justificatifs')
+
+    # Préconsultation
+    weight = fields.Float(string='Poids (kg)')
+    height = fields.Float(string='Taille (cm)')
+    preconsultation_care = fields.Text(string='Soins administrés en préconsultation')
+    preconsultation_notes = fields.Text(string='Notes de préconsultation')
 
     treatment_summary = fields.Text(string='Traitement', compute='_compute_treatment_summary')
 
@@ -64,6 +71,9 @@ class MedicalConsultation(models.Model):
         return super(MedicalConsultation, self).create(vals_list)
 
     def write(self, vals):
+        for rec in self:
+            if rec.state == 'locked' and not self.env.user.has_group('medical_base.group_medical_admin'):
+                raise AccessError("Cette consultation est verrouillée. Seul un administrateur peut la modifier.")
         if 'appointment_id' in vals:
             for rec in self:
                 self._check_doctor_access(vals.get('appointment_id'))
@@ -75,6 +85,10 @@ class MedicalConsultation(models.Model):
             rec.consultation_date = fields.Datetime.now()
             if rec.appointment_id:
                 rec.appointment_id.action_done()
+
+    def action_lock(self):
+        for rec in self:
+            rec.state = 'locked'
 
 
 class MedicalPrescriptionLine(models.Model):

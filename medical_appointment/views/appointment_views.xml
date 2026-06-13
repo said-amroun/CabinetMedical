@@ -10,7 +10,7 @@
                 <field name="patient_id"/>
                 <field name="doctor_id"/>
                 <field name="appointment_date"/>
-                <field name="state" widget="badge"/>
+                <field name="state" widget="badge" decoration-warning="state == 'draft'" decoration-success="state == 'confirmed'" decoration-danger="state == 'done'"/>
             </list>
         </field>
     </record>

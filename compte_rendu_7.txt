@@ -1,0 +1,177 @@
+================================================================================
+          COMPTE RENDU DES MODIFICATIONS - CABINET MEDICAL (ODOO)
+================================================================================
+
+Date : 14/06/2026
+Projet : Cabinet Médical (Odoo - modules custom)
+Compte Rendu N° : 7 (Verrouillage, Accès Patient/Secrétaire, Préconsultation, Cron & Restrictions Docteurs)
+
+
+================================================================================
+1. VERROUILLAGE DES CONSULTATIONS (ETAT LOCKED)
+================================================================================
+
+POURQUOI ?
+----------
+Empêcher la modification des consultations médicales une fois qu'elles sont closes,
+afin de garantir l'intégrité légale des données médicales. Seul l'administrateur
+doit avoir le droit de modifier ou de déverrouiller une consultation verrouillée.
+
+CE QUI A ETE FAIT
+-----------------
+A) Modèle medical.consultation (medical_consultation/models/consultation.py)
+   - Ajout de l'état 'locked' (Verrouillé) dans la sélection du champ "state".
+   - Ajout d'un bouton "Verrouiller" (action_lock) visible uniquement si l'état
+     est 'done' (Confirmé).
+   - Modification de la méthode write() : avant de procéder à la modification,
+     on vérifie si l'enregistrement est dans l'état 'locked'. Si c'est le cas
+     et que l'utilisateur actuel n'est pas dans le groupe Admin
+     (medical_base.group_medical_admin), une erreur d'accès (AccessError) est levée.
+
+FICHIERS MODIFIES
+-----------------
+- medical_consultation/models/consultation.py
+- medical_consultation/views/consultation_views.xml
+
+
+================================================================================
+2. DROITS DU SECRETAIRE SUR LES PATIENTS ET LE BOUTON "SUIVI MEDICAL"
+================================================================================
+
+POURQUOI ?
+----------
+Le secrétaire doit pouvoir lire, modifier, créer et supprimer des fiches
+patients, mais ne doit pas avoir accès aux informations médicales
+confidentielles (les consultations du patient accessibles via le smart button
+"Suivi Médical").
+
+De plus, l'accès à la fiche patient levait une erreur d'accès car le champ calculé
+"consultation_count" (sur le patient) tentait de lire le modèle
+"medical.consultation", sur lequel le secrétaire n'avait aucun droit dans l'ACL.
+
+CE QUI A ETE FAIT
+-----------------
+A) Masquage du Smart Button (medical_consultation/views/patient_views.xml)
+   - Ajout de groups="medical_base.group_medical_doctor,medical_base.group_medical_admin"
+     sur le bouton "Suivi Médical" dans l'héritage de la vue formulaire patient.
+     Le secrétaire ne voit plus ce bouton.
+
+B) Accès en Lecture Seule sur medical.consultation
+   - Modification de security/ir.model.access.csv : attribution des droits de
+     lecture seule au secrétaire sur model_medical_consultation (1,0,0,0).
+   - Ajout d'une règle d'enregistrement (ir.rule) dans security_rules.xml pour
+     le groupe Secretary permettant de lire toutes les consultations de manière
+     globale (sans restriction) mais en lecture seule uniquement (perm_read=1,
+     perm_write=0, perm_create=0, perm_unlink=0).
+     Cela permet à Odoo de calculer consultation_count sans erreur de sécurité
+     à l'ouverture de la fiche patient par le secrétaire.
+
+FICHIERS MODIFIES
+-----------------
+- medical_consultation/views/patient_views.xml
+- medical_consultation/security/ir.model.access.csv
+- medical_consultation/security/security_rules.xml
+
+
+================================================================================
+3. ONGLET PRECONSULATION DANS LA CONSULTATION
+================================================================================
+
+POURQUOI ?
+----------
+Permettre la saisie des constantes vitales (poids, taille) et des soins de base
+administrés au patient en préconsultation par les infirmiers ou secrétaires.
+
+CE QUI A ETE FAIT
+-----------------
+A) Modèle medical.consultation (medical_consultation/models/consultation.py)
+   - Ajout de 4 nouveaux champs :
+     - weight (Poids en kg)
+     - height (Taille en cm)
+     - preconsultation_care (Soins administrés en préconsultation - Texte)
+     - preconsultation_notes (Notes de préconsultation - Texte)
+
+B) Vue Formulaire (medical_consultation/views/consultation_views.xml)
+   - Ajout d'un nouvel onglet "Préconsultation" positionné en premier dans le
+     notebook, présentant le poids, la taille, les soins et les notes.
+
+FICHIERS MODIFIES
+-----------------
+- medical_consultation/models/consultation.py
+- medical_consultation/views/consultation_views.xml
+
+
+================================================================================
+4. ACTION PLANIFIEE (NOTIFIER LES DOCTEURS DE LEURS RDV DU LENDEMAIN)
+================================================================================
+
+POURQUOI ?
+----------
+Notifier automatiquement les médecins chaque jour à 17h00 de leurs consultations
+(rendez-vous) du lendemain afin qu'ils puissent anticiper leur planning.
+
+CE QUI A ETE FAIT
+-----------------
+A) Modèle medical.appointment (medical_appointment/models/appointment.py)
+   - Ajout de la méthode _cron_notify_tomorrow_appointments().
+   - Récupération du fuseau horaire de l'utilisateur (ex: Europe/Paris).
+   - Calcul des bornes UTC de la journée de demain (00:00:00 à 23:59:59 heure locale).
+   - Recherche des rendez-vous confirmés de demain pour les médecins ayant un
+     compte utilisateur Odoo lié.
+   - Saisie d'une activité standard Odoo ("To Do") assignée au médecin et liée au
+     rendez-vous. Vérification des doublons pour éviter les renvois multiples.
+
+B) Fichier XML data/cron.xml (medical_appointment/data/cron.xml)
+   - Création de la tâche planifiée (ir.cron) "Cabinet Médical : Notification
+     Consultations du Lendemain".
+   - Configuration pour un lancement quotidien avec initialisation dynamique
+     du champ "nextcall" à demain 17:00 (15:00 UTC en heure d'été).
+
+C) Manifest de medical_appointment
+   - Déclaration de 'data/cron.xml' dans le dictionnaire du manifest.
+
+FICHIERS MODIFIES
+-----------------
+- medical_appointment/models/appointment.py
+- medical_appointment/data/cron.xml (Nouveau)
+- medical_appointment/__manifest__.py
+
+
+================================================================================
+5. RESTRICTION DU CHAMP UTILISATEUR ODOO SUR LA FICHE DOCTEUR
+================================================================================
+
+POURQUOI ?
+----------
+Le compte utilisateur Odoo lié à un médecin régit ses droits d'accès à l'application.
+Ni le docteur lui-même ni le secrétaire ne doivent pouvoir changer cette association,
+cette action d'administration système devant être réservée uniquement à l'Admin.
+
+CE QUI A ETE FAIT
+-----------------
+A) Modèle medical.doctor (medical_base/models/doctor.py)
+   - Surcharge des méthodes create() et write() : si le champ "user_id" est
+     fourni dans les valeurs (create ou write) et que l'utilisateur connecté
+     ne fait pas partie du groupe Admin (medical_base.group_medical_admin),
+     une exception de sécurité (AccessError) est levée.
+
+B) Vue Formulaire (medical_base/views/doctor_views.xml)
+   - Ajout de l'attribut readonly="not current_user_has_group('medical_base.group_medical_admin')"
+     sur le champ "user_id". Il apparaît en lecture seule pour tous sauf l'Admin.
+
+FICHIERS MODIFIES
+-----------------
+- medical_base/models/doctor.py
+- medical_base/views/doctor_views.xml
+
+
+================================================================================
+MISE A JOUR DU SYSTEME
+================================================================================
+
+Pour appliquer l'ensemble de ces modifications en base de données, lancez la
+commande d'upgrade suivante :
+
+  python odoo-bin -u medical_base,medical_appointment,medical_consultation -d odoo
+
+================================================================================

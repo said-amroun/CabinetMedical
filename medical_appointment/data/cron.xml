@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="ir_cron_notify_doctor_consultations" model="ir.cron">
+            <field name="name">Cabinet Médical : Notification Consultations du Lendemain</field>
+            <field name="model_id" ref="medical_appointment.model_medical_appointment"/>
+            <field name="state">code</field>
+            <field name="code">model._cron_notify_tomorrow_appointments()</field>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <!-- Next call at 17:00 local time (15:00 UTC) tomorrow -->
+            <field name="nextcall" eval="(datetime.now() + timedelta(days=1)).replace(hour=15, minute=0, second=0, microsecond=0).strftime('%Y-%m-%d %H:%M:%S')"/>
+        </record>
+    </data>
+</odoo>

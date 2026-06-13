@@ -1,5 +1,5 @@
 from odoo import models, fields, api
-from odoo.exceptions import ValidationError
+from odoo.exceptions import ValidationError, AccessError
 from odoo.tools import email_normalize
 import re
 
@@ -18,13 +18,14 @@ class MedicalDoctor(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
     code = fields.Char(string='Code', required=True, default='New')
+    image_1920 = fields.Image(string='Photo', max_width=1920, max_height=1920)
     
-    first_name = fields.Char(string='Prénom', required=True)
-    last_name = fields.Char(string='Nom', required=True)
+    first_name = fields.Char(string='Prénom', required=True, tracking=True)
+    last_name = fields.Char(string='Nom', required=True, tracking=True)
     name = fields.Char(string='Nom Complet', compute='_compute_name', store=True)
-    email = fields.Char(string='Email')
-    phone = fields.Char(string='Téléphone')
-    specialty_id = fields.Many2one('medical.specialty', string='Spécialité')
+    email = fields.Char(string='Email', tracking=True)
+    phone = fields.Char(string='Téléphone', tracking=True)
+    specialty_id = fields.Many2one('medical.specialty', string='Spécialité', tracking=True)
     bio = fields.Text(string='Biographie')
     user_id = fields.Many2one('res.users', string='Utilisateur Odoo', help='Lié à l\'utilisateur du système')
     availability_ids = fields.One2many(
@@ -36,6 +37,8 @@ class MedicalDoctor(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
+            if vals.get('user_id') and not self.env.user.has_group('medical_base.group_medical_admin'):
+                raise AccessError("Seul un administrateur peut associer un médecin à un utilisateur Odoo.")
             if not vals.get('code') or vals.get('code') == 'New':
                 vals['code'] = self.env['ir.sequence'].next_by_code('medical.doctor') or 'DOC/000'
         doctors = super().create(vals_list)
@@ -53,6 +56,12 @@ class MedicalDoctor(models.Model):
                         })
                     self.env['medical.doctor.availability'].create(avail_vals)
         return doctors
+
+    def write(self, vals):
+        if 'user_id' in vals:
+            if not self.env.user.has_group('medical_base.group_medical_admin'):
+                raise AccessError("Seul un administrateur peut modifier l'utilisateur Odoo d'un médecin.")
+        return super().write(vals)
 
     @api.depends('first_name', 'last_name')
     def _compute_name(self):

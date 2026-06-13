@@ -1,6 +1,6 @@
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError, AccessError
-from datetime import timedelta
+from datetime import datetime, timedelta, time
 import pytz
 
 
@@ -148,3 +148,53 @@ class MedicalAppointment(models.Model):
     def action_cancel(self):
         for rec in self:
             rec.state = 'cancelled'
+
+    @api.model
+    def _cron_notify_tomorrow_appointments(self):
+        # Retrieve target timezone
+        tz_name = self.env.user.tz or 'Europe/Paris'
+        user_tz = pytz.timezone(tz_name)
+
+        # Calculate today and tomorrow local dates
+        today_local = datetime.now(user_tz).date()
+        tomorrow_local = today_local + timedelta(days=1)
+
+        # Local bounds for tomorrow
+        start_local = datetime.combine(tomorrow_local, time.min)
+        end_local = datetime.combine(tomorrow_local, time.max)
+
+        # Convert bounds to UTC for search query
+        start_utc = user_tz.localize(start_local).astimezone(pytz.utc).replace(tzinfo=None)
+        end_utc = user_tz.localize(end_local).astimezone(pytz.utc).replace(tzinfo=None)
+
+        # Search for tomorrow's appointments
+        appointments = self.search([
+            ('appointment_date', '>=', start_utc),
+            ('appointment_date', '<=', end_utc),
+            ('state', '=', 'confirmed'),
+            ('doctor_id.user_id', '!=', False),
+        ])
+
+        # Notify doctors
+        for appointment in appointments:
+            doctor_user = appointment.doctor_id.user_id
+            
+            # Formulate local time representation for the doctor
+            appt_time_local = pytz.utc.localize(appointment.appointment_date).astimezone(user_tz)
+            time_str = appt_time_local.strftime('%H:%M')
+
+            # Avoid duplicating activities
+            existing = self.env['mail.activity'].search([
+                ('res_model', '=', 'medical.appointment'),
+                ('res_id', '=', appointment.id),
+                ('user_id', '=', doctor_user.id),
+            ], limit=1)
+
+            if not existing:
+                appointment.activity_schedule(
+                    act_type_xmlid='mail.mail_activity_data_todo',
+                    date_deadline=tomorrow_local,
+                    summary=f"Consultation demain : {appointment.patient_id.name}",
+                    note=f"Rappel: Vous avez une consultation demain à {time_str} avec le patient {appointment.patient_id.name}.",
+                    user_id=doctor_user.id
+                )

@@ -10,6 +10,7 @@
         'security/security_rules.xml',
         'security/ir.model.access.csv',
         'data/sequence.xml',
+        'data/cron.xml',
         'views/dashboard_action.xml',
         'views/appointment_views.xml',
         'views/patient_views.xml',

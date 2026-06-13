@@ -20,6 +20,7 @@
         <field name="arch" type="xml">
             <form string="Docteur">
                 <sheet>
+                    <field name="image_1920" widget="image" class="oe_avatar" options="{'preview_image': 'image_128'}"/>
                     <div class="oe_title">
                         <h1>
                             <field name="code" readonly="1"/>
@@ -33,9 +34,9 @@
                             <field name="specialty_id"/>
                         </group>
                         <group>
-                            <field name="phone"/>
-                            <field name="email"/>
-                            <field name="user_id"/>
+                            <field name="phone" class="w-100" widget="phone" placeholder="Phone"/>
+                            <field name="email" class="w-100" widget="email" placeholder="Email"/>
+                            <field name="user_id" readonly="not current_user_has_group('medical_base.group_medical_admin')"/>
                         </group>
                     </group>
                     <notebook>
