@@ -64,6 +64,7 @@
                         <page string="Prescription">
                             <field name="prescription_line_ids">
                                 <list editable="bottom">
+                                    <field name="to_print"/>
                                     <field name="line_type"/>
                                     <field name="medication_id" invisible="line_type != 'medication'" required="line_type == 'medication'"/>
                                     <field name="custom_title" invisible="line_type != 'custom'" required="line_type == 'custom'" placeholder="Ex: Echodoppler"/>

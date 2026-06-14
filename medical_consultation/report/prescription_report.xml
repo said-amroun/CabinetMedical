@@ -72,7 +72,7 @@
 
                         <!-- Prescription Content Section -->
                         <div style="margin-top: 40px; min-height: 220px;">
-                            <t t-foreach="doc.prescription_line_ids" t-as="line">
+                            <t t-foreach="doc.prescription_line_ids.filtered('to_print')" t-as="line">
                                 <div style="margin-bottom: 20px;">
                                     <!-- For Medication lines -->
                                     <t t-if="line.line_type == 'medication'">

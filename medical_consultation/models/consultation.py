@@ -96,6 +96,7 @@ class MedicalPrescriptionLine(models.Model):
     _description = 'Prescription Line'
 
     consultation_id = fields.Many2one('medical.consultation', string='Consultation', ondelete='cascade')
+    to_print = fields.Boolean(string="À imprimer", default=True)
     line_type = fields.Selection([
         ('medication', 'Médicament'),
         ('custom', 'Autre (Soin, Examen...)')
