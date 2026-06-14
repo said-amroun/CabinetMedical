@@ -16,6 +16,7 @@
         'web.assets_frontend': [
             'medical_website/static/src/css/style.css',
             'medical_website/static/src/js/main.js',
+            'medical_website/static/src/js/accessibility.js',
         ],
     },
     'installable': True,

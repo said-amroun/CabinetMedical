@@ -3147,3 +3147,748 @@ body.dark-mode .ctc-v2-textarea {
     transform: translateY(-2px);
     box-shadow: 0 10px 22px -4px rgba(13,148,136,0.55);
 }
+/* ========== ACCESSIBILITÉ ========== */
+
+/* Bouton flottant */
+#a11y-fab {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #0d9488, #10b981);
+    color: white;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 8px 24px rgba(13,148,136,0.5);
+    z-index: 9998;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+#a11y-fab:hover {
+    transform: scale(1.08);
+    box-shadow: 0 12px 32px rgba(13,148,136,0.7);
+}
+
+/* Panneau */
+#a11y-panel {
+    position: fixed;
+    bottom: 100px;
+    right: 24px;
+    width: 320px;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.18);
+    border: 1px solid rgba(13,148,136,0.1);
+    z-index: 9999;
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+    pointer-events: none;
+    transition: all 0.25s cubic-bezier(0.4,0,0.2,1);
+}
+#a11y-panel.a11y-open {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+}
+.a11y-panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 22px;
+    border-bottom: 1px solid rgba(13,148,136,0.1);
+}
+.a11y-panel-header h3 {
+    margin: 0;
+    color: #0f172a;
+    font-size: 1.1rem;
+    font-weight: 700;
+    font-family: 'Playfair Display', serif;
+}
+.a11y-close {
+    background: none;
+    border: none;
+    font-size: 1.8rem;
+    cursor: pointer;
+    color: #64748b;
+    line-height: 1;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+}
+.a11y-close:hover { color: #0f172a; }
+
+.a11y-panel-body { padding: 20px 22px; }
+.a11y-section { margin-bottom: 18px; }
+.a11y-section:last-of-type { margin-bottom: 22px; }
+.a11y-label {
+    margin: 0 0 8px;
+    color: #64748b;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: block;
+}
+
+/* Boutons taille texte */
+.a11y-btn-group {
+    display: flex;
+    gap: 6px;
+}
+.a11y-btn {
+    flex: 1;
+    padding: 10px;
+    border: 1.5px solid rgba(13,148,136,0.2);
+    background: white;
+    border-radius: 10px;
+    cursor: pointer;
+    color: #64748b;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+.a11y-btn:hover { border-color: #0d9488; color: #0f766e; }
+.a11y-btn.active {
+    background: #0d9488;
+    color: white;
+    border-color: #0d9488;
+}
+.a11y-btn:nth-child(1) { font-size: 0.9rem; }
+.a11y-btn:nth-child(2) { font-size: 1.1rem; }
+.a11y-btn:nth-child(3) { font-size: 1.3rem; }
+
+/* Toggle switch */
+.a11y-toggle {
+    position: relative;
+    display: inline-block;
+    width: 46px;
+    height: 24px;
+    float: right;
+    margin-top: -28px;
+}
+.a11y-toggle input { display: none; }
+.a11y-slider {
+    position: absolute;
+    inset: 0;
+    background: #cbd5e1;
+    border-radius: 24px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.a11y-slider::before {
+    content: '';
+    position: absolute;
+    height: 18px; width: 18px;
+    left: 3px; top: 3px;
+    background: white;
+    border-radius: 50%;
+    transition: 0.3s;
+}
+.a11y-toggle input:checked + .a11y-slider { background: #0d9488; }
+.a11y-toggle input:checked + .a11y-slider::before { transform: translateX(22px); }
+
+/* Reset button */
+.a11y-reset {
+    width: 100%;
+    background: transparent;
+    color: #b91c1c;
+    border: 1.5px solid #fca5a5;
+    padding: 10px;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.a11y-reset:hover { background: #fee2e2; }
+
+/* ========== EFFETS APPLIQUÉS AU SITE ========== */
+
+/* Taille du texte */
+html.a11y-font-large { font-size: 18px !important; }
+html.a11y-font-large body { font-size: 18px !important; }
+html.a11y-font-xlarge { font-size: 21px !important; }
+html.a11y-font-xlarge body { font-size: 21px !important; }
+
+/* Contraste élevé */
+html.a11y-high-contrast,
+html.a11y-high-contrast body {
+    background: #000 !important;
+    color: #fff !important;
+}
+html.a11y-high-contrast h1,
+html.a11y-high-contrast h2,
+html.a11y-high-contrast h3,
+html.a11y-high-contrast h4,
+html.a11y-high-contrast h5,
+html.a11y-high-contrast h6,
+html.a11y-high-contrast p,
+html.a11y-high-contrast span,
+html.a11y-high-contrast li {
+    color: #fff !important;
+}
+html.a11y-high-contrast a { color: #ffff00 !important; text-decoration: underline !important; }
+html.a11y-high-contrast button,
+html.a11y-high-contrast .m-btn-primary,
+html.a11y-high-contrast .esp-v2-cta-btn {
+    background: #ffff00 !important;
+    color: #000 !important;
+    border: 2px solid #fff !important;
+}
+html.a11y-high-contrast input,
+html.a11y-high-contrast textarea,
+html.a11y-high-contrast select {
+    background: #000 !important;
+    color: #fff !important;
+    border: 2px solid #fff !important;
+}
+
+/* Animations réduites */
+html.a11y-reduce-motion *,
+html.a11y-reduce-motion *::before,
+html.a11y-reduce-motion *::after {
+    animation-duration: 0s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0s !important;
+    scroll-behavior: auto !important;
+}
+
+/* Soulignement des liens */
+html.a11y-underline-links a {
+    text-decoration: underline !important;
+}
+
+
+/* Tout en blanc sur fond noir, partout */
+html.a11y-high-contrast,
+html.a11y-high-contrast body,
+html.a11y-high-contrast div,
+html.a11y-high-contrast section,
+html.a11y-high-contrast header,
+html.a11y-high-contrast footer,
+html.a11y-high-contrast nav,
+html.a11y-high-contrast article,
+html.a11y-high-contrast aside,
+html.a11y-high-contrast main {
+    background: #000 !important;
+    background-color: #000 !important;
+    background-image: none !important;
+    color: #fff !important;
+}
+
+/* Tout le texte en blanc */
+html.a11y-high-contrast h1,
+html.a11y-high-contrast h2,
+html.a11y-high-contrast h3,
+html.a11y-high-contrast h4,
+html.a11y-high-contrast h5,
+html.a11y-high-contrast h6,
+html.a11y-high-contrast p,
+html.a11y-high-contrast span,
+html.a11y-high-contrast li,
+html.a11y-high-contrast label,
+html.a11y-high-contrast small,
+html.a11y-high-contrast strong,
+html.a11y-high-contrast em,
+html.a11y-high-contrast b,
+html.a11y-high-contrast i,
+html.a11y-high-contrast td,
+html.a11y-high-contrast th,
+html.a11y-high-contrast figcaption,
+html.a11y-high-contrast blockquote {
+    color: #fff !important;
+    background: transparent !important;
+    text-shadow: none !important;
+    -webkit-text-fill-color: #fff !important;
+    -webkit-background-clip: initial !important;
+    background-clip: initial !important;
+}
+
+/* Liens jaunes soulignés */
+html.a11y-high-contrast a,
+html.a11y-high-contrast a:visited {
+    color: #ffff00 !important;
+    text-decoration: underline !important;
+    -webkit-text-fill-color: #ffff00 !important;
+}
+html.a11y-high-contrast a:hover {
+    color: #fff !important;
+    background: #ffff00 !important;
+    -webkit-text-fill-color: #fff !important;
+}
+
+/* Boutons : jaune sur noir avec bordure */
+html.a11y-high-contrast button,
+html.a11y-high-contrast .m-btn-primary,
+html.a11y-high-contrast .m-btn-ghost,
+html.a11y-high-contrast .m-btn-light,
+html.a11y-high-contrast .esp-v2-cta-btn,
+html.a11y-high-contrast .mesrdv-v2-submit,
+html.a11y-high-contrast .ctc-v2-submit,
+html.a11y-high-contrast .rdv-submit-v2,
+html.a11y-high-contrast .med-card-btn,
+html.a11y-high-contrast .esp-v2-btn-details,
+html.a11y-high-contrast .esp-v2-btn-cancel,
+html.a11y-high-contrast input[type="submit"] {
+    background: #ffff00 !important;
+    background-image: none !important;
+    color: #000 !important;
+    -webkit-text-fill-color: #000 !important;
+    border: 2px solid #fff !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+}
+html.a11y-high-contrast button *,
+html.a11y-high-contrast .m-btn-primary *,
+html.a11y-high-contrast .esp-v2-cta-btn *,
+html.a11y-high-contrast .mesrdv-v2-submit *,
+html.a11y-high-contrast .ctc-v2-submit *,
+html.a11y-high-contrast .rdv-submit-v2 *,
+html.a11y-high-contrast .med-card-btn * {
+    color: #000 !important;
+    -webkit-text-fill-color: #000 !important;
+    fill: #000 !important;
+    stroke: #000 !important;
+}
+
+/* Inputs / textareas / selects */
+html.a11y-high-contrast input,
+html.a11y-high-contrast textarea,
+html.a11y-high-contrast select,
+html.a11y-high-contrast .mesrdv-v2-input,
+html.a11y-high-contrast .ctc-v2-textarea,
+html.a11y-high-contrast .rdv-date-field {
+    background: #000 !important;
+    background-color: #000 !important;
+    color: #fff !important;
+    -webkit-text-fill-color: #fff !important;
+    border: 2px solid #fff !important;
+    caret-color: #fff !important;
+}
+html.a11y-high-contrast input::placeholder,
+html.a11y-high-contrast textarea::placeholder {
+    color: #ccc !important;
+    -webkit-text-fill-color: #ccc !important;
+}
+
+/* Labels flottants */
+html.a11y-high-contrast .mesrdv-v2-label,
+html.a11y-high-contrast .ctc-v2-textarea-label {
+    color: #fff !important;
+    -webkit-text-fill-color: #fff !important;
+}
+
+/* Toutes les cartes / blocs */
+html.a11y-high-contrast .m-bento-large,
+html.a11y-high-contrast .m-bento-small,
+html.a11y-high-contrast .m-doctor-card-v3,
+html.a11y-high-contrast .m-care-step,
+html.a11y-high-contrast .m-rgpd-card,
+html.a11y-high-contrast .med-card,
+html.a11y-high-contrast .esp-v2-stat,
+html.a11y-high-contrast .esp-v2-block,
+html.a11y-high-contrast .esp-v2-rdv-item,
+html.a11y-high-contrast .esp-v2-ord-card,
+html.a11y-high-contrast .esp-v2-med,
+html.a11y-high-contrast .ctc-v2-form-card,
+html.a11y-high-contrast .ctc-v2-info-card,
+html.a11y-high-contrast .ctc-v2-map-card,
+html.a11y-high-contrast .mesrdv-v2-card,
+html.a11y-high-contrast .rdv-doctor-recap,
+html.a11y-high-contrast .rdv-slots-section,
+html.a11y-high-contrast .rdv-form-section,
+html.a11y-high-contrast .confirm-card,
+html.a11y-high-contrast .rgpd-block {
+    background: #000 !important;
+    background-image: none !important;
+    border: 2px solid #fff !important;
+    box-shadow: none !important;
+}
+
+/* Headers, hero, CTA sombres -> noir uni */
+html.a11y-high-contrast .m-hero,
+html.a11y-high-contrast .m-cta-v2,
+html.a11y-high-contrast .esp-v2-header,
+html.a11y-high-contrast .mesrdv-v2-left-panel,
+html.a11y-high-contrast .rdv-hero,
+html.a11y-high-contrast .med-hero,
+html.a11y-high-contrast .rgpd-hero,
+html.a11y-high-contrast .m-cta-bg,
+html.a11y-high-contrast .m-cta-overlay,
+html.a11y-high-contrast .m-hero-bg-blob {
+    background: #000 !important;
+    background-image: none !important;
+    color: #fff !important;
+}
+
+/* Avatars / badges colorés -> jaune */
+html.a11y-high-contrast .esp-v2-avatar,
+html.a11y-high-contrast .esp-v2-doc-badge,
+html.a11y-high-contrast .esp-v2-stat-icon,
+html.a11y-high-contrast .esp-v2-empty-icon,
+html.a11y-high-contrast .med-card-avatar,
+html.a11y-high-contrast .rdv-doctor-recap-avatar,
+html.a11y-high-contrast .m-bento-icon,
+html.a11y-high-contrast .m-bento-icon-sm,
+html.a11y-high-contrast .m-rgpd-icon,
+html.a11y-high-contrast .ctc-v2-info-icon,
+html.a11y-high-contrast .confirm-success-circle,
+html.a11y-high-contrast .mesrdv-icon-badge {
+    background: #ffff00 !important;
+    background-image: none !important;
+    color: #000 !important;
+    border: 2px solid #fff !important;
+}
+html.a11y-high-contrast .esp-v2-avatar *,
+html.a11y-high-contrast .esp-v2-doc-badge *,
+html.a11y-high-contrast .esp-v2-stat-icon *,
+html.a11y-high-contrast .esp-v2-empty-icon *,
+html.a11y-high-contrast .m-rgpd-icon *,
+html.a11y-high-contrast .ctc-v2-info-icon *,
+html.a11y-high-contrast .m-bento-icon *,
+html.a11y-high-contrast .m-bento-icon-sm * {
+    color: #000 !important;
+    -webkit-text-fill-color: #000 !important;
+    fill: #000 !important;
+    stroke: #000 !important;
+}
+
+/* Texte muted -> blanc */
+html.a11y-high-contrast .text-muted,
+html.a11y-high-contrast .esp-v2-stat-label,
+html.a11y-high-contrast .esp-v2-rdv-ref,
+html.a11y-high-contrast .esp-v2-block-sub,
+html.a11y-high-contrast .esp-v2-empty-text,
+html.a11y-high-contrast .esp-v2-rdv-date,
+html.a11y-high-contrast .esp-v2-ord-doc,
+html.a11y-high-contrast .esp-v2-med-detail,
+html.a11y-high-contrast .esp-v2-welcome,
+html.a11y-high-contrast .esp-v2-contact,
+html.a11y-high-contrast .esp-v2-detail-label,
+html.a11y-high-contrast .esp-v2-detail-value,
+html.a11y-high-contrast .ctc-v2-info-label,
+html.a11y-high-contrast .ctc-v2-info-value,
+html.a11y-high-contrast .ctc-v2-form-sub,
+html.a11y-high-contrast .ctc-v2-form-note,
+html.a11y-high-contrast .ctc-v2-sub,
+html.a11y-high-contrast .mesrdv-v2-sub,
+html.a11y-high-contrast .mesrdv-v2-help,
+html.a11y-high-contrast .mesrdv-v2-step-label,
+html.a11y-high-contrast .m-section-subtitle,
+html.a11y-high-contrast .m-hero-desc,
+html.a11y-high-contrast .m-doctor-bio-v2,
+html.a11y-high-contrast .m-doctor-specialty-v2,
+html.a11y-high-contrast .med-card-bio,
+html.a11y-high-contrast .med-card-specialty,
+html.a11y-high-contrast .med-card-meta,
+html.a11y-high-contrast .med-tag,
+html.a11y-high-contrast .rdv-step-sub,
+html.a11y-high-contrast .rdv-hero-sub {
+    color: #fff !important;
+    -webkit-text-fill-color: #fff !important;
+}
+
+/* Eyebrows / badges */
+html.a11y-high-contrast .m-eyebrow,
+html.a11y-high-contrast .m-doctor-status-v2,
+html.a11y-high-contrast .esp-v2-status,
+html.a11y-high-contrast .rdv-badge,
+html.a11y-high-contrast .mesrdv-v2-eyebrow,
+html.a11y-high-contrast .m-cta-eyebrow {
+    background: #ffff00 !important;
+    color: #000 !important;
+    -webkit-text-fill-color: #000 !important;
+    border: 1px solid #fff !important;
+}
+
+/* SVG icons -> blanc partout sauf dans les badges jaunes */
+html.a11y-high-contrast svg {
+    color: #fff !important;
+}
+html.a11y-high-contrast svg path,
+html.a11y-high-contrast svg circle,
+html.a11y-high-contrast svg rect,
+html.a11y-high-contrast svg line,
+html.a11y-high-contrast svg polyline,
+html.a11y-high-contrast svg polygon {
+    fill: currentColor !important;
+    stroke: currentColor !important;
+}
+
+/* Titres avec gradient -> blanc uni */
+html.a11y-high-contrast em,
+html.a11y-high-contrast h1 em,
+html.a11y-high-contrast h2 em,
+html.a11y-high-contrast h3 em {
+    background: none !important;
+    -webkit-background-clip: initial !important;
+    background-clip: initial !important;
+    -webkit-text-fill-color: #ffff00 !important;
+    color: #ffff00 !important;
+}
+
+/* Bouton accessibilité reste visible et reconnaissable */
+html.a11y-high-contrast #a11y-fab {
+    background: #ffff00 !important;
+    color: #000 !important;
+    border: 2px solid #fff !important;
+}
+html.a11y-high-contrast #a11y-fab svg { color: #000 !important; }
+
+html.a11y-high-contrast #a11y-panel {
+    background: #000 !important;
+    border: 2px solid #fff !important;
+}
+html.a11y-high-contrast * {
+    background-color: transparent !important;
+    color: #fff !important;
+    -webkit-text-fill-color: #fff !important;
+    border-color: #fff !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+    background-image: none !important;
+}
+
+/* Le fond global reste noir */
+html.a11y-high-contrast,
+html.a11y-high-contrast body {
+    background-color: #000 !important;
+}
+
+/* Liens en jaune */
+html.a11y-high-contrast a,
+html.a11y-high-contrast a * {
+    color: #ffff00 !important;
+    -webkit-text-fill-color: #ffff00 !important;
+    text-decoration: underline !important;
+}
+
+/* Boutons et badges -> jaune fond, texte noir */
+html.a11y-high-contrast button,
+html.a11y-high-contrast button *,
+html.a11y-high-contrast .m-btn-primary,
+html.a11y-high-contrast .m-btn-primary *,
+html.a11y-high-contrast .m-btn-light,
+html.a11y-high-contrast .m-btn-light *,
+html.a11y-high-contrast .esp-v2-cta-btn,
+html.a11y-high-contrast .esp-v2-cta-btn *,
+html.a11y-high-contrast .mesrdv-v2-submit,
+html.a11y-high-contrast .mesrdv-v2-submit *,
+html.a11y-high-contrast .ctc-v2-submit,
+html.a11y-high-contrast .ctc-v2-submit *,
+html.a11y-high-contrast .rdv-submit-v2,
+html.a11y-high-contrast .rdv-submit-v2 *,
+html.a11y-high-contrast .med-card-btn,
+html.a11y-high-contrast .med-card-btn *,
+html.a11y-high-contrast .m-doctor-btn-v2,
+html.a11y-high-contrast .m-doctor-btn-v2 *,
+html.a11y-high-contrast .esp-v2-status,
+html.a11y-high-contrast .esp-v2-status *,
+html.a11y-high-contrast .rdv-badge,
+html.a11y-high-contrast .rdv-badge *,
+html.a11y-high-contrast .m-eyebrow,
+html.a11y-high-contrast .m-eyebrow *,
+html.a11y-high-contrast .mesrdv-v2-eyebrow,
+html.a11y-high-contrast .m-doctor-status-v2 {
+    background-color: #ffff00 !important;
+    color: #000 !important;
+    -webkit-text-fill-color: #000 !important;
+    fill: #000 !important;
+    stroke: #000 !important;
+    border: 2px solid #fff !important;
+}
+
+/* Avatars / icônes colorés -> jaune fond, contenu noir */
+html.a11y-high-contrast .esp-v2-avatar,
+html.a11y-high-contrast .esp-v2-avatar *,
+html.a11y-high-contrast .esp-v2-doc-badge,
+html.a11y-high-contrast .esp-v2-doc-badge *,
+html.a11y-high-contrast .esp-v2-stat-icon,
+html.a11y-high-contrast .esp-v2-stat-icon *,
+html.a11y-high-contrast .esp-v2-empty-icon,
+html.a11y-high-contrast .esp-v2-empty-icon *,
+html.a11y-high-contrast .med-card-avatar,
+html.a11y-high-contrast .med-card-avatar *,
+html.a11y-high-contrast .rdv-doctor-recap-avatar,
+html.a11y-high-contrast .rdv-doctor-recap-avatar *,
+html.a11y-high-contrast .m-bento-icon,
+html.a11y-high-contrast .m-bento-icon *,
+html.a11y-high-contrast .m-bento-icon-sm,
+html.a11y-high-contrast .m-bento-icon-sm *,
+html.a11y-high-contrast .m-rgpd-icon,
+html.a11y-high-contrast .m-rgpd-icon *,
+html.a11y-high-contrast .ctc-v2-info-icon,
+html.a11y-high-contrast .ctc-v2-info-icon *,
+html.a11y-high-contrast .mesrdv-icon-badge,
+html.a11y-high-contrast .mesrdv-icon-badge *,
+html.a11y-high-contrast .confirm-success-circle,
+html.a11y-high-contrast .confirm-success-circle * {
+    background-color: #ffff00 !important;
+    color: #000 !important;
+    -webkit-text-fill-color: #000 !important;
+    fill: #000 !important;
+    stroke: #000 !important;
+}
+
+/* Cartes / blocs -> bordure blanche pour les distinguer */
+html.a11y-high-contrast .m-bento-large,
+html.a11y-high-contrast .m-bento-small,
+html.a11y-high-contrast .m-doctor-card-v3,
+html.a11y-high-contrast .m-care-step,
+html.a11y-high-contrast .m-rgpd-card,
+html.a11y-high-contrast .med-card,
+html.a11y-high-contrast .esp-v2-stat,
+html.a11y-high-contrast .esp-v2-block,
+html.a11y-high-contrast .esp-v2-rdv-item,
+html.a11y-high-contrast .esp-v2-ord-card,
+html.a11y-high-contrast .ctc-v2-form-card,
+html.a11y-high-contrast .ctc-v2-info-card,
+html.a11y-high-contrast .mesrdv-v2-card,
+html.a11y-high-contrast .confirm-card,
+html.a11y-high-contrast .rgpd-block {
+    border: 2px solid #fff !important;
+}
+
+/* Inputs */
+html.a11y-high-contrast input,
+html.a11y-high-contrast textarea,
+html.a11y-high-contrast select {
+    background-color: #000 !important;
+    color: #fff !important;
+    -webkit-text-fill-color: #fff !important;
+    border: 2px solid #fff !important;
+}
+
+/* Titres en italique (gradient) -> jaune */
+html.a11y-high-contrast em {
+    color: #ffff00 !important;
+    -webkit-text-fill-color: #ffff00 !important;
+    background: none !important;
+}
+
+/* SVG hors badges -> blanc */
+html.a11y-high-contrast svg:not(button svg):not(.esp-v2-avatar svg):not(.m-bento-icon svg) {
+    fill: #fff !important;
+    stroke: currentColor !important;
+}
+
+/* Bouton accessibilité */
+html.a11y-high-contrast #a11y-fab,
+html.a11y-high-contrast #a11y-fab * {
+    background-color: #ffff00 !important;
+    color: #000 !important;
+    fill: #000 !important;
+    stroke: #000 !important;
+}
+html.a11y-high-contrast #a11y-panel {
+    background-color: #000 !important;
+    border: 2px solid #fff !important;
+}
+html.a11y-high-contrast .a11y-btn.active,
+html.a11y-high-contrast .a11y-toggle input:checked + .a11y-slider {
+    background-color: #ffff00 !important;
+}
+html.a11y-high-contrast a[class*="btn"],
+html.a11y-high-contrast a[class*="btn"] *,
+html.a11y-high-contrast button[class*="btn"],
+html.a11y-high-contrast button[class*="btn"] *,
+html.a11y-high-contrast .m-btn-primary,
+html.a11y-high-contrast .m-btn-primary *,
+html.a11y-high-contrast .m-btn-ghost,
+html.a11y-high-contrast .m-btn-ghost *,
+html.a11y-high-contrast .m-btn-light,
+html.a11y-high-contrast .m-btn-light *,
+html.a11y-high-contrast .m-bento-link,
+html.a11y-high-contrast .m-bento-link *,
+html.a11y-high-contrast .m-bento-link-sm,
+html.a11y-high-contrast .m-bento-link-sm *,
+html.a11y-high-contrast .m-doctor-btn-v2,
+html.a11y-high-contrast .m-doctor-btn-v2 *,
+html.a11y-high-contrast .med-card-btn,
+html.a11y-high-contrast .med-card-btn *,
+html.a11y-high-contrast .med-cal-slot,
+html.a11y-high-contrast .med-cal-slot *,
+html.a11y-high-contrast .esp-v2-cta-btn,
+html.a11y-high-contrast .esp-v2-cta-btn *,
+html.a11y-high-contrast .esp-v2-btn-details,
+html.a11y-high-contrast .esp-v2-btn-details *,
+html.a11y-high-contrast .mesrdv-v2-submit,
+html.a11y-high-contrast .mesrdv-v2-submit *,
+html.a11y-high-contrast .ctc-v2-submit,
+html.a11y-high-contrast .ctc-v2-submit *,
+html.a11y-high-contrast .rdv-submit-v2,
+html.a11y-high-contrast .rdv-submit-v2 *,
+html.a11y-high-contrast .rdv-doctor-pick,
+html.a11y-high-contrast .rdv-doctor-pick *,
+html.a11y-high-contrast .confirm-btn-primary,
+html.a11y-high-contrast .confirm-btn-primary *,
+html.a11y-high-contrast .confirm-btn-secondary,
+html.a11y-high-contrast .confirm-btn-secondary *,
+html.a11y-high-contrast .mesrdv-submit-btn,
+html.a11y-high-contrast .mesrdv-submit-btn * {
+    background: #ffff00 !important;
+    background-color: #ffff00 !important;
+    background-image: none !important;
+    color: #000 !important;
+    -webkit-text-fill-color: #000 !important;
+    fill: #000 !important;
+    stroke: #000 !important;
+    border-color: #000 !important;
+    text-shadow: none !important;
+}
+/* ========== FIX BENTO SERVICES CONTRASTE ========== */
+html.a11y-high-contrast .m-bento-large,
+html.a11y-high-contrast .m-bento-small,
+html.a11y-high-contrast .m-bento-content,
+html.a11y-high-contrast .m-bento-visual {
+    background: #000 !important;
+    background-color: #000 !important;
+    background-image: none !important;
+    border: 2px solid #fff !important;
+}
+
+/* Textes du bento -> blanc */
+html.a11y-high-contrast .m-bento-title,
+html.a11y-high-contrast .m-bento-text,
+html.a11y-high-contrast .m-bento-title-sm,
+html.a11y-high-contrast .m-bento-text-sm {
+    color: #fff !important;
+    -webkit-text-fill-color: #fff !important;
+    background: transparent !important;
+}
+
+/* Liens "Prendre rendez-vous →" et "Voir nos médecins →" du bento -> jaune souligné */
+html.a11y-high-contrast .m-bento-link,
+html.a11y-high-contrast .m-bento-link-sm {
+    color: #ffff00 !important;
+    -webkit-text-fill-color: #ffff00 !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    border: none !important;
+    text-decoration: underline !important;
+}
+html.a11y-high-contrast .m-bento-link *,
+html.a11y-high-contrast .m-bento-link-sm * {
+    color: #ffff00 !important;
+    -webkit-text-fill-color: #ffff00 !important;
+    fill: #ffff00 !important;
+}
+
+/* Icônes des services jaune fond, noir dedans */
+html.a11y-high-contrast .m-bento-icon,
+html.a11y-high-contrast .m-bento-icon-sm {
+    background: #ffff00 !important;
+    background-color: #ffff00 !important;
+    border: 2px solid #fff !important;
+}
+html.a11y-high-contrast .m-bento-icon svg,
+html.a11y-high-contrast .m-bento-icon-sm svg,
+html.a11y-high-contrast .m-bento-icon svg path,
+html.a11y-high-contrast .m-bento-icon-sm svg path {
+    fill: #000 !important;
+    stroke: #000 !important;
+    color: #000 !important;
+}
