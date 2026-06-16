@@ -37,10 +37,38 @@ class MedicalConsultation(models.Model):
     # Préconsultation
     weight = fields.Float(string='Poids (kg)')
     height = fields.Float(string='Taille (cm)')
+    bmi = fields.Float(string='IMC', compute='_compute_bmi', store=True, digits=(4, 2))
+    bmi_status = fields.Char(string='État du patient', compute='_compute_bmi', store=True)
     preconsultation_care = fields.Text(string='Soins administrés en préconsultation')
     preconsultation_notes = fields.Text(string='Notes de préconsultation')
 
     treatment_summary = fields.Text(string='Traitement', compute='_compute_treatment_summary')
+
+    @api.depends('weight', 'height')
+    def _compute_bmi(self):
+        for rec in self:
+            if rec.weight and rec.height:
+                height_m = rec.height / 100.0
+                rec.bmi = rec.weight / (height_m ** 2)
+                if rec.bmi < 15:
+                    rec.bmi_status = 'Insuffisance pondérale très grave'
+                elif rec.bmi < 16:
+                    rec.bmi_status = 'Insuffisance pondérale grave'
+                elif rec.bmi < 18.5:
+                    rec.bmi_status = 'Insuffisance pondérale'
+                elif rec.bmi < 25:
+                    rec.bmi_status = 'Poids normal'
+                elif rec.bmi < 30:
+                    rec.bmi_status = 'Surpoids'
+                elif rec.bmi < 35:
+                    rec.bmi_status = 'Obésité modérée'
+                elif rec.bmi < 40:
+                    rec.bmi_status = 'Obésité grave'
+                else:
+                    rec.bmi_status = 'Obésité très grave'
+            else:
+                rec.bmi = 0.0
+                rec.bmi_status = ''
 
     @api.depends('prescription_line_ids.medication_id', 'prescription_line_ids.dosage')
     def _compute_treatment_summary(self):

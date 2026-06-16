@@ -1213,7 +1213,7 @@
                                         <t t-set="months_fr" t-value="['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre']"/>
                                         <t t-set="days_fr" t-value="['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche']"/>
                                         <t t-foreach="consultations" t-as="consult">
-                                            <t t-if="consult.prescription_line_ids">
+                                            <t t-if="consult.prescription_line_ids.filtered(lambda l: l.to_print)">
                                                 <div class="esp-v2-ord-card">
                                                     <div class="esp-v2-ord-top">
                                                         <div>
@@ -1231,7 +1231,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="esp-v2-ord-meds">
-                                                        <t t-foreach="consult.prescription_line_ids" t-as="line">
+                                                        <t t-foreach="consult.prescription_line_ids.filtered(lambda l: l.to_print)" t-as="line">
                                                             <div class="esp-v2-med">
                                                                 <div class="esp-v2-med-dot"></div>
                                                                 <div>
