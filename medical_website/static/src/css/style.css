@@ -3892,3 +3892,24 @@ html.a11y-high-contrast .m-bento-icon-sm svg path {
     stroke: #000 !important;
     color: #000 !important;
 }
+/* Bouton reporter */
+.esp-v2-btn-reporter {
+    background: rgba(59,130,246,0.08);
+    color: #2563eb;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+}
+.esp-v2-btn-reporter:hover {
+    background: #2563eb;
+    color: white;
+}
+
+/* Alerte succès report */
