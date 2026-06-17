@@ -296,31 +296,45 @@ class MedicalWebsite(http.Controller):
         last_name = kwargs.get('last_name', '').strip()
         email = kwargs.get('email', '').strip()
         birth_date = kwargs.get('birth_date', '').strip()
+        reference = kwargs.get('reference', '').strip()
 
-        if not first_name or not last_name or not email or not birth_date:
+        if not first_name or not last_name or not email or not birth_date or not reference:
             return request.render('medical_website.mes_rdv', {
                 'error': "Tous les champs sont obligatoires.",
                 'searched': False,
             })
 
+        # On vérifie d'abord que le RDV avec cette référence existe
+        rdv_ref = request.env['medical.appointment'].sudo().search([
+            ('name', '=ilike', reference),
+        ], limit=1)
+
+        if not rdv_ref:
+            return request.render('medical_website.mes_rdv', {
+                'error': "Aucun rendez-vous trouvé avec cette référence.",
+                'searched': True,
+                'rdvs': False,
+            })
+
+        # On vérifie que le patient correspond bien aux infos saisies ET à la référence
         patient = request.env['medical.patient'].sudo().search([
             ('first_name', 'ilike', first_name),
             ('last_name', 'ilike', last_name),
             ('email', '=ilike', email),
             ('birth_date', '=', birth_date),
+            ('id', '=', rdv_ref.patient_id.id),
         ], limit=1)
 
         if not patient:
             return request.render('medical_website.mes_rdv', {
-                'error': "Aucun patient trouvé avec ces informations.",
+                'error': "Les informations saisies ne correspondent pas à ce rendez-vous.",
                 'searched': True,
                 'rdvs': False,
             })
 
-        # AUTHENTIFICATION SESSION
+        # Authentification session
         request.session['authenticated_patient_id'] = patient.id
 
-        # Redirection directe vers l'espace patient
         return request.redirect('/medical/espace-patient/' + str(patient.id))
 
     @http.route('/medical/espace-patient/<int:patient_id>', type='http', auth='public', website=True)
@@ -400,6 +414,22 @@ class MedicalWebsite(http.Controller):
             'rdv': rdv,
         })
 
+    @http.route('/medical/mon-profil', type='http', auth='public', website=True)
+    def mon_profil(self, **kwargs):
+        session_patient_id = request.session.get('authenticated_patient_id')
+        if not session_patient_id:
+            return request.redirect('/medical/mes-rdv')
+
+        patient = request.env['medical.patient'].sudo().browse(session_patient_id)
+        if not patient.exists():
+            return request.redirect('/medical/mes-rdv')
+
+        return request.render('medical_website.mon_profil', {
+            'patient': patient,
+            'success': kwargs.get('success'),
+            'error': kwargs.get('error'),
+        })
+
     @http.route('/medical/patient/edit', type='http', auth='public', website=True, methods=['POST'], csrf=True)
     def patient_edit(self, **kwargs):
         session_patient_id = request.session.get('authenticated_patient_id')
@@ -421,11 +451,10 @@ class MedicalWebsite(http.Controller):
                 'email': email,
                 'phone': phone,
             })
-
-            return request.redirect('/medical/espace-patient/' + str(session_patient_id) + '?success=infos')
+            return request.redirect('/medical/mon-profil?success=1')
 
         except Exception as e:
-            return request.redirect('/medical/espace-patient/' + str(session_patient_id) + '?error=' + str(e))
+            return request.redirect('/medical/mon-profil?error=' + str(e))
 
     @http.route('/medical/rdv/reporter/<int:rdv_id>', type='http', auth='public', website=True)
     def rdv_reporter(self, rdv_id, **kwargs):

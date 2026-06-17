@@ -893,7 +893,7 @@
                                 <div class="mesrdv-v2-step-line"></div>
                                 <div class="mesrdv-v2-step">
                                     <div class="mesrdv-v2-step-dot"></div>
-                                    <p class="mesrdv-v2-step-label">Vérification</p>
+                                    <p class="mesrdv-v2-step-label">Référence</p>
                                 </div>
                                 <div class="mesrdv-v2-step-line"></div>
                                 <div class="mesrdv-v2-step">
@@ -932,6 +932,12 @@
                                                 <label for="birth_date" class="mesrdv-v2-label mesrdv-v2-label-date">Date de naissance</label>
                                             </div>
                                         </div>
+                                        <div class="col-12">
+                                            <div class="mesrdv-v2-field">
+                                                <input type="text" id="reference" name="reference" class="mesrdv-v2-input" placeholder=" " required="required"/>
+                                                <label for="reference" class="mesrdv-v2-label">Référence du RDV (ex: APT-XX/00001)</label>
+                                            </div>
+                                        </div>
                                     </div>
 
                                     <button type="submit" class="mesrdv-v2-submit">
@@ -951,7 +957,7 @@
                             </div>
 
                             <p class="mesrdv-v2-help">
-                                Saisissez les informations utilisées lors de votre prise de rendez-vous pour accéder à votre dossier sécurisé.
+                                Votre référence (ex: APT-XX/00001) se trouve dans l'email de confirmation reçu lors de la prise de rendez-vous.
                             </p>
 
                             <t t-if="error">
@@ -1045,7 +1051,10 @@
                                     </t>
                                 </div>
                             </div>
-                            <a href="/medical/logout" class="esp-v2-logout">Déconnexion</a>
+                            <div style="display:flex;gap:10px;align-self:flex-start;flex-wrap:wrap;">
+                                <a href="/medical/mon-profil" class="esp-v2-logout" style="background:rgba(255,255,255,0.2);">Mon profil</a>
+                                <a href="/medical/logout" class="esp-v2-logout">Déconnexion</a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1053,22 +1062,10 @@
                 <div class="container esp-v2-main">
 
                     <!-- ALERTES -->
-                    <t t-if="request.params.get('success') == 'infos'">
-                        <div class="mesrdv-v2-alert mesrdv-v2-alert-info" style="margin-bottom:20px;">
-                            <svg viewBox="0 0 24 24" style="width:18px;fill:currentColor;flex-shrink:0;"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
-                            <span>Vos informations ont été mises à jour.</span>
-                        </div>
-                    </t>
                     <t t-if="request.params.get('success') == 'report'">
                         <div class="mesrdv-v2-alert mesrdv-v2-alert-info" style="margin-bottom:20px;">
                             <svg viewBox="0 0 24 24" style="width:18px;fill:currentColor;flex-shrink:0;"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
                             <span>Votre rendez-vous a bien été reporté.</span>
-                        </div>
-                    </t>
-                    <t t-if="request.params.get('error')">
-                        <div class="mesrdv-v2-alert mesrdv-v2-alert-error" style="margin-bottom:20px;">
-                            <svg viewBox="0 0 24 24" style="width:18px;fill:currentColor;flex-shrink:0;"><path d="M11 15h2v2h-2zm0-8h2v6h-2z"/></svg>
-                            <span><t t-esc="request.params.get('error')"/></span>
                         </div>
                     </t>
 
@@ -1115,9 +1112,10 @@
                         </div>
                     </div>
 
+                    <!-- 2 COLONNES -->
                     <div class="row g-4 mt-2">
 
-                        <!-- COLONNE GAUCHE : RDV -->
+                        <!-- COLONNE 1 : RDV -->
                         <div class="col-lg-6">
                             <div class="esp-v2-block">
                                 <div class="esp-v2-block-header">
@@ -1195,11 +1193,9 @@
                             </div>
                         </div>
 
-                        <!-- COLONNE DROITE : ORDONNANCES + MODIFIER INFOS -->
+                        <!-- COLONNE 2 : ORDONNANCES -->
                         <div class="col-lg-6">
-
-                            <!-- ORDONNANCES -->
-                            <div class="esp-v2-block" style="margin-bottom:16px;">
+                            <div class="esp-v2-block">
                                 <div class="esp-v2-block-header">
                                     <div>
                                         <h4 class="esp-v2-block-title">Mes ordonnances</h4>
@@ -1212,7 +1208,7 @@
                                         <t t-set="months_fr" t-value="['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre']"/>
                                         <t t-set="days_fr" t-value="['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche']"/>
                                         <t t-foreach="consultations" t-as="consult">
-                                            <t t-if="consult.prescription_line_ids.filtered(lambda l: l.to_print)">
+                                            <t t-if="consult.prescription_line_ids">
                                                 <div class="esp-v2-ord-card">
                                                     <div class="esp-v2-ord-top">
                                                         <div>
@@ -1230,7 +1226,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="esp-v2-ord-meds">
-                                                        <t t-foreach="consult.prescription_line_ids.filtered(lambda l: l.to_print)" t-as="line">
+                                                        <t t-foreach="consult.prescription_line_ids" t-as="line">
                                                             <div class="esp-v2-med">
                                                                 <div class="esp-v2-med-dot"></div>
                                                                 <div>
@@ -1260,41 +1256,8 @@
                                     </div>
                                 </t>
                             </div>
-
-                            <!-- MODIFIER MES INFOS -->
-                            <div class="esp-v2-block">
-                                <div class="esp-v2-block-header">
-                                    <div>
-                                        <h4 class="esp-v2-block-title">Mes informations</h4>
-                                        <p class="esp-v2-block-sub">Mettre à jour mes coordonnées</p>
-                                    </div>
-                                </div>
-                                <form method="post" action="/medical/patient/edit">
-                                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
-                                    <div class="row g-3">
-                                        <div class="col-12">
-                                            <div class="mesrdv-v2-field">
-                                                <input type="email" id="edit_email" name="email" class="mesrdv-v2-input" placeholder=" " required="required" t-att-value="patient.email or ''"/>
-                                                <label for="edit_email" class="mesrdv-v2-label mesrdv-v2-label-date">Adresse email</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <div class="mesrdv-v2-field">
-                                                <input type="tel" id="edit_phone" name="phone" class="mesrdv-v2-input" placeholder=" " required="required" t-att-value="patient.phone or ''"/>
-                                                <label for="edit_phone" class="mesrdv-v2-label mesrdv-v2-label-date">Téléphone</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <button type="submit" class="esp-v2-cta-btn" style="margin-top:16px;">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="width:16px;height:16px;margin-right:8px;">
-                                            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v14a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/>
-                                        </svg>
-                                        Enregistrer les modifications
-                                    </button>
-                                </form>
-                            </div>
-
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -1638,6 +1601,109 @@
                     renderSlots();
                 })();
             </script>
+        </t>
+    </template>
+    <template id="mon_profil" name="Medical - Mon Profil">
+        <t t-call="website.layout">
+            <div class="esp-v2-page">
+                <div class="container" style="padding:60px 0;">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-7">
+
+                            <a t-att-href="'/medical/espace-patient/' + str(patient.id)" class="m-btn-ghost mb-4" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="width:16px;height:16px;"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+                                Retour à mon espace
+                            </a>
+
+                            <!-- ALERTES -->
+                            <t t-if="success">
+                                <div class="mesrdv-v2-alert mesrdv-v2-alert-info" style="margin-bottom:24px;">
+                                    <svg viewBox="0 0 24 24" style="width:18px;fill:currentColor;flex-shrink:0;"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                                    <span>Vos informations ont été mises à jour avec succès.</span>
+                                </div>
+                            </t>
+                            <t t-if="error">
+                                <div class="mesrdv-v2-alert mesrdv-v2-alert-error" style="margin-bottom:24px;">
+                                    <svg viewBox="0 0 24 24" style="width:18px;fill:currentColor;flex-shrink:0;"><path d="M11 15h2v2h-2zm0-8h2v6h-2z"/></svg>
+                                    <span><t t-esc="error"/></span>
+                                </div>
+                            </t>
+
+                            <!-- CARTE PROFIL -->
+                            <div class="esp-v2-block">
+                                <div class="esp-v2-block-header">
+                                    <div>
+                                        <h2 class="esp-v2-block-title">Mes informations personnelles</h2>
+                                        <p class="esp-v2-block-sub">Consultez et mettez à jour vos coordonnées</p>
+                                    </div>
+                                </div>
+
+                                <!-- INFOS NON MODIFIABLES -->
+                                <div class="row g-4" style="margin-bottom:8px;">
+                                    <div class="col-md-6">
+                                        <p class="esp-v2-detail-label">Prénom</p>
+                                        <p class="esp-v2-detail-value"><t t-esc="patient.first_name or '—'"/></p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p class="esp-v2-detail-label">Nom</p>
+                                        <p class="esp-v2-detail-value"><t t-esc="patient.last_name or '—'"/></p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p class="esp-v2-detail-label">Date de naissance</p>
+                                        <p class="esp-v2-detail-value">
+                                            <t t-if="patient.birth_date">
+                                                <t t-esc="patient.birth_date.strftime('%d/%m/%Y')"/>
+                                            </t>
+                                            <t t-else="">—</t>
+                                        </p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p class="esp-v2-detail-label">Genre</p>
+                                        <p class="esp-v2-detail-value">
+                                            <t t-if="patient.gender == 'male'">Homme</t>
+                                            <t t-elif="patient.gender == 'female'">Femme</t>
+                                            <t t-else="">—</t>
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="esp-v2-detail-note" style="margin:20px 0;">
+                                    <strong>Note :</strong> Votre nom, prénom, date de naissance et genre ne peuvent pas être modifiés en ligne. Pour toute correction, contactez le secrétariat du cabinet.
+                                </div>
+
+                                <!-- FORMULAIRE MODIFIABLE -->
+                                <h4 style="font-family:var(--m-font-serif);color:var(--m-text);font-weight:700;margin:0 0 18px;font-size:1.1rem;padding-top:18px;border-top:1px solid rgba(13,148,136,0.08);">Coordonnées modifiables</h4>
+
+                                <form method="post" action="/medical/patient/edit">
+                                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <div class="mesrdv-v2-field">
+                                                <input type="email" id="edit_email" name="email" class="mesrdv-v2-input" placeholder=" " required="required" t-att-value="patient.email or ''"/>
+                                                <label for="edit_email" class="mesrdv-v2-label mesrdv-v2-label-date">Adresse email</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="mesrdv-v2-field">
+                                                <input type="tel" id="edit_phone" name="phone" class="mesrdv-v2-input" placeholder=" " required="required" t-att-value="patient.phone or ''"/>
+                                                <label for="edit_phone" class="mesrdv-v2-label mesrdv-v2-label-date">Téléphone</label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <button type="submit" class="esp-v2-cta-btn" style="margin-top:20px;">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="width:16px;height:16px;margin-right:8px;">
+                                            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v14a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/>
+                                        </svg>
+                                        Enregistrer les modifications
+                                    </button>
+                                </form>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
         </t>
     </template>
 </odoo>

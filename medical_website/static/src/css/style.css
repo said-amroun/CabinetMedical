@@ -3912,4 +3912,8 @@ html.a11y-high-contrast .m-bento-icon-sm svg path {
     color: white;
 }
 
-/* Alerte succès report */
+html, body {
+    height: auto !important;
+    min-height: 100% !important;
+    overflow-y: auto !important;
+}
