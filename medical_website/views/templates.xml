@@ -22,7 +22,6 @@
                                         <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
                                     </svg>
                                 </a>
-                                <a href="/medical/medecins" class="m-btn-ghost">Voir nos médecins</a>
                             </div>
                             <div class="m-hero-trust">
                                 <span><svg viewBox="0 0 24 24" style="width:16px;fill:#10b981;"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> Sans appel téléphonique</span>
@@ -240,15 +239,6 @@
                             <div class="med-toolbar">
                                 <div>
                                     <p class="med-results-count"><strong t-esc="len(doctors)"/> médecins trouvés</p>
-                                </div>
-                                <div class="med-toolbar-actions">
-                                    <div class="med-sort">
-                                        <label>Trier par :</label>
-                                        <select>
-                                            <option>Disponibilité</option>
-                                            <option>Nom A-Z</option>
-                                        </select>
-                                    </div>
                                 </div>
                             </div>
 
@@ -565,28 +555,24 @@
 
     <template id="confirmation" name="Medical - Confirmation RDV">
         <t t-call="website.layout">
-            <div class="mesrdv-page">
-                <!-- Decorative shapes -->
-                <div class="mesrdv-blob mesrdv-blob-1"></div>
-                <div class="mesrdv-blob mesrdv-blob-2"></div>
-                <div class="mesrdv-blob mesrdv-blob-3"></div>
+            <div class="mesrdv-v2-page">
 
-                <div class="container" style="position:relative;z-index:5;padding:70px 0;">
+                <div class="container mesrdv-v2-container">
                     <div class="row justify-content-center">
-                        <div class="col-lg-9">
+                        <div class="col-lg-8 col-md-10">
 
-                            <!-- Animation de succès -->
-                            <div class="text-center mb-4">
+                            <!-- HEADER SUCCÈS -->
+                            <div class="mesrdv-v2-header">
                                 <div class="confirm-success-circle">
-                                    <svg viewBox="0 0 24 24" style="width:60px;fill:white;">
+                                    <svg viewBox="0 0 24 24" style="width:56px;fill:white;">
                                         <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
                                     </svg>
                                 </div>
-                                <h1 class="mesrdv-title mt-4">Rendez-vous confirmé !</h1>
-                                <p class="mesrdv-subtitle">Votre rendez-vous a été enregistré avec succès. Un email de confirmation vous sera envoyé.</p>
+                                <h1 class="mesrdv-v2-title mt-4">Rendez-vous <em>confirmé</em></h1>
+                                <p class="mesrdv-v2-sub">Votre rendez-vous a été enregistré avec succès. Un email de confirmation vous sera envoyé.</p>
                             </div>
 
-                            <!-- Carte récapitulative -->
+                            <!-- CARTE RÉCAPITULATIVE -->
                             <div class="confirm-card">
 
                                 <!-- Référence en haut -->
@@ -612,7 +598,7 @@
                                         </div>
                                         <div>
                                             <p class="confirm-label">DATE ET HEURE</p>
-                                            <p class="confirm-value"><t t-esc="rdv.appointment_date" t-options='{"widget": "datetime"}'/></p>
+                                            <p class="confirm-value"><t t-esc="(rdv.appointment_date + datetime.timedelta(hours=2)).strftime('%d/%m/%Y à %H:%M') if rdv.appointment_date else ''"/></p>
                                         </div>
                                     </div>
 
@@ -658,7 +644,7 @@
 
                                 <!-- Note d'information -->
                                 <div class="confirm-note">
-                                    <svg viewBox="0 0 24 24" style="width:22px;fill:var(--medical-primary);flex-shrink:0;">
+                                    <svg viewBox="0 0 24 24" style="width:22px;fill:var(--m-primary);flex-shrink:0;">
                                         <path d="M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/>
                                     </svg>
                                     <span>Veuillez vous présenter <strong>15 minutes avant</strong> votre rendez-vous. En cas d'empêchement, merci de nous prévenir au plus tôt.</span>
@@ -678,9 +664,19 @@
                                 </div>
                             </div>
 
-                            <div class="text-center mt-4">
-                                <a href="/medical/mes-rdv" style="color:var(--medical-primary);font-weight:600;">Accéder à mon espace patient</a>
+                            <!-- TRUST BADGES -->
+                            <div class="mesrdv-v2-trust">
+                                <span>Données chiffrées</span>
+                                <span class="mesrdv-v2-trust-sep">·</span>
+                                <span>Hébergement HDS</span>
+                                <span class="mesrdv-v2-trust-sep">·</span>
+                                <span>Conforme RGPD</span>
                             </div>
+
+                            <p class="mesrdv-v2-help">
+                                <a href="/medical/mes-rdv" style="color:var(--m-primary-dark);font-weight:600;text-decoration:none;">Accéder à mon espace patient →</a>
+                            </p>
+
                         </div>
                     </div>
                 </div>
@@ -981,17 +977,18 @@
 
                                 <div class="rdv-timeline mt-4">
                                     <t t-foreach="rdvs" t-as="rdv">
+                                        <t t-set="rdv_date_corrected" t-value="rdv.appointment_date + datetime.timedelta(hours=2) if rdv.appointment_date else False"/>
                                         <div class="rdv-item">
                                             <div class="rdv-item-date">
-                                                <span class="rdv-day"><t t-esc="rdv.appointment_date.strftime('%d') if rdv.appointment_date else '--'"/></span>
-                                                <span class="rdv-month"><t t-esc="rdv.appointment_date.strftime('%b') if rdv.appointment_date else ''"/></span>
+                                                <span class="rdv-day"><t t-esc="rdv_date_corrected.strftime('%d') if rdv_date_corrected else '--'"/></span>
+                                                <span class="rdv-month"><t t-esc="rdv_date_corrected.strftime('%b') if rdv_date_corrected else ''"/></span>
                                             </div>
                                             <div class="rdv-item-content">
                                                 <div style="display:flex;justify-content:space-between;align-items:start;flex-wrap:wrap;gap:10px;width:100%;">
                                                     <div>
                                                         <h5 style="margin:0;color:var(--m-text);font-weight:700;">Dr. <t t-esc="rdv.doctor_id.name"/></h5>
                                                         <p style="margin:4px 0;color:var(--m-text-muted);font-size:0.85rem;">
-                                                            Réf: <t t-esc="rdv.name"/> · <t t-esc="rdv.appointment_date" t-options='{"widget": "datetime"}'/>
+                                                            Réf: <t t-esc="rdv_date_corrected.strftime('%d/%m/%Y à %H:%M') if rdv_date_corrected else ''"/>
                                                         </p>
                                                     </div>
                                                     <span t-attf-class="rdv-badge rdv-badge-#{'done' if rdv.state == 'done' else 'confirmed' if rdv.state == 'confirmed' else 'draft' if rdv.state == 'draft' else 'cancel'}">
@@ -1131,6 +1128,7 @@
                                             <t t-set="doc_initials" t-value="(rdv.doctor_id.name[:1] if rdv.doctor_id.name else 'D')"/>
                                             <t t-set="months_fr" t-value="['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre']"/>
                                             <t t-set="days_fr" t-value="['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche']"/>
+                                            <t t-set="rdv_date_corrected" t-value="rdv.appointment_date + datetime.timedelta(hours=2) if rdv.appointment_date else False"/>
                                             <div class="esp-v2-rdv-item">
                                                 <div class="esp-v2-doc-badge">
                                                     <span><t t-esc="doc_initials.upper()"/></span>
@@ -1138,11 +1136,11 @@
                                                 <div class="esp-v2-rdv-info">
                                                     <h6 class="esp-v2-rdv-doc">Dr. <t t-esc="rdv.doctor_id.name"/></h6>
                                                     <p class="esp-v2-rdv-date">
-                                                        <t t-if="rdv.appointment_date">
-                                                            <t t-esc="days_fr[rdv.appointment_date.weekday()]"/>
-                                                            <t t-esc="rdv.appointment_date.strftime(' %d ')"/>
-                                                            <t t-esc="months_fr[rdv.appointment_date.month - 1]"/>
-                                                            <t t-esc="rdv.appointment_date.strftime(' à %Hh%M')"/>
+                                                        <t t-if="rdv_date_corrected">
+                                                            <t t-esc="days_fr[rdv_date_corrected.weekday()]"/>
+                                                            <t t-esc="rdv_date_corrected.strftime(' %d ')"/>
+                                                            <t t-esc="months_fr[rdv_date_corrected.month - 1]"/>
+                                                            <t t-esc="rdv_date_corrected.strftime(' à %Hh%M')"/>
                                                         </t>
                                                     </p>
                                                     <p class="esp-v2-rdv-ref"><t t-esc="rdv.name"/></p>
@@ -1396,16 +1394,17 @@
 
                                 <t t-set="months_fr" t-value="['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre']"/>
                                 <t t-set="days_fr" t-value="['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche']"/>
+                                <t t-set="rdv_date_corrected" t-value="rdv.appointment_date + datetime.timedelta(hours=2) if rdv.appointment_date else False"/>
 
                                 <div class="row g-4">
                                     <div class="col-md-6">
                                         <p class="esp-v2-detail-label">Date et heure</p>
                                         <p class="esp-v2-detail-value">
-                                            <t t-if="rdv.appointment_date">
-                                                <t t-esc="days_fr[rdv.appointment_date.weekday()]"/>
-                                                <t t-esc="rdv.appointment_date.strftime(' %d ')"/>
-                                                <t t-esc="months_fr[rdv.appointment_date.month - 1]"/>
-                                                <t t-esc="rdv.appointment_date.strftime(' %Y à %Hh%M')"/>
+                                            <t t-if="rdv_date_corrected">
+                                                <t t-esc="days_fr[rdv_date_corrected.weekday()]"/>
+                                                <t t-esc="rdv_date_corrected.strftime(' %d ')"/>
+                                                <t t-esc="months_fr[rdv_date_corrected.month - 1]"/>
+                                                <t t-esc="rdv_date_corrected.strftime(' %Y à %Hh%M')"/>
                                             </t>
                                         </p>
                                     </div>

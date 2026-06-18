@@ -118,7 +118,7 @@ class MedicalWebsite(http.Controller):
             if date_utc < datetime.utcnow():
                 raise ValueError("La date choisie est déjà passée.")
 
-            # ===== CONTRAINTE A : créneau déjà pris (vérifié AVANT création/recherche patient) =====
+            # ===== CONTRAINTE A : créneau déjà pris =====
             existing_slot_taken = request.env['medical.appointment'].sudo().search([
                 ('doctor_id', '=', doctor_id),
                 ('appointment_date', '=', date_utc),
@@ -485,7 +485,7 @@ class MedicalWebsite(http.Controller):
     @http.route('/medical/rdv/reporter/submit', type='http', auth='public', website=True, methods=['POST'], csrf=True)
     def rdv_reporter_submit(self, **kwargs):
         from datetime import datetime, timedelta
-        import pytz
+
 
         session_patient_id = request.session.get('authenticated_patient_id')
         if not session_patient_id:
@@ -513,16 +513,13 @@ class MedicalWebsite(http.Controller):
             if date_local.weekday() >= 5:
                 raise ValueError("Les RDV ne sont pas disponibles le weekend.")
 
-            user_tz = pytz.timezone('Europe/Paris')
-            date_utc = user_tz.localize(date_local).astimezone(pytz.utc).replace(tzinfo=None)
-
-            if date_utc < datetime.utcnow():
+            if date_local < datetime.now():
                 raise ValueError("La date choisie est déjà passée.")
 
             # Vérifier que le créneau n'est pas pris (par un autre patient)
             existing = request.env['medical.appointment'].sudo().search([
                 ('doctor_id', '=', rdv.doctor_id.id),
-                ('appointment_date', '=', date_utc),
+                ('appointment_date', '=', date_local),
                 ('state', '!=', 'cancelled'),
                 ('id', '!=', rdv_id),
             ], limit=1)
@@ -530,7 +527,7 @@ class MedicalWebsite(http.Controller):
                 raise ValueError("Ce créneau est déjà réservé. Choisissez un autre horaire.")
 
             # Modifier la date du RDV existant (pas d'annulation/recréation)
-            rdv.sudo().write({'appointment_date': date_utc})
+            rdv.sudo().write({'appointment_date': date_local})
 
             return request.redirect('/medical/espace-patient/' + str(session_patient_id) + '?success=report')
 
